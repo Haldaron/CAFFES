@@ -36,18 +36,14 @@ include "mylibrary.php";
  	<?php $cmp=validar($usuario,$password);?>
  		<?php if($cmp): ?>
 			<form action="cordinador.php", method="">			
-				<div class="radio-inline">
-  					<label><input type="radio" name="Dowload" checked="checked" ><img src="./imagenes/download.svg" alt="" height="120" width="120"></label>
+				<div class="row">
+  					<input type="radio" name="action" checked="checked" id="download">
+  					<label for="download">Descargar Datos</label>
 				</div>
-				<div class="radio-inline">
-  					<label><input type="radio" name="Upload"><img src="./imagenes/upload.svg" alt="" height="120" width="120"></label>
+				<div class="row">
+  					<input type="radio" name="action" id="upload">
+  					<label for="upload">Ingresar Datos</label>
 				</div>
-				<!--
-				<div class="radio disabled">
-  					<label><input type="radio" name="optradio" disabled>Option 3</label>
-				</div>
-				-->
-				<br>
 				<input type="submit" name="submit" value="Seleccionar" class="btn btn-default form-control">
 			</form>						
 	 	<?php else : ?>
