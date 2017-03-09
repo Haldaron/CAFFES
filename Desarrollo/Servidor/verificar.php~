@@ -11,8 +11,20 @@
 </head>
 
 <?php
-$usuario=$_POST['user'];
-$password=$_POST['password'];	
+if(isset($_POST['something']){
+	$usuario=$_POST['user'];
+}
+	else {
+	$usuario=$_GET['user'];
+}
+
+if(isset($_POST['something']){
+	$password=$_POST['password'];
+}
+	else {
+	$password=$_GET['password'];
+}
+
 ?>
 
 <?php
@@ -41,8 +53,8 @@ include "mylibrary.php";
   					<label for="download">Descargar Datos</label>
 				</div>
 				<div class="row">
-  					<input type="radio" name="action" style="display:none" id="upload"><img src="./imagenes/upload.svg" alt="" style="width:50%">
-  					<label for="upload"><br>Ingresar Datos</label>
+  					<input type="radio" name="action" id="upload">
+  					<label for="upload">Ingresar Datos</label>
 				</div>
 				<input type="submit" name="submit" value="Seleccionar" class="btn btn-default form-control">
 			</form>						

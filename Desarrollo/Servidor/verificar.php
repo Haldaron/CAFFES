@@ -11,8 +11,19 @@
 </head>
 
 <?php
-$usuario=$_POST['user'];
-$password=$_POST['password'];	
+if(isset($_POST['user'])){
+	$usuario=$_POST['user'];
+}
+	else {
+	$usuario=$_GET['user'];
+}
+
+if(isset($_POST['password'])){
+	$password=$_POST['password'];
+}
+	else {
+	$password=$_GET['password'];
+}
 ?>
 
 <?php
