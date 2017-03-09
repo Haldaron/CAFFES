@@ -1,0 +1,14 @@
+div.page-header {
+	color: black;
+	background-color: yellow;
+	text-align: center;
+	vertical-align: middle;
+   display: flex;
+   justify-content: center;
+   align-content: center;
+   flex-direction: column;
+}
+
+body {
+    background-color: #EEEEEE;
+}
