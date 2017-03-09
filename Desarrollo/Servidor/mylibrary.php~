@@ -1,0 +1,16 @@
+<?php
+//Permite hace una validación al formulario de registro
+function validar($nombre, $clave) 
+{	
+	$cmp = false;
+	if((strcmp($nombre, "usco")==0 && strcmp($clave, "usco123")==0) ||
+		(strcmp($nombre, "finca")==0 && strcmp($clave, "finca123")==0))  {
+		$cmp=true;
+	}
+	else {
+		$cmp=false;
+	}
+	
+	return $cmp;		
+}
+?>
