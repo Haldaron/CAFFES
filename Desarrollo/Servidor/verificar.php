@@ -34,7 +34,7 @@ include "mylibrary.php";
 	<!-- Librería jQuery requerida por los plugins de JavaScript -->
    <script src="http://code.jquery.com/jquery.js"></script>
 	<div class="container">
-		<div class="page-header"><h3>INVESTIGACIÓN DE LAS CONDICIONES DE CONTROL DE LA CALIDAD DE CAFÉ ESPECIAL<br><small> LA PLATA, HUILA, CENTRO ORIENTE</small></h3></div>
+	<div class="page-header"><h3>INVESTIGACIÓN DE LAS CONDICIONES DE CONTROL DE LA CALIDAD DE CAFÉ ESPECIAL<br><small> LA PLATA, HUILA, CENTRO ORIENTE</small></h3></div>
 	</div>
 	<div class="container"><!-- formulario de ingreso con notificación de error -->
 	<div class="row">
@@ -46,16 +46,16 @@ include "mylibrary.php";
 	<!-- decide si reenvia al formulario de registro o muestra las acciones permitidas -->
  	<?php $cmp=validar($usuario,$password);?>
  		<?php if($cmp): ?>
-			<form action="cordinador.php", method="">			
+			<form action="cordinador.php" method="POST">			
 				<div class="row">
-  					<input type="radio" name="action" checked="checked" id="download">
-  					<label for="download">Descargar Datos</label>
+  					<input type="radio" name="action" value="download" checked="checked" id="download">
+  					<label for="download" class="DefAccion">Descargar Datos</label>
 				</div>
 				<div class="row">
-  					<input type="radio" name="action" id="upload">
-  					<label for="upload">Ingresar Datos</label>
+  					<input type="radio" name="action" value="upload" id="upload">
+  					<label for="upload" class="DefAccion">Ingresar Datos</label>
 				</div>
-				<input type="submit" name="submit" value="Seleccionar" class="btn btn-default form-control">
+				<button value="Ingresar" type="submit" class="btn btn-default form-control" name="button">Siguiente</button>
 			</form>						
 	 	<?php else : ?>
 			<!-- formulario de registro -->		
@@ -81,4 +81,3 @@ include "mylibrary.php";
 	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
-

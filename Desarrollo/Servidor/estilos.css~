@@ -10,5 +10,20 @@ div.page-header {
 }
 
 body {
-    background-color: #CCCCCC;
+    background-color: #EEEEEE;
+}
+
+.DefAccion {
+	font-size: 2em;
+	background-color: yellow;
+}
+.DefAccion:hover {
+	cursor: pointer;
+	color: red;
+}
+
+.btn,
+.btn-default{
+	font-size: 2em;
+	height: 2em;
 }
