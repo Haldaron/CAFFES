@@ -7,13 +7,13 @@ class navegacion
 {
 	public $UserID=0;
 	public $Logged=false;
-	public $ActionList=array();
+	public $ActionList=[];
 	public $ActionSel="";
-	public $CordList=array();
+	public $CordList=[];
 	public $CordSel="";
-	public $RemoteList=array();
+	public $RemoteList=[];
 	public $RemoteVar="";
-	public $VariableList=array();
+	public $VariableList=[];
 	public $VariableSel="";
 	
 	//muestra si estado de validación de registro del usuario
@@ -24,26 +24,26 @@ class navegacion
 	public function setLog($value) {
 		$this->Logged=$value;
 	}
+
 	//busca en la base de datos el ID del usuario
-	public function getUserID($user) {
-		$id=0; // inicializa la variable ID, la idea es buscarlos en base de datos
-		if (strcmp($user, "usco")==0){
-			$id=USCO_ID;		
-		}
-		elseif(strcmp($user, $finca)==0) {
-			$id=FINCA_ID;		
-		}
-		return $id;
+	public function setUserID($id) {
+		$this->UserID=$id;
+	}
+	
+	//busca en la base de datos el ID del usuario
+	public function getUserID() {
+		return $this->UserID;
 	}
 	
 	//busca en la base de datos los permisos a los que tiene un usuario en función de la acción que va a efectuar
-	public function getActionList($userID) {
-		if($userID==USCO_ID) {
+	public function getActionList() {
+		if(($this->UserID)==USCO_ID) {
 			$this->ActionList=["download","upload"];
 		}
-		elseif($userID==FINCA_ID) {
+		elseif(($this->UserID)==FINCA_ID) {
 			$this->ActionList=["upload"];	
 		}
+		return $this->ActionList;
 	}
 	
 	// pone en el campo de ActionSel la variable que seleccióno el usuario en el formulario
@@ -74,4 +74,18 @@ function validar($nombre, $clave)
 	
 	return $cmp;		
 }
+?>
+
+<?php
+// asocia un ID a un nombre de Usuario Determinado
+function querryID($user) {
+		$id=0; // inicializa la variable ID, la idea es buscarlos en base de datos
+		if (strcmp($user, "usco")==0){
+			$id=USCO_ID;	
+		}
+		elseif(strcmp($user, "finca")==0) {
+			$id=FINCA_ID;		
+		}
+		return $id;
+	}
 ?>
