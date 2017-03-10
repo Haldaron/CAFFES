@@ -15,15 +15,9 @@ body {
 
 .DefAccion {
 	font-size: 2em;
-	background-color: yellow;
-}
-.DefAccion:hover {
-	cursor: pointer;
-	color: #101010;
 }
 
-.btn,
-.btn-default{
-	font-size: 2em;
-	height: 2em;
+.DefAccion:hover {
+	cursor: pointer;
+	color: #AAAAAA;
 }
