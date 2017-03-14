@@ -13,11 +13,3 @@ body {
     background-color: #EEEEEE;
 }
 
-.DefAccion {
-	font-size: 2em;
-}
-
-.DefAccion:hover {
-	cursor: pointer;
-	color: #AAAAAA;
-}

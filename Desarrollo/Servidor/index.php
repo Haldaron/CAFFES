@@ -42,7 +42,7 @@ else {
 		$nav->setLog(true);
 		$nav->setUserID(querryID($usuario));
 		$_SESSION['navigator']=$nav;
-		header("Location: verificar.php");
+		header("Location: actions.php");
 		?>
 	<?php else: ?>
 		<?php
@@ -59,7 +59,7 @@ else {
 					</div>
 					<!-- formulario de registro -->		
 					<div class="col-sm-6">
-							<form action="index.php" method="post">
+							<form action="index.php" method="POST">
 								<div class="form-group">
 									<label for="user_text">usuario</label><br>				
 									<input type="text" name="user" value="usuario" id="user_text" class="form-control">
@@ -90,7 +90,7 @@ else {
 		$nav->setLog(true);
 		$nav->setUserID(querryID($usuario));
 		$_SESSION['navigator']=$nav;
-		header("Location: verificar.php");
+		header("Location: actions.php");
 		?>
 	<?php else: ?>
 		<?php
@@ -107,7 +107,7 @@ else {
 					</div>
 					<!-- formulario de registro -->		
 					<div class="col-sm-6">
-							<form action="index.php" method="post">
+							<form action="index.php" method="POST">
 								<div class="form-group">
 									<label for="user_text">usuario</label><br>				
 									<input type="text" name="user" value="usuario" id="user_text" class="form-control">
@@ -128,7 +128,7 @@ else {
 	<?php endif; ?>
 <?php else: ?>
 	<?php if($nav->getLog()): ?>
-		<?php header("Location: verificar.php");?>
+		<?php header("Location: actions.php");?>
 	<?php else: ?>
 			<div class="container">
 				<div class="row">
@@ -138,7 +138,7 @@ else {
 					</div>
 					<!-- formulario de registro -->		
 					<div class="col-sm-6">
-							<form action="index.php" method="post">
+							<form action="index.php" method="POST">
 								<div class="form-group">
 									<label for="user_text">usuario</label><br>				
 									<input type="text" name="user" value="usuario" id="user_text" class="form-control">
@@ -161,8 +161,6 @@ else {
 			<script src="js/bootstrap.min.js"></script>	
 </body>
 </html>
-
-
 		
 
 

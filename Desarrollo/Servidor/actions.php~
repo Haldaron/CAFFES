@@ -12,13 +12,7 @@ else {
 }
 ?>
 
-<?php if($nav->getLog()):?>
-	<?php
-		//
-		$action=$_POST['action'];
-		$nav->setActionSel($action);
-	?>
-
+<?php if($nav->getLog()): ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,9 +34,19 @@ else {
 			</div>
 			<div class="container">
 				<div class="col-sm-6 col-sm-offset-3">
+					<h2>Opciones disponibles: </h2><br>
+					<form action="cordinador.php" method="POST">					
 					<?php
-						echo $nav->getActionSel();
+						$list=$nav->getActionList();
+						foreach ($list as $item){
+							echo "<div class='row'>\n";
+  							echo "<input type='radio' name='action' value='".$item."'>\n";
+  							echo "<label for='".$item." >".$item."</label>\n";
+							echo "</div>\n";
+						}
 					?>
+					<button value='Ingresar' type='submit' class='btn btn-default form-control' name='button'>Siguiente</button>
+					</form>
 				</div>
 			</div>	
 			<script src="js/bootstrap.min.js"></script>	
