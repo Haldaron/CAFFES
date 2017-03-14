@@ -1,20 +1,20 @@
 <?php 
 //definciones
-define("USCO_ID",0001);
-define("FINCA_ID",0002);
+define('USCO_ID',0001);
+define('FINCA_ID',0002);
 //declaración de una clase que define los parametros del flujo de la navegacion
 class navegacion
 {
 	public $UserID=0;
 	public $Logged=false;
 	public $ActionList=[];
-	public $ActionSel="";
+	public $ActionSel='';
 	public $CordList=[];
-	public $CordSel="";
+	public $CordSel='';
 	public $RemoteList=[];
-	public $RemoteVar="";
+	public $RemoteVar='';
 	public $VariableList=[];
-	public $VariableSel="";
+	public $VariableSel='';
 	
 	//muestra si estado de validación de registro del usuario
 	public function getLog() {
@@ -38,10 +38,10 @@ class navegacion
 	//busca en la base de datos los permisos a los que tiene un usuario en función de la acción que va a efectuar
 	public function getActionList() {
 		if(($this->UserID)==USCO_ID) {
-			$this->ActionList=["download","upload"];
+			$this->ActionList=['download','upload'];
 		}
 		elseif(($this->UserID)==FINCA_ID) {
-			$this->ActionList=["upload"];	
+			$this->ActionList=['upload'];	
 		}
 		return $this->ActionList;
 	}
@@ -57,15 +57,12 @@ class navegacion
 	}	
 }
 
-?>
 
-<?php
 //Permite hace una validación al formulario de registro
-function validar($nombre, $clave) 
-{	
+function validar($nombre, $clave) {	
 	$cmp = false;
-	if((strcmp($nombre, "usco")==0 && strcmp($clave, "usco123")==0) ||
-		(strcmp($nombre, "finca")==0 && strcmp($clave, "finca123")==0))  {
+	if((strcmp($nombre, 'usco')==0 && strcmp($clave, 'usco123')==0) ||
+		(strcmp($nombre, 'finca')==0 && strcmp($clave, 'finca123')==0)){
 		$cmp=true;
 	}
 	else {
@@ -74,16 +71,15 @@ function validar($nombre, $clave)
 	
 	return $cmp;		
 }
-?>
 
-<?php
+
 // asocia un ID a un nombre de Usuario Determinado
 function querryID($user) {
 		$id=0; // inicializa la variable ID, la idea es buscarlos en base de datos
-		if (strcmp($user, "usco")==0){
+		if (strcmp($user, 'usco')==0){
 			$id=USCO_ID;	
 		}
-		elseif(strcmp($user, "finca")==0) {
+		elseif(strcmp($user, 'finca')==0) {
 			$id=FINCA_ID;		
 		}
 		return $id;

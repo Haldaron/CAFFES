@@ -1,4 +1,9 @@
 <?php
+// Start the session
+session_start();
+?>
+
+<?php
 include "mylibrary.php";
 
 $navegador= new navegacion;
@@ -12,6 +17,7 @@ function ShowLog($value) {
 	}
 }
 
+
 echo "<h2>Pruebas de la funcion SetLog/getLog</h2>"."<br>";
 $navegador->setLog(false);
 ShowLog($navegador->getLog());
@@ -20,7 +26,7 @@ ShowLog($navegador->getLog());
 
 echo "<h2>Pruebas de la funcion Action List </h2>"."<br>";
 
-$user="finca";
+$user="usco";
 $id=querryID($user);
 echo "la identificación del usuario ".$user." es: ".$id."<br>";
 $navegador->setUserID($id);
@@ -34,5 +40,21 @@ foreach ($lista as $act){
 $action = $_POST["action"];
 
 $navegador->setActionSel($action);
+
 echo "la opción seleccionada es: ". $navegador->ActionSel."<br>";
+?>
+			<form action="verificar.php" method="post">
+				<div class="form-group">
+					<label for="user_text">usuario</label><br>				
+					<input type="text" name="user" value="usuario" id="user_text" class="form-control">	
+				</div>
+				<div class="form-group">
+					<label for="password_text">contraseña</label><br>							
+					<input type="password" name="password" value="contraseña" id="password_text" class="form-control">	
+				</div>	
+				<button value="Ingresar" type="submit" class="btn btn-default form-control">Ingresar</button>
+			</form>
+			
+<?php
+	$_SESSION["nav"]=$navegador;
 ?>

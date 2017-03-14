@@ -1,4 +1,9 @@
 <?php
+// Start the session
+session_start();
+?>
+
+<?php
 include "mylibrary.php";
 
 $navegador= new navegacion;
@@ -11,6 +16,7 @@ function ShowLog($value) {
 		echo "el usuario no se encuentra logueado"."<br>";
 	}
 }
+
 
 echo "<h2>Pruebas de la funcion SetLog/getLog</h2>"."<br>";
 $navegador->setLog(false);
@@ -34,5 +40,13 @@ foreach ($lista as $act){
 $action = $_POST["action"];
 
 $navegador->setActionSel($action);
+
 echo "la opción seleccionada es: ". $navegador->ActionSel."<br>";
+?>
+			<form action="remoto.php" method="post">
+				<button value="Ingresar" type="submit" class="btn btn-default form-control">Ingresar</button>
+			</form>
+			
+<?php
+	$_SESSION["nav"]=$navegador;
 ?>
