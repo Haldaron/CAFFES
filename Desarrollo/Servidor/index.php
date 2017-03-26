@@ -162,6 +162,6 @@ else {
 			</div> 		
 	<?php endif; ?>
 <?php endif; ?>		
-			<script src="js/bootstrap.min.js"></script>	
+<script src="js/bootstrap.min.js"></script>	
 </body>
 </html>

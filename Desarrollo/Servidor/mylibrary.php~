@@ -2,8 +2,8 @@
 // incluir los servicios de la base de datos
 include 'ConnectDataBase.php'; 
 //definciones
-define('USCO_ID',0001);
-define('FINCA_ID',0002);
+define('USCO_ID',2);
+define('FINCA_ID',3);
 //declaración de una clase que define los parametros del flujo de la navegacion
 class navegacion
 {
@@ -50,15 +50,7 @@ class navegacion
 		
 	//busca en la base de datos los permisos a los que tiene un usuario en función de la acción que va a efectuar
 	public function getActionList() {
-		if(($this->UserID)==USCO_ID) {
-			$this->ActionList=['download','upload'];
-		}
-		elseif(($this->UserID)==FINCA_ID) {
-			$this->ActionList=['upload'];	
-		}
-		else {
-			$this->ActionList=[];
-		}
+			$this->ActionList=queryActionList($this->UserName);
 		return $this->ActionList;
 	}
 	
@@ -122,15 +114,42 @@ function validar($nombre, $clave) {
 
 // asocia un ID a un nombre de Usuario Determinado
 function querryID($user) {
-		$id=0; // inicializa la variable ID, la idea es buscarlos en base de datos
-		if (strcmp($user, 'usco')==0){
-			$id=USCO_ID;	
+	$id=NULL; // inicializa la variable ID, la idea es buscarlos en base de datos
+	$mysql=connect_database(); //socilita la conexion a la base de datos	
+	if ($mysql){
+		$query="SELECT UsuarioName, UsuarioID FROM Usuarios";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+			if(strcmp($row[0], $user)==0) {//determina si se encuentra el nombre
+				$id=$row[1]; //devuelve el valor que se encuentra en el registro
+			}
 		}
-		elseif(strcmp($user, 'finca')==0) {
-			$id=FINCA_ID;		
-		}
-		return $id;
 	}
+	mysqli_close($mysql);	
+	return $id;
+}
+
+/*********************************
+Obtiene un listado de las acciones a las que tiene permiso un usuario
+**********************************/
+function queryActionList($UserName){
+	$list=[];//Devuelve el valor de la lista de acciones del sujeto
+	$mysql=connect_database(); //socilita la conexion a la base de datos	
+	if ($mysql){
+		$query="SELECT UsuarioName, Permiso FROM Permisos";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], "escribir")==0)) {
+					$list=array_merge($list,['action_1'=>'upload']);
+				}
+				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], "leer")==0)) {
+					$list=array_merge($list,['action_2'=>'download']);
+				}
+			}
+		}
+	mysqli_close($mysql);			
+	return $list;
+}
 	
 function querryCordinator($id, $action) {
 	$list=[];	

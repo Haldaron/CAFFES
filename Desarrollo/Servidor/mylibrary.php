@@ -50,15 +50,7 @@ class navegacion
 		
 	//busca en la base de datos los permisos a los que tiene un usuario en función de la acción que va a efectuar
 	public function getActionList() {
-		if(($this->UserID)==USCO_ID) {
-			$this->ActionList=['download','upload'];
-		}
-		elseif(($this->UserID)==FINCA_ID) {
-			$this->ActionList=['upload'];	
-		}
-		else {
-			$this->ActionList=[];
-		}
+			$this->ActionList=queryActionList($this->UserName);
 		return $this->ActionList;
 	}
 	
@@ -136,7 +128,29 @@ function querryID($user) {
 	mysqli_close($mysql);	
 	return $id;
 }
-	
+
+/*********************************
+Obtiene un listado de las acciones a las que tiene permiso un usuario
+**********************************/
+function queryActionList($UserName){
+	$list=[];//Devuelve el valor de la lista de acciones del sujeto
+	$mysql=connect_database(); //socilita la conexion a la base de datos	
+	if ($mysql){
+		$query="SELECT UsuarioName, Permiso FROM Permisos";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], "escribir")==0)) {
+					$list=array_merge($list,['action_1'=>'upload']);
+				}
+				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], "leer")==0)) {
+					$list=array_merge($list,['action_2'=>'download']);
+				}
+			}
+		}
+	mysqli_close($mysql);			
+	return $list;
+}
+
 function querryCordinator($id, $action) {
 	$list=[];	
 	if(($id==USCO_ID)&&($action=="download")){
