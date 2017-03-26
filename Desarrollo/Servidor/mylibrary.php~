@@ -2,6 +2,7 @@
 // incluir los servicios de la base de datos
 include 'ConnectDataBase.php'; 
 //definciones
+define("ACCIONES",['upload'=>'escribir','download'=>'leer']);
 define('USCO_ID',2);
 define('FINCA_ID',3);
 //declaración de una clase que define los parametros del flujo de la navegacion
@@ -65,11 +66,11 @@ class navegacion
 	}
 	
 	public function setCordList() {
-		$this->CordList=querryCordinator($this->UserID,$this->ActionSel);
+		$this->CordList=querryCordinator($this->UserName, $this->ActionSel);
 	}
 	
 	public function getCordList(){
-		return $this->CordList;	
+		return $this->CordList;
 	}
 	
 	public function setCordSel($cordinator){
@@ -129,14 +130,14 @@ function querryID($user) {
 	return $id;
 }
 
-/*********************************
+/********************************************************************
 Obtiene un listado de las acciones a las que tiene permiso un usuario
-**********************************/
+*********************************************************************/
 function queryActionList($UserName){
 	$list=[];//Devuelve el valor de la lista de acciones del sujeto
 	$mysql=connect_database(); //socilita la conexion a la base de datos	
 	if ($mysql){
-		$query="SELECT UsuarioName, Permiso FROM Permisos";
+		$query="SELECT UsuarioName, permiso FROM Permisos";
 		$result=mysqli_query($mysql, $query);
 		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
 				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], "escribir")==0)) {
@@ -150,22 +151,27 @@ function queryActionList($UserName){
 	mysqli_close($mysql);			
 	return $list;
 }
-	
-function querryCordinator($id, $action) {
-	$list=[];	
-	if(($id==USCO_ID)&&($action=="download")){
-			$list=['Cord01','Cord02','Cord03'];
-	}
-	elseif(($id==USCO_ID)&&($action=="upload")) {
-		$list=['Cord02','Cord03'];
-	}
-	elseif(($id==FINCA_ID)&&($action=="download")) {
-		$list=[];
-	}
-	elseif(($id==FINCA_ID)&&($action=="upload")) {
-		$list=['Cord01'];
-	}
-	return $list;		
+
+/***********************************************************
+Selecciona un listado de cordinadores en los que un usuario 
+puede desempeñar determinada función 
+***********************************************************/
+function querryCordinator($UserName, $action) {
+	$opcion=ACCIONES[$action];
+	$list=[]; //la lista inicialmente está vacía
+	$mysql=connect_database(); //solicita la conexión a la base de datos	
+	if ($mysql){
+		$query="SELECT UsuarioName, permiso, CordinadorLugar FROM Permisos";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], $opcion)==0)) {
+					echo "entra aqui alguna vez \n";				
+					$list=array_merge($list,[$row[2]]);
+				}
+			}
+		}
+	mysqli_close($mysql);
+	return $list;
 }
 
 function queryRemoto($id,$action,$cord){
