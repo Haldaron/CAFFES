@@ -41,6 +41,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(true);
 		$nav->setUserID(querryID($usuario));
+		$nav->setUserName($usuario);
 		$_SESSION['navigator']=$nav;
 		header("Location: actions.php");
 		?>
@@ -49,6 +50,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(false);
 		$nav->setUserID(NULL);
+		$nav->setUserName(NULL);
 		$_SESSION['navigator']=$nav;
 		?>
 			<div class="container">
@@ -59,7 +61,7 @@ else {
 					</div>
 					<!-- formulario de registro -->		
 					<div class="col-sm-6">
-							<form action="index.php" method="post">
+							<form action="index.php" method="POST">
 								<div class="form-group">
 									<label for="user_text">usuario</label><br>				
 									<input type="text" name="user" value="usuario" id="user_text" class="form-control">
@@ -89,6 +91,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(true);
 		$nav->setUserID(querryID($usuario));
+		$nav->setUserName($usuario);
 		$_SESSION['navigator']=$nav;
 		header("Location: actions.php");
 		?>
@@ -97,6 +100,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(false);
 		$nav->setUserID(NULL);
+		$nav->setUserName(NULL);
 		$_SESSION['navigator']=$nav;
 		?>
 			<div class="container">
@@ -107,7 +111,7 @@ else {
 					</div>
 					<!-- formulario de registro -->		
 					<div class="col-sm-6">
-							<form action="index.php" method="post">
+							<form action="index.php" method="POST">
 								<div class="form-group">
 									<label for="user_text">usuario</label><br>				
 									<input type="text" name="user" value="usuario" id="user_text" class="form-control">
@@ -138,7 +142,7 @@ else {
 					</div>
 					<!-- formulario de registro -->		
 					<div class="col-sm-6">
-							<form action="index.php" method="post">
+							<form action="index.php" method="POST">
 								<div class="form-group">
 									<label for="user_text">usuario</label><br>				
 									<input type="text" name="user" value="usuario" id="user_text" class="form-control">
@@ -161,8 +165,3 @@ else {
 			<script src="js/bootstrap.min.js"></script>	
 </body>
 </html>
-		
-
-
-	
-

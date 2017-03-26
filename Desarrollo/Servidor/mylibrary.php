@@ -2,12 +2,13 @@
 // incluir los servicios de la base de datos
 include 'ConnectDataBase.php'; 
 //definciones
-define('USCO_ID',0001);
-define('FINCA_ID',0002);
+define('USCO_ID',2);
+define('FINCA_ID',3);
 //declaración de una clase que define los parametros del flujo de la navegacion
 class navegacion
 {
 	public $UserID=0;
+	public $UserName='';
 	public $Logged=false;
 	public $ActionList=[];
 	public $ActionSel='';
@@ -27,7 +28,7 @@ class navegacion
 		$this->Logged=$value;
 	}
 
-	//busca en la base de datos el ID del usuario
+	//setea el nombre de usuario en 
 	public function setUserID($id) {
 		$this->UserID=$id;
 	}
@@ -37,6 +38,16 @@ class navegacion
 		return $this->UserID;
 	}
 	
+	//configura el nombre de usuario en la clase
+	public function setUserName($name) {
+		$this->UserName=$name;
+	}
+	
+	//Devuelve el valor del nombre de usuario
+	public function getUserName(){
+		return $this->UserName;
+	}
+		
 	//busca en la base de datos los permisos a los que tiene un usuario en función de la acción que va a efectuar
 	public function getActionList() {
 		if(($this->UserID)==USCO_ID) {
@@ -44,6 +55,9 @@ class navegacion
 		}
 		elseif(($this->UserID)==FINCA_ID) {
 			$this->ActionList=['upload'];	
+		}
+		else {
+			$this->ActionList=[];
 		}
 		return $this->ActionList;
 	}
@@ -108,15 +122,21 @@ function validar($nombre, $clave) {
 
 // asocia un ID a un nombre de Usuario Determinado
 function querryID($user) {
-		$id=0; // inicializa la variable ID, la idea es buscarlos en base de datos
-		if (strcmp($user, 'usco')==0){
-			$id=USCO_ID;	
+	$id=NULL; // inicializa la variable ID, la idea es buscarlos en base de datos
+	$mysql=connect_database(); //socilita la conexion a la base de datos	
+	if ($mysql){
+		$query="SELECT UsuarioName, UsuarioID FROM Usuarios";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+			if(strcmp($row[0], $user)==0) {//determina si se encuentra el nombre
+				$id=$row[1]; //devuelve el valor que se encuentra en el registro
+			}
 		}
-		elseif(strcmp($user, 'finca')==0) {
-			$id=FINCA_ID;		
-		}
-		return $id;
 	}
+	mysqli_close($mysql);	
+	return $id;
+}
+	
 function querryCordinator($id, $action) {
 	$list=[];	
 	if(($id==USCO_ID)&&($action=="download")){

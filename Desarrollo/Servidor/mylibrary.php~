@@ -8,6 +8,7 @@ define('FINCA_ID',0002);
 class navegacion
 {
 	public $UserID=0;
+	public $UserName='';
 	public $Logged=false;
 	public $ActionList=[];
 	public $ActionSel='';
@@ -27,7 +28,7 @@ class navegacion
 		$this->Logged=$value;
 	}
 
-	//busca en la base de datos el ID del usuario
+	//setea el nombre de usuario en 
 	public function setUserID($id) {
 		$this->UserID=$id;
 	}
@@ -37,6 +38,16 @@ class navegacion
 		return $this->UserID;
 	}
 	
+	//configura el nombre de usuario en la clase
+	public function setUserName($name) {
+		$this->UserName=$name;
+	}
+	
+	//Devuelve el valor del nombre de usuario
+	public function getUserName(){
+		return $this->UserName;
+	}
+		
 	//busca en la base de datos los permisos a los que tiene un usuario en función de la acción que va a efectuar
 	public function getActionList() {
 		if(($this->UserID)==USCO_ID) {
@@ -44,6 +55,9 @@ class navegacion
 		}
 		elseif(($this->UserID)==FINCA_ID) {
 			$this->ActionList=['upload'];	
+		}
+		else {
+			$this->ActionList=[];
 		}
 		return $this->ActionList;
 	}
@@ -95,8 +109,10 @@ function validar($nombre, $clave) {
 	if ($mysql){
 		$query="SELECT UsuarioName, Password FROM Usuarios";
 		$result=mysqli_query($mysql, $query);
-		while($row=mysqli_fetch_row($result)){
-			echo "user: ".$row[0]."\tpassword: ".$row[1]."<br>";
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+			if((strcmp($row[0], $nombre)==0)&&(strcmp($row[1], $clave)==0)) {
+				$cmp=true; // si enceuntra la combinacion de usuario y contraseña se pone en "true";
+			}
 		}
 	}
 	mysqli_close($mysql);	
@@ -115,6 +131,7 @@ function querryID($user) {
 		}
 		return $id;
 	}
+	
 function querryCordinator($id, $action) {
 	$list=[];	
 	if(($id==USCO_ID)&&($action=="download")){

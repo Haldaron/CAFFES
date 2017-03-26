@@ -41,6 +41,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(true);
 		$nav->setUserID(querryID($usuario));
+		$nav->setUserName($usuario);
 		$_SESSION['navigator']=$nav;
 		header("Location: actions.php");
 		?>
@@ -49,6 +50,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(false);
 		$nav->setUserID(NULL);
+		$nav->setUserName(NULL);
 		$_SESSION['navigator']=$nav;
 		?>
 			<div class="container">
@@ -89,6 +91,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(true);
 		$nav->setUserID(querryID($usuario));
+		$nav->setUserName($usuario);
 		$_SESSION['navigator']=$nav;
 		header("Location: actions.php");
 		?>
@@ -97,6 +100,7 @@ else {
 		//actualiza los valores de la estructura
 		$nav->setLog(false);
 		$nav->setUserID(NULL);
+		$nav->setUserName(NULL);
 		$_SESSION['navigator']=$nav;
 		?>
 			<div class="container">
@@ -161,8 +165,3 @@ else {
 			<script src="js/bootstrap.min.js"></script>	
 </body>
 </html>
-		
-
-
-	
-
