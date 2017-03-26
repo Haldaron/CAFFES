@@ -1,4 +1,6 @@
-<?php 
+<?php
+// incluir los servicios de la base de datos
+include 'ConnectDataBase.php'; 
 //definciones
 define('USCO_ID',0001);
 define('FINCA_ID',0002);
@@ -12,7 +14,7 @@ class navegacion
 	public $CordList=[];
 	public $CordSel='';
 	public $RemoteList=[];
-	public $RemoteVar='';
+	public $RemoteSel='';
 	public $VariableList=[];
 	public $VariableSel='';
 	
@@ -54,22 +56,51 @@ class navegacion
 	// devuelve el valor de la accion que selecciono de la lista anterior
 	public function getActionSel() {
 		return $this->ActionSel;
-	}	
+	}
+	
+	public function setCordList() {
+		$this->CordList=querryCordinator($this->UserID,$this->ActionSel);
+	}
+	
+	public function getCordList(){
+		return $this->CordList;	
+	}
+	
+	public function setCordSel($cordinator){
+		$this->CordSel=$cordinator;
+	}
+	
+	public function getCordSel() {
+		return $this->CordSel;
+	}
+
+	public function setRemList() {	
+	}
+	
+	public function getRemList() {
+	}
+		
+	public function setVarList() {	
+	}
+	
+	public function getVarList() {
+	}
 }
 
 
 //Permite hace una validación al formulario de registro
-function validar($nombre, $clave) {	
-	$cmp = false;
-	if((strcmp($nombre, 'usco')==0 && strcmp($clave, 'usco123')==0) ||
-		(strcmp($nombre, 'finca')==0 && strcmp($clave, 'finca123')==0)){
-		$cmp=true;
+function validar($nombre, $clave) {
+	$cmp=false;
+	$mysql=connect_database(); //socilita la conexion a la base de datos	
+	if ($mysql){
+		$query="SELECT UsuarioName, Password FROM Usuarios";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){
+			echo "user: ".$row[0]."\tpassword: ".$row[1]."<br>";
+		}
 	}
-	else {
-		$cmp=false;
-	}
-	
-	return $cmp;		
+	mysqli_close($mysql);	
+	return $cmp;
 }
 
 
@@ -84,4 +115,81 @@ function querryID($user) {
 		}
 		return $id;
 	}
+function querryCordinator($id, $action) {
+	$list=[];	
+	if(($id==USCO_ID)&&($action=="download")){
+			$list=['Cord01','Cord02','Cord03'];
+	}
+	elseif(($id==USCO_ID)&&($action=="upload")) {
+		$list=['Cord02','Cord03'];
+	}
+	elseif(($id==FINCA_ID)&&($action=="download")) {
+		$list=[];
+	}
+	elseif(($id==FINCA_ID)&&($action=="upload")) {
+		$list=['Cord01'];
+	}
+	return $list;		
+}
+
+function queryRemoto($id,$action,$cord){
+	$list=[];
+		switch($id) {
+			case FINCA_ID:
+				switch($action) {
+					case "download":
+						$list=['Suelos01','Tanques01'];
+					break;
+					case "upload":
+						$list=[];
+					break;
+				}
+			break;
+			case USCO_ID:
+				switch($action) {
+					case "download":
+						switch($cord) {
+							case "Cord01":
+								$list=['Suelos01','Tanques01','Amb01'];
+							break;
+							case "Cord02":
+								$list=['Suelos02','Tanques02','Amb03'];
+							break;
+							case "Cord03":
+								$list=['Suelos03','Tanques03'];
+							break;
+						}
+					break;
+					case "upload":
+						switch($cord) {
+							case "Cord01":
+								$list=[];
+							break;
+							case "Cord02":
+								$list=['Suelos02','Tanques02'];
+							break;
+							case "Cord03":
+								$list=['Suelos03','Tanques03'];
+							break;
+						}						
+					break;
+				}
+			break;
+		}	
+	return $list;
+}
+
+function ActionMask($action){
+	$string="";
+	if(strcmp($action, "download")==0){
+		$string="Descargar datos";
+	}
+	elseif(strcmp($action, "upload")==0) {
+		$string="Ingresar datos";
+	}
+	else {
+		$string="";
+	}
+	return $string;	
+}
 ?>

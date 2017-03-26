@@ -59,6 +59,11 @@ else {
 
 	</div>
 	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$(":radio").labelauty();
+	});	
+	</script>
 	<script src='js/bootstrap.min.js'></script>
 </body>
 </html>

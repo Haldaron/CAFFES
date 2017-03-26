@@ -23,7 +23,20 @@
 		<!-- Formulario de registro de usuarios -->
 		<!-- imagen de referencia -->
 		<div class="col-sm-6">
-			<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
+				<div class="col-sm-12">
+			<div class="row">
+				<nav class="navbar navbar-default navbar-static-top" role="navigation">				
+					<button type="button" class="btn btn-default navbar-btn"><a href="index.html">Usuario</a></button>
+					<button type="button" class="btn btn-default navbar-btn"><a href="actions.php">Acción</a></button>
+					<button type="button" class="btn btn-default navbar-btn"><a href="cordinador.php">Cordinador</a></button>
+					<button type="button" class="btn btn-default navbar-btn"><a href="remoto.php">Remoto</a></button>
+					<button type="button" class="btn btn-default navbar-btn"><a href="index.html">Usuario</a></button>
+				</nav>
+				</div>
+			</div>
+			<div class="row">
+				<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
+			</div>	
 		</div>
 		<!-- formulario de registro -->		
 		<div class="col-sm-6">
