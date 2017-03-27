@@ -1,4 +1,5 @@
 <?php
+define("SERVERNAME","localhost");
 define("MYPHPUSER","root");
 define("MYPHPPASSWORD","gerrard8");
 define("DATABASENAME", "CaffesDataBase");
@@ -25,9 +26,9 @@ function getTableColumns($tableName){
 
 
 function connect_database(){
-	$identifier=mysqli_connect('localhost', MYPHPUSER, MYPHPPASSWORD);
+	$identifier=mysqli_connect(SERVERNAME, MYPHPUSER, MYPHPPASSWORD);
 	if(isset($identifier)){
-		mysqli_select_db($identifier,'DATABASENAME');	
+		mysqli_select_db($identifier,DATABASENAME);	
 	}
 	return $identifier;
 } 

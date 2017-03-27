@@ -74,4 +74,4 @@ else {
 </html>
 <?php else: ?>
 	<?php header("Location: index.php"); ?>
-<?php endif;?>	
+<?php endif;?>

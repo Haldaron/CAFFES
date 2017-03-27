@@ -164,8 +164,7 @@ function querryCordinator($UserName, $action) {
 		$query="SELECT UsuarioName, permiso, CordinadorLugar FROM Permisos";
 		$result=mysqli_query($mysql, $query);
 		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
-				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], $opcion)==0)) {
-					echo "entra aqui alguna vez \n";				
+				if((strcmp($row[0], $UserName)==0)&&(strcmp($row[1], $opcion)==0)) {				
 					$list=array_merge($list,[$row[2]]);
 				}
 			}
@@ -175,49 +174,15 @@ function querryCordinator($UserName, $action) {
 }
 
 function queryRemoto($id,$action,$cord){
-	$list=[];
-		switch($id) {
-			case FINCA_ID:
-				switch($action) {
-					case "download":
-						$list=['Suelos01','Tanques01'];
-					break;
-					case "upload":
-						$list=[];
-					break;
-				}
+	$list=[];//variable que lista los remotos que perteneces a cada cordinador.
+	switch($action) {
+		case "download":
+			$list=['suelos','tanque','ambiental'];
 			break;
-			case USCO_ID:
-				switch($action) {
-					case "download":
-						switch($cord) {
-							case "Cord01":
-								$list=['Suelos01','Tanques01','Amb01'];
-							break;
-							case "Cord02":
-								$list=['Suelos02','Tanques02','Amb03'];
-							break;
-							case "Cord03":
-								$list=['Suelos03','Tanques03'];
-							break;
-						}
-					break;
-					case "upload":
-						switch($cord) {
-							case "Cord01":
-								$list=[];
-							break;
-							case "Cord02":
-								$list=['Suelos02','Tanques02'];
-							break;
-							case "Cord03":
-								$list=['Suelos03','Tanques03'];
-							break;
-						}						
-					break;
-				}
+		case "upload":
+			$list=['suelos','tanque'];
 			break;
-		}	
+	}	
 	return $list;
 }
 

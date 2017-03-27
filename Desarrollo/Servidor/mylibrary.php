@@ -2,13 +2,13 @@
 // incluir los servicios de la base de datos
 include 'ConnectDataBase.php'; 
 //definciones
-define("ACCIONES",['upload'=>'escribir','download'=>'leer']);
+define('ACCIONES',['upload'=>'escribir','download'=>'leer']);
 define('USCO_ID',2);
 define('FINCA_ID',3);
 //declaración de una clase que define los parametros del flujo de la navegacion
 class navegacion
 {
-	public $UserID=0;
+	public $UserID=NULL;
 	public $UserName='';
 	public $Logged=false;
 	public $ActionList=[];
@@ -17,6 +17,7 @@ class navegacion
 	public $CordSel='';
 	public $RemoteList=[];
 	public $RemoteSel='';
+	public $RemoteID=NULL;
 	public $VariableList=[];
 	public $VariableSel='';
 	
@@ -174,49 +175,15 @@ function querryCordinator($UserName, $action) {
 }
 
 function queryRemoto($id,$action,$cord){
-	$list=[];
-		switch($id) {
-			case FINCA_ID:
-				switch($action) {
-					case "download":
-						$list=['Suelos01','Tanques01'];
-					break;
-					case "upload":
-						$list=[];
-					break;
-				}
+	$list=[];//variable que lista los remotos que perteneces a cada cordinador.
+	switch($action) {
+		case "download":
+			$list=['suelos','tanque','ambiental'];
 			break;
-			case USCO_ID:
-				switch($action) {
-					case "download":
-						switch($cord) {
-							case "Cord01":
-								$list=['Suelos01','Tanques01','Amb01'];
-							break;
-							case "Cord02":
-								$list=['Suelos02','Tanques02','Amb03'];
-							break;
-							case "Cord03":
-								$list=['Suelos03','Tanques03'];
-							break;
-						}
-					break;
-					case "upload":
-						switch($cord) {
-							case "Cord01":
-								$list=[];
-							break;
-							case "Cord02":
-								$list=['Suelos02','Tanques02'];
-							break;
-							case "Cord03":
-								$list=['Suelos03','Tanques03'];
-							break;
-						}						
-					break;
-				}
+		case "upload":
+			$list=['suelos','tanque'];
 			break;
-		}	
+	}	
 	return $list;
 }
 

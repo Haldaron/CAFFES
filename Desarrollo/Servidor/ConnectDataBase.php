@@ -1,7 +1,7 @@
 <?php
 define("SERVERNAME","localhost");
 define("MYPHPUSER","root");
-define("MYPHPPASSWORD","gerrard8");
+define("MYPHPPASSWORD","GEST2017");
 define("DATABASENAME", "CaffesDataBase");
 
 function getTableColumns($tableName){
