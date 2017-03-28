@@ -41,10 +41,10 @@ else {
 				<div class="page-header"><h3>INVESTIGACIÓN DE LAS CONDICIONES DE CONTROL DE LA CALIDAD DE CAFÉ ESPECIAL<br><small> LA PLATA, HUILA, CENTRO ORIENTE</small></h3></div>
 			</div>
 			<div class="container">
-				<div class="col-sm-6">
+				<div class="col-sm-5">
 					<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-7">
 					<?php
 						$nav->setCordList();
 					?>
@@ -52,11 +52,14 @@ else {
 					<div class="row">					
 					<form action="variable.php" method="POST">										
 					<?php
-						$list=queryRemoto($nav->getUserID(),$nav->getActionSel(),$nav->getCordSel());
-						foreach ($list as $item){
-							echo "<div class='col-sm-4'>\n";
-  							echo "<input class='radio-inline' type='radio' name='cord' value='".$item."' data-labelauty='".$item."' checked>\n";
-							echo "</div>\n";
+						$list=queryRemoto($nav->getActionSel(),$nav->getCordSel());
+						foreach ($list as $clave=>$item){
+							$label=$item?$clave:NULL;// Si está vacio el listado de remotos no muestra la clave
+							if($label) {
+								echo "<div class='col-sm-4'>\n";
+	  							echo "<input class='radio-inline' type='radio' name='cord' value='".$label."' data-labelauty='".$label."' checked>\n";
+								echo "</div>\n";							
+							}
 						}
 					?>
 					</div>

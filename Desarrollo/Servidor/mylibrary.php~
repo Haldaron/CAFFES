@@ -2,13 +2,14 @@
 // incluir los servicios de la base de datos
 include 'ConnectDataBase.php'; 
 //definciones
-define("ACCIONES",['upload'=>'escribir','download'=>'leer']);
+define('ACCIONES',['upload'=>'escribir','download'=>'leer']);
+define('ACTIONMASK',['upload'=>'Ingresar datos','download'=>'Descargar Datos']);
 define('USCO_ID',2);
 define('FINCA_ID',3);
 //declaración de una clase que define los parametros del flujo de la navegacion
 class navegacion
 {
-	public $UserID=0;
+	public $UserID=NULL;
 	public $UserName='';
 	public $Logged=false;
 	public $ActionList=[];
@@ -17,6 +18,7 @@ class navegacion
 	public $CordSel='';
 	public $RemoteList=[];
 	public $RemoteSel='';
+	public $RemoteID=NULL;
 	public $VariableList=[];
 	public $VariableSel='';
 	
@@ -113,7 +115,10 @@ function validar($nombre, $clave) {
 }
 
 
-// asocia un ID a un nombre de Usuario Determinado
+/**************************************************
+**Asocia un ID a un nombre de Usuario Determinado**
+***************************************************/
+
 function querryID($user) {
 	$id=NULL; // inicializa la variable ID, la idea es buscarlos en base de datos
 	$mysql=connect_database(); //socilita la conexion a la base de datos	
@@ -173,30 +178,85 @@ function querryCordinator($UserName, $action) {
 	return $list;
 }
 
-function queryRemoto($id,$action,$cord){
-	$list=[];//variable que lista los remotos que perteneces a cada cordinador.
+/******************************************************************
+Lista los remotos que estan asociados a un cordinador en especifico
+******************************************************************/
+function queryRemoto($action,$cord){
+	$list=['Suelos'=>NULL,'Meteorológico'=>NULL,'Tanques'=>NULL];//variable que lista los remotos que perteneces a cada cordinador.
+	//usando el nombre del cordinador obtengo el ID del mismo
+	$cordID=NULL;
+	$mysql=connect_database(); //solicita la conexión a la base de datos
+	if($mysql){
+		$query="SELECT Lugar, CordinadoresID FROM Cordinadores";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+			if(strcmp($row[0], $cord)==0){//busca el ID que coincida con el nombre 				
+				$cordID=$row[1];
+			}
+		}//esta identificado el ID del cordinador
+		mysqli_free_result($result);
+		mysqli_close($mysql);
+	}
 	switch($action) {
-		case "download":
-			$list=['suelos','tanque','ambiental'];
+		case "download":// Busco en la tablas: RemotoSuelos, RemotoMetereologico, RemotoTanques 
+			seekSoilRemotes($list, $cordID);
+			seekMeteoRemotes($list, $cordID);
+			seekTanqRemotes($list, $cordID);
 			break;
-		case "upload":
-			$list=['suelos','tanque'];
+		case "upload":// Busco en la tablas: RemotoSuelos, RemotoTanques
+			seekSoilRemotes($list, $cordID);
+			seekTanqRemotes($list, $cordID);
 			break;
-	}	
+	}
 	return $list;
 }
+/**************************************************************
+Consulta el listado de Remotos de Suelos Conectados a un CordID
+***************************************************************/
+function seekSoilRemotes(&$list, $cordID){
+	$mysql=connect_database(); //solicita la conexión a la base de datos
+	if($mysql){
+		$query="SELECT CordinadorID, RemSuelosID FROM RemotoSuelos";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+			if(strcmp($row[0], $cordID)==0){//busca el ID que coincida con el nombre 				
+				$list['Suelos'][]=$row[1];
+			}
+		}	
+	}
+	mysqli_close($mysql);
+}
+/*******************************************************************
+Consulta el listado de Remotos Metereologicos Conectados a un CordID
+********************************************************************/
+function seekMeteoRemotes(&$list, $cordID){
+	$mysql=connect_database(); //solicita la conexión a la base de datos
+	if($mysql){
+		$query="SELECT CordinadorID, RemMetID FROM RemotoMetereologico";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+			if(strcmp($row[0], $cordID)==0){//busca el ID que coincida con el nombre 				
+				$list['Meteorológico'][]=$row[1];
+			}
+		}	
+	}
+	mysqli_close($mysql);
+}
 
-function ActionMask($action){
-	$string="";
-	if(strcmp($action, "download")==0){
-		$string="Descargar datos";
+/*******************************************************************
+Consulta el listado de Remotos de Tanques Conectados a un CordID
+********************************************************************/
+function seekTanqRemotes(&$list, $cordID){
+	$mysql=connect_database(); //solicita la conexión a la base de datos
+	if($mysql){
+		$query="SELECT CordinadorID, RemTanqueID FROM RemotoTanques";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+			if(strcmp($row[0], $cordID)==0){//busca el ID que coincida con el nombre 				
+				$list['Tanques'][]=$row[1];
+			}
+		}	
 	}
-	elseif(strcmp($action, "upload")==0) {
-		$string="Ingresar datos";
-	}
-	else {
-		$string="";
-	}
-	return $string;	
+	mysqli_close($mysql);
 }
 ?>

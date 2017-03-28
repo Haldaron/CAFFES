@@ -46,7 +46,7 @@ else {
 						$list=$nav->getActionList();
 						foreach ($list as $item){
 							echo "<div class='row block'>\n";
-  							echo "<input  type='radio' name='action' value='".$item."' data-labelauty='".ActionMask($item)."' checked>\n";
+  							echo "<input  type='radio' name='action' value='".$item."' data-labelauty='".ACTIONMASK[$item]."' checked>\n";
 							echo "</div>\n";
 						}
 					?>

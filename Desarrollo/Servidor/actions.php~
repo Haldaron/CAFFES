@@ -40,7 +40,7 @@ else {
 					<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
 				</div>
 				<div class="col-sm-6">
-					<h3><i>Acciones:</i></h3><br>
+					<h3><i>Lista de acciones:</i></h3><br>
 					<form action="cordinador.php" method="POST">					
 					<?php
 						$list=$nav->getActionList();
