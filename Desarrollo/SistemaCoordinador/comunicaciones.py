@@ -13,16 +13,17 @@ leer=False
 while True:
     
     incoming =ser.readline().strip()
-    str1 = "!,"
     str2 = ">"
-    str3 = "$"
-    str4 = "*"
     
-    posicion0= incoming.find(str1)
-    posicion1= incoming.find(str2)
-    posicion2= incoming.find(str3)
-    posicion3= incoming.find(str4)
-    posicion4= len(incoming)
+    
+    posicion0=incoming.find(str2)
+    posicion1=incoming[posicion0+1:len(incoming)].find(str2)
+    posicion1=posicion1+posicion0+1
+    posicion2=incoming[posicion1+1:len(incoming)].find(str2)
+    posicion2=posicion2+posicion1+1
+    posicion3=incoming[posicion2+1:len(incoming)].find(str2)
+    posicion3=posicion3+posicion2+1
+    posicion4=len(incoming)
 
     tipo=incoming[0:posicion0]
     remotoID=incoming[posicion0+1:posicion1]

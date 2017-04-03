@@ -1,12 +1,12 @@
 import os
 
-path_principal='USCO'
-os.system("rm -r USCO")
+path_principal='/home/pi/USCO'
+os.system("rm -r /home/pi/USCO")
 
 if not os.path.exists(path_principal):
     os.mkdir(path_principal)
 
-path_ambiental='USCO/remoto_meteorologico'
+path_ambiental='/home/pi/USCO/remoto_meteorologico'
 
 if not os.path.exists(path_ambiental):
     os.mkdir(path_ambiental)
@@ -33,7 +33,7 @@ archivo_temperatura_ambiente.close()
 archivo_velocidad_viento=open(path_ambiental+"/VelocidadViento.csv","a+")
 archivo_velocidad_viento.close()
 
-path_suelos='USCO/remoto_suelo'
+path_suelos='/home/pi/USCO/remoto_suelo'
 
 if not os.path.exists(path_suelos):
     os.mkdir(path_suelos)
@@ -43,7 +43,7 @@ primera_pregunta=input("Cuantos nodos remotos estan asociados a este coordinador
 
 for i in range(1,primera_pregunta+1):
 
-    path_temp='USCO/remoto_suelo/remoto%d '% i
+    path_temp='/home/pi/USCO/remoto_suelo/remoto%d '% i
 
     if not os.path.exists(path_temp):
         os.mkdir(path_temp)
@@ -54,7 +54,7 @@ for i in range(1,primera_pregunta+1):
     archivo_temperatura.close()
 print 'su respuesta fue: %d y ya se crearon los directorios y archivos'% primera_pregunta
 
-path_administrativo='USCO/administrativo'
+path_administrativo='/home/pi/USCO/administrativo'
 
 if not os.path.exists(path_administrativo):
     os.mkdir(path_administrativo)
