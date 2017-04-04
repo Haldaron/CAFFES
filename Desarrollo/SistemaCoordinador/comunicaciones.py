@@ -1,10 +1,13 @@
 import serial
 import time
 import os
+from xbee import XBee
+
+str1 = 'rf_data'
+str2 = ">"
 
 ser=serial.Serial('/dev/ttyUSB0' , 9600, timeout=0.5)
-"""os.remove('archivo.csv')"""
-
+xbee = XBee(ser)
 
 
 parar=False
@@ -12,8 +15,10 @@ leer=False
 
 while True:
     
-    incoming =ser.readline().strip()
-    str2 = ">"
+    raw_incoming =xbee.wait_read_frame()
+    print raw_incoming
+    incoming = raw_incoming[str1]
+    
     
     
     posicion0=incoming.find(str2)
