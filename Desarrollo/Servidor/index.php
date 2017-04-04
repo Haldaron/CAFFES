@@ -57,7 +57,7 @@ else {
 				<div class="row">
 					<!-- imagen de referencia -->
 					<div class="col-sm-6">
-						<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
+						<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
 					</div>
 					<!-- formulario de registro -->		
 					<div class="col-sm-6">

@@ -16,6 +16,7 @@ else {
 	<?php
 		$cord=$_POST['cord'];
 		$nav->setCordSel($cord);
+		$nav->setRemList();
 	?>
 
 <!DOCTYPE html>
@@ -41,10 +42,10 @@ else {
 				<div class="page-header"><h3>INVESTIGACIÓN DE LAS CONDICIONES DE CONTROL DE LA CALIDAD DE CAFÉ ESPECIAL<br><small> LA PLATA, HUILA, CENTRO ORIENTE</small></h3></div>
 			</div>
 			<div class="container">
-				<div class="col-sm-5">
-					<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
+				<div class="col-sm-6">
+					<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
 				</div>
-				<div class="col-sm-7">
+				<div class="col-sm-6">
 					<?php
 						$nav->setCordList();
 					?>
@@ -52,12 +53,12 @@ else {
 					<div class="row">					
 					<form action="variable.php" method="POST">										
 					<?php
-						$list=queryRemoto($nav->getActionSel(),$nav->getCordSel());
+						$list=$nav->getRemList();
 						foreach ($list as $clave=>$item){
 							$label=$item?$clave:NULL;// Si está vacio el listado de remotos no muestra la clave
 							if($label) {
-								echo "<div class='col-sm-4'>\n";
-	  							echo "<input class='radio-inline' type='radio' name='cord' value='".$label."' data-labelauty='".$label."' checked>\n";
+								echo "<div class='col-sm-6'>\n";
+	  							echo "<input class='radio-inline' type='radio' name='remoto' value='".$label."' data-labelauty='".$label."' checked>\n";
 								echo "</div>\n";							
 							}
 						}

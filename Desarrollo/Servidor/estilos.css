@@ -1,14 +1,45 @@
 div.page-header {
 	color: black;
-	background-color: yellow;
+	background-color: #FFF200;
 	text-align: center;
 	vertical-align: middle;
-   display: flex;
+	display: flex;
    justify-content: center;
    align-content: center;
    flex-direction: column;
 }
 
+div.page-footer {
+	color: black;
+	background-color: #CCCCCC;
+	text-align: center;
+	vertical-align: middle;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+   flex-direction: column;
+}
+
 body {
-    background-color: #EEEEEE;
+    background-color: #FAFAFA;
+}
+
+.mibuton{
+  display: block;
+  height: 50px;
+  width: 200px;
+  background: #00b7ea; 
+  /*TYPE*/
+  color: white;
+  font: 17px/50px Helvetica, Verdana, sans-serif;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.logo {
+  margin-top: .5em;
+  margin-bottom: .5em;
+  margin-left: .5em;
+  margin-right: .5em;
 }

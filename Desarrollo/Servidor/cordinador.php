@@ -42,10 +42,10 @@ else {
 				<div class="page-header"><h3>INVESTIGACIÓN DE LAS CONDICIONES DE CONTROL DE LA CALIDAD DE CAFÉ ESPECIAL<br><small> LA PLATA, HUILA, CENTRO ORIENTE</small></h3></div>
 			</div>
 			<div class="container">
-				<div class="col-sm-4">
-					<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
+				<div class="col-sm-6">
+					<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
 				</div>
-				<div class="col-sm-8">
+				<div class="col-sm-6">
 					<h3><i>Lista de cordinadores:</i></h3><br>
 					<div class="row">					
 					<form action="remoto.php" method="POST">										

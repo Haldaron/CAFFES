@@ -7,7 +7,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-   <link rel="stylesheet" href="./estilos.css" type="text/css" media="all">
+   <link rel="stylesheet" href="estilos.css" type="text/css" media="all">
 </head>
 <body>
 	<!-- Librería jQuery requerida por los plugins de JavaScript -->
@@ -23,22 +23,13 @@
 		<!-- Formulario de registro de usuarios -->
 		<!-- imagen de referencia -->
 		<div class="col-sm-6">
-			<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
+			<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
 		</div>
 		<!-- formulario de registro -->		
-		<div class="col-sm-6">
-				<form action="index.php" method="post">
-					<div class="form-group">
-						<label for="user_text">usuario</label><br>				
-						<input type="text" name="user" value="usuario" id="user_text" class="form-control">
-					</div>		
-					<div class="form-group">
-						<label for="password_text">contraseña</label><br>							
-						<input type="password" name="password" value="contraseña" id="password_text" class="form-control">	
-					</div>
-					<br>	
-					<button value="Ingresar" type="submit" class="btn btn-default form-control" name="button">Ingresar</button>
-				</form>	
+		<div class="col-sm-6">	
+				<a href="/output/data.xls" class="miboton" download="ReporteDatos.xls">
+					<img src="imagenes/descargar.svg" class="img-responsive" alt="Imagen responsive">
+				</a>
 		</div>
 	</div>
 	</div>

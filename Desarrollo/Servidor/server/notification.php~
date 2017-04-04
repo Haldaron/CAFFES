@@ -1,0 +1,16 @@
+<?php
+include 'serverlib.php';
+// Start the session
+session_start();
+// se asegura que exista la clase de navegación, si no existe la crea.
+if(isset($_SESSION['form'])) {
+	$formulario=$_SESSION['form'];
+}
+else {
+	$formulario=new ServicioAutomatico;
+	echo "toco crear uno nuevo";
+}
+
+echo "Algo de pruebas";
+echo $formulario->getErrorMessage();
+?>

@@ -37,7 +37,7 @@ else {
 			</div>
 			<div class="container">
 				<div class="col-sm-6">
-					<img src="./imagenes/finca.jpg" class="img-thumbnail" alt="">
+					<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
 				</div>
 				<div class="col-sm-6">
 					<h3><i>Lista de acciones:</i></h3><br>

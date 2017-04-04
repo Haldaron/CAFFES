@@ -4,8 +4,7 @@ include 'ConnectDataBase.php';
 //definciones
 define('ACCIONES',['upload'=>'escribir','download'=>'leer']);
 define('ACTIONMASK',['upload'=>'Ingresar datos','download'=>'Descargar Datos']);
-define('USCO_ID',2);
-define('FINCA_ID',3);
+
 //declaración de una clase que define los parametros del flujo de la navegacion
 class navegacion
 {
@@ -83,16 +82,36 @@ class navegacion
 		return $this->CordSel;
 	}
 
-	public function setRemList() {	
+	public function setRemList() {
+		$this->RemoteList=queryRemoto($this->ActionSel,$this->CordSel);
 	}
 	
 	public function getRemList() {
+		return $this->RemoteList;
+	}
+	
+	public function setRemSel($rem) {
+		$this->RemoteSel=$rem;	
+	}
+	
+	public function getRemSel() {
+		return $this->RemoteSel;
+	}
+	
+	public function setRemID($rem) {
+		$this->RemoteID=$rem;	
+	}
+	
+	public function getRemID() {
+		return $this->RemoteID;
 	}
 		
-	public function setVarList() {	
+	public function setVarList() {
+		$this->VariableList=queryVariable($this->RemoteSel,$this->RemoteID);	
 	}
 	
 	public function getVarList() {
+		return $this->VariableList;
 	}
 }
 
@@ -224,6 +243,7 @@ function seekSoilRemotes(&$list, $cordID){
 			}
 		}	
 	}
+	mysqli_free_result($result);
 	mysqli_close($mysql);
 }
 /*******************************************************************
@@ -240,6 +260,7 @@ function seekMeteoRemotes(&$list, $cordID){
 			}
 		}	
 	}
+	mysqli_free_result($result);
 	mysqli_close($mysql);
 }
 
@@ -257,6 +278,23 @@ function seekTanqRemotes(&$list, $cordID){
 			}
 		}	
 	}
+	mysqli_free_result($result);
 	mysqli_close($mysql);
+}
+
+function queryVariable($remoteType, $RemoteID) {
+	$list=[];
+	switch($remoteType) {
+		case "Suelos":
+			$list=['Temperatura','Humedad','pH'];
+			break;
+		case "Meteorológico":
+			$list=['Humedad Relativa','Temperatura','Brillo Solar','Velocidad de Viento', 'Dirección de Viento','Precipitación','PAR'];
+			break;
+		case "Tanques":
+			$list=['pH','Temperatura'];
+			break;
+	}
+	return $list;
 }
 ?>
