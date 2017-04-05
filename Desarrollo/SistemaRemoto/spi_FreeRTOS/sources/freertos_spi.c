@@ -41,6 +41,7 @@
 #include "fsl_spi.h"
 #include "fsl_spi_freertos.h"
 #include "board.h"
+#include "fsl_gpio.h"
 
 
 #include "fsl_common.h"
@@ -51,6 +52,7 @@
  * Definitions
  ******************************************************************************/
 #define EXAMPLE_SPI_MASTER_BASE (SPI0_BASE)
+#define PIN18_IDX                         18u   /*!< Pin number for pin 7 in a port */
 #ifndef EXAMPLE_SPI_MASTER_BASE
 #error Undefined SPI base address!
 #endif // ifndef EXAMPLE_SPI_MASTER_BASE
@@ -89,8 +91,11 @@
  * Variables
  ******************************************************************************/
 #define BUFFER_SIZE (32)
+#define BOARD_LED_GPIO BOARD_LED_RED_GPIO
+#define BOARD_LED_GPIO_PIN BOARD_LED_RED_GPIO_PIN
 static uint8_t srcBuff[BUFFER_SIZE];
 static uint8_t destBuff[BUFFER_SIZE];
+
 spi_rtos_handle_t master_rtos_handle;
 /*******************************************************************************
  * Definitions
@@ -103,6 +108,7 @@ spi_rtos_handle_t master_rtos_handle;
  ******************************************************************************/
 
 static void master_task(void *pvParameters);
+static void gpio_tast(void *pvParameters);
 
 /*******************************************************************************
  * Code
@@ -114,7 +120,11 @@ int main(void)
 {
     /* Init board hardware. */
     pinmux_init_all(true);
+    gpio_pin_config_t led_config = {
+        kGPIO_DigitalOutput, 0,
+    };
 
+    GPIO_PinInit(GPIOB, PIN18_IDX, &led_config);
 
 
     BOARD_BootClockRUN();
@@ -133,6 +143,9 @@ int main(void)
 
     xTaskCreate(master_task, "Master_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
 
+    xTaskCreate(gpio_tast, "gpio", configMINIMAL_STACK_SIZE, NULL, configMAX_PRIORITIES, NULL);
+
+
     vTaskStartScheduler();
     for (;;)
         ;
@@ -141,6 +154,16 @@ int main(void)
 /*!
  * @brief Task responsible for master SPI communication.
  */
+
+static void gpio_tast(void *pvParameters)
+{
+	 while (1)
+	 {
+		 GPIO_TogglePinsOutput(GPIOB, 1u << PIN18_IDX);
+	     vTaskDelay(500);
+	 }
+}
+
 static void master_task(void *pvParameters)
 {
     spi_master_config_t masterConfig;
@@ -232,5 +255,6 @@ static void master_task(void *pvParameters)
     {
         PRINTF("Data verified ok.\n\r");
     }
-
+    for (;;)
+        ;
 }
