@@ -48,6 +48,7 @@
 #include "fsl_port.h"
 #include "pin_mux.h"
 #include "clock_config.h"
+#include "spi.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -109,7 +110,7 @@ spi_rtos_handle_t master_rtos_handle;
 
 static void master_task(void *pvParameters);
 static void gpio_tast(void *pvParameters);
-
+static void spi_task(void *pvParameters);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -141,8 +142,7 @@ int main(void)
     GPIO_TogglePinsOutput(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_GPIO_PIN);
 
 
-    xTaskCreate(master_task, "Master_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
-
+    xTaskCreate(spi_task, "spi_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
     xTaskCreate(gpio_tast, "gpio", configMINIMAL_STACK_SIZE, NULL, configMAX_PRIORITIES, NULL);
 
 
@@ -162,6 +162,27 @@ static void gpio_tast(void *pvParameters)
 		 GPIO_TogglePinsOutput(GPIOB, 1u << PIN18_IDX);
 	     vTaskDelay(500);
 	 }
+}
+
+static void spi_task(void *pvParameters){
+	spi_dev dev;
+	spi_rtos_handle_t handle;
+	int8_t data_out=0;
+	uint8_t data_in=0;
+	uint8_t size=1;
+
+	dev.spi_rtos_handle= &handle;
+	dev.base=GPIOC;
+	dev.pin=PIN4;
+
+	spi_init(&dev);
+
+	for(;;){
+		data_out+=1;
+		spi_transfer(&dev,&data_out,(uint8_t *)&data_in,size);
+		PRINTF("DATO ENVIADO %d. DATO RECIBIDO %d \n\r", data_out, data_in);
+		vTaskDelay(1000);
+	}
 }
 
 static void master_task(void *pvParameters)
