@@ -6,30 +6,11 @@
  * @return 0 si la inicializacion se realizo exitosamente. 1 de lo contrario.
  */
 uint8_t spi_init(spi_dev *dev){
-
-	spi_master_config_t config;
-	uint32_t 			sourceClock;
-	status_t			status;
-
-	/* Generacion de estructura de configuración por defecto*/
-    spi_getConfig(&config);
-
     /* Inicializacion de pines para SPI0*/
     spi_initPins(dev);
 
     /* Configuracion prioridad de interrupcion para SPI0*/
     NVIC_SetPriority(SPI0_IRQn, SPI_NVIC_PRIO);
-
-
-    sourceClock = CLOCK_GetFreq(kCLOCK_BusClk);
-	status = SPI_RTOS_Init(dev->spi_rtos_handle, SPI0, &config, sourceClock);
-
-
-	if (status != kStatus_Success)
-	{
-		return status;
-	}
-
 
 	return ERR_OK;
 }
@@ -80,9 +61,21 @@ void spi_getConfig(spi_master_config_t *config){
  */
 uint8_t spi_transfer(spi_dev *dev, uint8_t data_out[], uint8_t data_in[], uint8_t transfer_size){
 
-    spi_transfer_t masterXfer = {0};
-    status_t status;
-    uint32_t mascara;
+    spi_transfer_t 	masterXfer = {0};
+    status_t 				status;
+    uint32_t 				mascara;
+    uint32_t 				sourceClock;
+	spi_master_config_t 	config;
+
+	/* Generacion de estructura de configuración por defecto*/
+    spi_getConfig(&config);
+
+    sourceClock = CLOCK_GetFreq(kCLOCK_BusClk);
+	status = SPI_RTOS_Init(dev->spi_rtos_handle, SPI0, &config, sourceClock);
+	if (status != kStatus_Success)
+	{
+		return status;
+	}
 
     /* Send and receive data through loopback  */
     masterXfer.txData = data_out;
@@ -94,16 +87,22 @@ uint8_t spi_transfer(spi_dev *dev, uint8_t data_out[], uint8_t data_in[], uint8_
 
     GPIO_ClearPinsOutput(dev->base, mascara ); 		//pinCS=0
     status = SPI_RTOS_Transfer(dev->spi_rtos_handle, &masterXfer);
+    GPIO_SetPinsOutput(dev->base, mascara );		//pinCS=1
 
+	status = SPI_RTOS_Deinit(dev->spi_rtos_handle);
+	if (status != kStatus_Success)
+	{
+		return status;
+	}
 
     /*Verificacion de resultado de transferencia*/
     if (status != kStatus_Success)
     {
         PRINTF("SPI transfer completed with error. \r\n");
-        GPIO_SetPinsOutput(dev->base, mascara );		//pinCS=1
+
         return ERR_FAIL;
     }
-    GPIO_SetPinsOutput(dev->base, mascara );		//pinCS=1
+
 	return ERR_OK;
 }
 
