@@ -223,4 +223,21 @@ function queryVariable($remoteType, $RemoteID) {
 /**************************************************
 revisa si un coordinador tiene permisos de escribir
 **************************************************/
+function isCordWritable($cordPlace,$userName) {
+	$isWritable=false; //la lista inicialmente está vacía
+	$mysql=connect_database(); //solicita la conexión a la base de datos	
+	if ($mysql){
+		$query="SELECT CordinadorLugar, UsuarioName, permiso  FROM Permisos";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+				if((strcmp($row[0], $cordPlace)==0)&&
+					(strcmp($row[1], $userName)==0)&&
+					(strcmp($row[2], 'leer'))) {				
+					$isWritable=true;
+				}
+			}
+		}
+	mysqli_close($mysql);
+	return $isWritable;	
+}
 ?>

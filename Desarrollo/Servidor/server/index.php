@@ -16,10 +16,10 @@
 <label for="password">Contraseña: </label>
 <input type="password" name="password"><br>
 <!-- Identificacion del Cordinador -->
-<label for="codID">Cordinador</label>
-<input type="number" name="cordID"><br>
+<label for="cordPlace">Cordinador</label>
+<input type="text" name="cordPlace"><br>
 <!-- Remoto ID al cual quiere escribir -->
-<label for="eemoteID">ID del remoto: </label>
+<label for="remoteID">ID del remoto: </label>
 <input type="number" name="remoteID"><br>
 <!-- variable que desea insertar -->
 <label for="variable">Variable que desea ingresar: </label>
@@ -46,15 +46,20 @@ else {
 //setea la autenticacion del equipo/usuario
 $formulario->setUserName($_POST['user']);
 $formulario->setPassword($_POST['password']);
-
+$formulario->setCordPlace($_POST['cordPlace']);
 if(validar($formulario->getUserName(), $formulario->getPassword())) {
-	
+	if(isCordWritable($formulario->getCordPlace(),$formulario->getUserName())) {
+		echo "se puede";
+	}
+	else {
+		$formulario->setErrorMessage("El usuario no tiene permitido modificar este cordinador");	
+	}
 }
 else {
 	$formulario->setErrorMessage("autenficacion fallida");
 }
 
-$_SESSION['form']=$formulario;
+//$_SESSION['form']=$formulario;
 ?>
 <?php	
 	$filename = $_FILES['csvfile']['name'];

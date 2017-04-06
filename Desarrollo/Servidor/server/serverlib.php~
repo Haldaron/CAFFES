@@ -20,6 +20,12 @@ class ServicioAutomatico {
 	}
 	public function getPassword() {
 		return $this->clave;
+	}
+	public function setCordPlace($cord) {
+		$this->cordID=$cord;
+	}
+	public function getCordPlace() {
+		return $this->cordID;
 	}	
 	public function getErrorMessage() {
 		return $this->errorMessage;
