@@ -167,21 +167,21 @@ static void gpio_tast(void *pvParameters)
 static void spi_task(void *pvParameters){
 	spi_dev dev;
 	spi_rtos_handle_t handle;
-	int8_t data_out=0;
+	uint8_t data_out=0xAA;
 	uint8_t data_in=0;
 	uint8_t size=1;
 
 	dev.spi_rtos_handle= &handle;
-	dev.base=GPIOC;
-	dev.pin=PIN4;
+	dev.base=GPIOB;
+	dev.pin=PIN2;
 
 	spi_init(&dev);
 
 	for(;;){
-		data_out+=1;
-		spi_transfer(&dev,&data_out,(uint8_t *)&data_in,size);
+		data_out+=0;
+		spi_transfer(&dev,&data_out,&data_in,size);
 		PRINTF("DATO ENVIADO %d. DATO RECIBIDO %d \n\r", data_out, data_in);
-		vTaskDelay(1000);
+		vTaskDelay(10);
 	}
 }
 

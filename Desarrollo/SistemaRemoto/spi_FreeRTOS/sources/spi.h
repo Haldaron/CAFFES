@@ -65,7 +65,6 @@ typedef enum _pin_number
 	PIN25 = 25U, 		/*!< Pin 25 de la base asociada*/
 } pin_number;
 
-
 /*!
  * @brief  Inicializa el dispositivo SPI configurando los pines necesarios de la tarjeta
  *
@@ -101,3 +100,5 @@ uint8_t spi_transfer(spi_dev *dev, uint8_t data_out[], uint8_t data_in[], uint8_
 
 void spi_initPins(spi_dev *dev);
 void spi_getConfig(spi_master_config_t *config);
+uint32_t spi_mask(uint32_t pin);
+PORT_Type * spi_getPort(GPIO_Type *gpio);
