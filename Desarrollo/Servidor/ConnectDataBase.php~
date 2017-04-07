@@ -9,27 +9,6 @@ define('ACCIONES',['upload'=>'escribir','download'=>'leer']);
 define('ACTIONMASK',['upload'=>'Ingresar datos','download'=>'Descargar Datos']);
 
 
-function getTableColumns($tableName){
-	$query="SHOW COLUMNS FROM ".$tableName;
-	//echo $query;
-   $my_sql=connect_database();
-   //echo isset($my_sql)?"si":"no";
-   $result=mysqli_query($my_sql,$query);
-   
-	$n=mysqli_num_rows($result);
-	//echo $n;
-	for($i=0;$i<$n;$i++) {
-		$row=	mysqli_fetch_row($result);
-		foreach($row as $clave => $value){
-		//echo $clave." : " .$value."<br>";
-	}
-	}
-
-	mysqli_close($my_sql);
-}
-				
-
-
 function connect_database(){
 	$identifier=mysqli_connect(SERVERNAME, MYPHPUSER, MYPHPPASSWORD);
 	if(isset($identifier)){
@@ -286,5 +265,22 @@ function isRemoteAttached($tableName,$remoteID,$cordID){
 		}
 	mysqli_close($mysql);
 	return $isAttached;
+}
+
+/********************************************************
+Obtiene de manera automatica los campos de una tabla dada
+********************************************************/
+function getTableColumns($tableName){
+	$tableColumns=[];	
+	$mysql=connect_database(); //solicita la conexión a la base de datos	
+   $query="SHOW COLUMNS FROM ".$tableName;
+	if ($mysql){
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+				$tableColumns[]=$row[0];			
+			}
+		}
+	mysqli_close($mysql);
+	return $tableColumns;
 }
 ?>
