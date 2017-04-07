@@ -49,6 +49,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "spi.h"
+#include "lmp.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -130,6 +131,7 @@ static void spi_task(void *pvParameters){
 	for(int i=0;i<SIZE;i++){
 		data_out[i]=i;
 	}
+
 
 	for(;;){
 		if(spi_transfer(&dev1,data_out,data_in,SIZE)!=0){
