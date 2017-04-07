@@ -41,57 +41,24 @@
 #include "fsl_spi.h"
 #include "fsl_spi_freertos.h"
 #include "board.h"
+#include "fsl_gpio.h"
 
 
 #include "fsl_common.h"
 #include "fsl_port.h"
 #include "pin_mux.h"
 #include "clock_config.h"
+#include "spi.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define EXAMPLE_SPI_MASTER_BASE (SPI0_BASE)
-#ifndef EXAMPLE_SPI_MASTER_BASE
-#error Undefined SPI base address!
-#endif // ifndef EXAMPLE_SPI_MASTER_BASE
+#define	BASE_SPI1	GPIOC
+#define	BASE_SPI2	GPIOA
+#define	PIN_SPI1	PIN4
+#define	PIN_SPI2	PIN5
+#define SIZE		2
 
-#define EXAMPLE_SPI_MASTER_BASEADDR ((SPI_Type *)EXAMPLE_SPI_MASTER_BASE)
 
-#ifndef SPI_MASTER_CLK_SRC
-
-#if (EXAMPLE_SPI_MASTER_BASE == SPI0_BASE)
-#define SPI_MASTER_CLK_SRC (SPI0_CLK_SRC)
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI1_BASE)
-#define SPI_MASTER_CLK_SRC (SPI1_CLK_SRC)
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI2_BASE)
-#define SPI_MASTER_CLK_SRC (SPI2_CLK_SRC)
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI3_BASE)
-#define SPI_MASTER_CLK_SRC (SPI3_CLK_SRC)
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI4_BASE)
-#define SPI_MASTER_CLK_SRC (SPI4_CLK_SRC)
-#else
-#error Undefined SPI_MASTER_CLK_SRC!
-#endif
-
-#endif // ifndef SPI_MASTER_CLK_SRC
-
-#if (__CORTEX_M >= 0x03)
-#define SPI_NVIC_PRIO 6
-#else
-#define SPI_NVIC_PRIO 2
-#endif
-
-/*******************************************************************************
- * Prototypes
- ******************************************************************************/
-
-/*******************************************************************************
- * Variables
- ******************************************************************************/
-#define BUFFER_SIZE (32)
-static uint8_t srcBuff[BUFFER_SIZE];
-static uint8_t destBuff[BUFFER_SIZE];
-spi_rtos_handle_t master_rtos_handle;
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -102,8 +69,7 @@ spi_rtos_handle_t master_rtos_handle;
  * Prototypes
  ******************************************************************************/
 
-static void master_task(void *pvParameters);
-
+static void spi_task(void *pvParameters);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -115,23 +81,16 @@ int main(void)
     /* Init board hardware. */
     pinmux_init_all(true);
 
-
-
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    PRINTF("SPI FreeRTOS example start.\r\n");
-    PRINTF("This example use one SPI instance in master mode\r\n");
-    PRINTF("to transfer data through loopback.\r\n");
-    PRINTF("Please be sure to externally connect together SOUT and SIN signals.\r\n");
+    PRINTF("EJEMPLO DE SPI PARA PROYECTO CAFFES.\r\n");
+    PRINTF("Este ejemplo se utilizan dos dispositivos SPI de manera simultanea\r\n");
+    PRINTF("cada uno con un GPIO diferente como CS.\r\n");
     PRINTF("   SOUT     --    SIN  \r\n");
 
 
-
-    GPIO_TogglePinsOutput(BOARD_LED_RED_GPIO, 1u << BOARD_LED_RED_GPIO_PIN);
-
-
-    xTaskCreate(master_task, "Master_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
+    xTaskCreate(spi_task, "spi_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
 
     vTaskStartScheduler();
     for (;;)
@@ -141,96 +100,49 @@ int main(void)
 /*!
  * @brief Task responsible for master SPI communication.
  */
-static void master_task(void *pvParameters)
-{
-    spi_master_config_t masterConfig;
-    spi_transfer_t masterXfer = {0};
-    uint32_t sourceClock;
-    status_t status;
-
-#if (EXAMPLE_SPI_MASTER_BASE == SPI0_BASE)
-    NVIC_SetPriority(SPI0_IRQn, SPI_NVIC_PRIO);
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI1_BASE)
-    NVIC_SetPriority(SPI1_IRQn, SPI_NVIC_PRIO);
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI2_BASE)
-    NVIC_SetPriority(SPI2_IRQn, SPI_NVIC_PRIO);
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI3_BASE)
-    NVIC_SetPriority(SPI3_IRQn, SPI_NVIC_PRIO);
-#elif(EXAMPLE_SPI_MASTER_BASE == SPI4_BASE)
-    NVIC_SetPriority(SPI4_IRQn, SPI_NVIC_PRIO);
-#endif
-
-    /*
-     * masterConfig.enableStopInWaitMode = false;
-     * masterConfig.polarity = kSPI_ClockPolarityActiveHigh;
-     * masterConfig.phase = kSPI_ClockPhaseFirstEdge;
-     * masterConfig.direction = kSPI_MsbFirst;
-     * masterConfig.dataMode = kSPI_8BitMode;
-     * masterConfig.txWatermark = kSPI_TxFifoOneHalfEmpty;
-     * masterConfig.rxWatermark = kSPI_RxFifoOneHalfFull;
-     * masterConfig.pinMode = kSPI_PinModeNormal;
-     * masterConfig.outputMode = kSPI_SlaveSelectAutomaticOutput;
-     * masterConfig.baudRate_Bps = 500000U;
-     */
-
-    SPI_MasterGetDefaultConfig(&masterConfig);
-    masterConfig.baudRate_Bps = 500000;
-    masterConfig.outputMode = kSPI_SlaveSelectAsGpio;
-    masterConfig.polarity=kSPI_ClockPolarityActiveLow;
-    masterConfig.phase = kSPI_ClockPhaseSecondEdge;
-    masterConfig.dataMode = kSPI_16BitMode;
-
-    sourceClock = CLOCK_GetFreq(kCLOCK_BusClk);
-    status = SPI_RTOS_Init(&master_rtos_handle, EXAMPLE_SPI_MASTER_BASEADDR, &masterConfig, sourceClock);
-
-    if (status != kStatus_Success)
-    {
-        PRINTF("DSPI master: error during initialization. \r\n");
-        vTaskSuspend(NULL);
-    }
-
-    /* Init Buffer */
-    uint8_t i = 0;
-    for (i = 0; i < BUFFER_SIZE; i++)
-    {
-        srcBuff[i] = i;
-    }
-
-    	srcBuff[0]=0x10;
-    	srcBuff[1]=0x00;
-    	srcBuff[2]=0x89;
-    	srcBuff[3]=0x00;
 
 
-    /* Send and receive data through loopback  */
-    masterXfer.txData = srcBuff;
-    masterXfer.rxData = destBuff;
-    masterXfer.dataSize = BUFFER_SIZE;
 
-    status = SPI_RTOS_Transfer(&master_rtos_handle, &masterXfer);
+static void spi_task(void *pvParameters){
+	spi_dev dev1;
+	spi_dev dev2;
+	spi_rtos_handle_t handle1;
+	spi_rtos_handle_t handle2;
+	uint8_t data_out[SIZE];
+	uint8_t data_in[SIZE];
 
-    if (status == kStatus_Success)
-    {
-        PRINTF("SPI transfer completed successfully. \r\n");
-    }
-    else
-    {
-        PRINTF("SPI transfer completed with error. \r\n");
-    }
+	dev1.spi_rtos_handle= &handle1;
+	dev1.base=BASE_SPI1;
+	dev1.pin=PIN_SPI1;
 
-    /* Verify received data */
-    uint32_t err = 0;
-    for (i = 0; i < BUFFER_SIZE; i++)
-    {
-        if (srcBuff[i] != destBuff[i])
-        {
-            err++;
-            PRINTF("Mismatch at offset %d. %X != %X \n\r", i, destBuff[i], srcBuff[i]);
-        }
-    }
-    if (err == 0)
-    {
-        PRINTF("Data verified ok.\n\r");
-    }
+	dev2.spi_rtos_handle= &handle2;
+	dev2.base=BASE_SPI2;
+	dev2.pin=PIN_SPI2;
 
+	if(spi_init(&dev1)!=0){
+		PRINTF("Error de inicializacion dev1");
+	}
+
+	if(spi_init(&dev2)!=0){
+		PRINTF("Error de inicializacion dev2");
+	}
+
+	for(int i=0;i<SIZE;i++){
+		data_out[i]=i;
+	}
+
+	for(;;){
+		if(spi_transfer(&dev1,data_out,data_in,SIZE)!=0){
+			PRINTF("Error de transmision dev1");
+		}
+		PRINTF("DATO ENVIADO %X%X. DATO RECIBIDO %X%X \n\r", data_out[0],data_out[1], data_in[0],data_in[1]);
+		vTaskDelay(2);
+
+		if(spi_transfer(&dev2,data_out,data_in,SIZE)!=0){
+			PRINTF("Error de transmision dev2");
+		}
+		PRINTF("DATO ENVIADO %X%X. DATO RECIBIDO %X%X \n\r", data_out[0],data_out[1], data_in[0],data_in[1]);
+		vTaskDelay(2);
+	}
 }
+
