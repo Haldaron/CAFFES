@@ -1,3 +1,9 @@
+<?php define("TOKEN_FILE",","); ?>
+<?php define("TOKEN_REMOTE_TYPE","_"); ?>
+<?php define("DATABASE_NAME",['suelo'=>'RemotoSuelos',
+										'tanque'=>'RemotoTanques',
+										'metereologico'=>'RemotoMetereologico']);
+?>
 <?php
 //clase que permite hacer la carga automatica de los datos
 class ServicioAutomatico {
@@ -6,8 +12,11 @@ class ServicioAutomatico {
 	public $cordID=NULL;
 	public $remID=NULL;
 	public $varName="";
+	public $remoteTable="";
+	public $remoteID=NULL;
 	public $filename="";
 	public $errorMessage="";
+	public $estructura=[];	
 	
 	public function setUserName($name) {
 		$this->usuario=$name;
@@ -21,12 +30,31 @@ class ServicioAutomatico {
 	public function getPassword() {
 		return $this->clave;
 	}
-	public function setCordPlace($cord) {
+	public function setCordID($cord) {
 		$this->cordID=$cord;
 	}
-	public function getCordPlace() {
+	public function getCordID() {
 		return $this->cordID;
+	}
+	public function setVariable($var){
+		$this->varName=$var;	
 	}	
+	public function getVariable() {
+		return $this->varName;	
+	}
+	public function setRemoteTable() {
+		$remote=strtok($this->varName,TOKEN_REMOTE_TYPE);//saca la parte del string que indica el remoto
+		$this->remoteTable= DATABASE_NAME[$remote];
+	}
+	public function getRemoteTable() {
+		return $this->remoteTable;
+	}
+	public function setRemoteID($remID){		
+		$this->remoteID=$remID;	
+	}	
+	public function getRemoteID() {
+		return $this->remoteID;	
+	}		
 	public function getErrorMessage() {
 		return $this->errorMessage;
 	}
@@ -41,7 +69,22 @@ class ServicioAutomatico {
 		$this->varName="";
 		$this->filename="";
 		$this->errorMessage="";
+		$this->estructura=[];
+	}
+	public function getStructure(){
+		$this->estructura['tanque'][]='pH';
+		$this->estructura['tanque'][]='temperatura';
+		$this->estructura['suelo'][]='pH';
+		$this->estructura['suelo'][]='temperatura';
+		$this->estructura['suelo'][]='humedad';
+		$this->estructura['metereologico'][]='precipitacion';
+		$this->estructura['metereologico'][]='radiacion_PAR';
+		$this->estructura['metereologico'][]='temperatura';
+		$this->estructura['metereologico'][]='humedad';
+		$this->estructura['metereologico'][]='brillo_solar';
+		$this->estructura['metereologico'][]='direccion_viento';
+		$this->estructura['metereologico'][]='velocidad_viento';	
+		return $this->estructura;
 	}
 }
-
 ?>

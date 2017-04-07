@@ -220,6 +220,25 @@ function queryVariable($remoteType, $RemoteID) {
 	return $list;
 }
 
+/***************************************************************
+Obtiene el Lugar de instalación del Cordinador a partir de su ID
+***************************************************************/
+function retrieveCordPlace($cordID) {
+	$cordPlace="";
+	$mysql=connect_database(); //solicita la conexión a la base de datos	
+	if ($mysql){
+		$query="SELECT CordinadoresID, Lugar  FROM Cordinadores";
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+				if($row[0]==$cordID){				
+					$cordPlace=$row[1];
+				}
+			}
+		}
+	mysqli_close($mysql);
+	return $cordPlace;	
+}
+
 /**************************************************
 revisa si un coordinador tiene permisos de escribir
 **************************************************/
@@ -239,5 +258,33 @@ function isCordWritable($cordPlace,$userName) {
 		}
 	mysqli_close($mysql);
 	return $isWritable;	
+}
+/******************************************************************************
+Chequea en la base de datos si un remoto especifico esta ligado a un cordinador
+*******************************************************************************/
+function isRemoteAttached($tableName,$remoteID,$cordID){
+	$isAttached=false;
+	switch($tableName) {
+		case 'RemotoSuelos':
+			$query="SELECT RemSuelosID, CordinadorID FROM ".$tableName;
+			break;
+		case 'RemotoTanques':
+			$query="SELECT RemTanqueID, CordinadorID FROM ".$tableName;
+			break;
+		case 'RemotoMetereologico':
+			$query="SELECT RemMetID, CordinadorID FROM ".$tableName;
+			break;		
+	}	
+	$mysql=connect_database(); //solicita la conexión a la base de datos	
+	if ($mysql){
+		$result=mysqli_query($mysql, $query);
+		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
+				if(($row[0]==$remoteID)&&($row[1]==$cordID)) {				
+					$isAttached=true;
+				}
+			}
+		}
+	mysqli_close($mysql);
+	return $isAttached;
 }
 ?>
