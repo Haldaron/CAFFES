@@ -79,7 +79,12 @@ if(validar($formulario->getUserName(), $formulario->getPassword())) {
 				foreach($content as $fila){
 					$fila=TOKEN_BEGIN.$fila;//garantiza que la funcion lea todos los datos de la cadena			
 					$query=$formulario->setQuery($fila);				
-					mysqli_query($mysql,$query);
+					if(mysqli_query($mysql,$query)){
+						$formulario->setErrorMessage("OK");					
+					}
+					else {
+						$formulario->setErrorMessage("Fallo al subir el archivo");
+					}
 				}
 			}
 			mysqli_close($mysql);		
@@ -96,7 +101,7 @@ else {
 	$formulario->setErrorMessage("autenficacion fallida");
 }
 /*Muestra el mensaje de error*/
-echo "<p>".$formulario->getErrorMessage()."</p>";
+echo "<p>&".$formulario->getErrorMessage()."&</p>";
 $formulario->clearForm();
 $_SESSION['form']=$formulario;
 ?>

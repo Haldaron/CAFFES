@@ -75,8 +75,8 @@ class ServicioAutomatico {
 		$this->remID=NULL;
 		$this->varName="";
 		$this->filename="";
-		$this->errorMessage="";
-		$this->estructura=[];
+		//$this->errorMessage="";
+		//$this->estructura=[];
 	}
 	public function getStructure(){
 		$this->estructura['tanque'][]='pH';
@@ -99,7 +99,7 @@ class ServicioAutomatico {
 		$query.=$this->varName." ("; //señala la tabla en la que se van a insertar los datos
 		/*Concatena los campos de la tabla*/		
 		foreach($tableFields as $index=>$field){
-			$query.=" '".$field."'";
+			$query.=" ".$field;
 			if($index<sizeof($tableFields)-1) {
 				$query.=",";
 			}
