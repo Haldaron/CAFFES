@@ -78,8 +78,7 @@ if(validar($formulario->getUserName(), $formulario->getPassword())) {
 			while($content=fscanf($handle, "%s\n")){//escanea todas las filas del archivo		
 				foreach($content as $fila){
 					$fila=TOKEN_BEGIN.$fila;//garantiza que la funcion lea todos los datos de la cadena			
-					$query=$formulario->setQuery($fila);
-					echo $query.'<br>';				
+					$query=$formulario->setQuery($fila);				
 					mysqli_query($mysql,$query);
 				}
 			}

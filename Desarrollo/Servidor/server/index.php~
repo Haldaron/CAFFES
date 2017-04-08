@@ -79,7 +79,7 @@ if(validar($formulario->getUserName(), $formulario->getPassword())) {
 				foreach($content as $fila){
 					$fila=TOKEN_BEGIN.$fila;//garantiza que la funcion lea todos los datos de la cadena			
 					$query=$formulario->setQuery($fila);
-					echo $query;				
+					echo $query.'<br>';				
 					mysqli_query($mysql,$query);
 				}
 			}
