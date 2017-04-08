@@ -48,8 +48,8 @@ else {
 <label for="remoteID">ID del remoto: </label>
 <input type="number" name="remoteID"><br>
 <!-- archivo csv -->
-<label for="csvfile">Archivo .CSV: </label>
-<input type="file" name="csvfile" /><br>
+<label for="csvfile">Archivo .csv: </label>
+<input type="file" name="datafile" /><br>
 <!-- boton de ingreso -->
 <input type="submit" name="enviar"  value="Importar"/>
 </form>
@@ -62,13 +62,32 @@ $formulario->setCordID($_POST['cordID']);
 $formulario->setVariable($_POST['variable']);
 $formulario->setRemoteTable();
 $formulario->setRemoteID($_POST['remoteID']);
+$formulario->setFilename($_FILES['datafile']['tmp_name']);
 
 if(validar($formulario->getUserName(), $formulario->getPassword())) {
 	if(isCordWritable(retrieveCordPlace($formulario->getCordID()),$formulario->getUserName())) {
 		if(isRemoteAttached(	$formulario->getRemoteTable(),
 									$formulario->getRemoteID(),
 									$formulario->getCordID())){
-			echo "ya puede cargar su archivo su archivo";
+			/****************************************************************
+			Inicia el proceso de inserción del archivo CSV a la base de datos
+			--Se toma como referencia todos los datos de la solicitud.
+			*****************************************************************/
+			$mysql=connect_database();			
+			$handle=fopen($formulario->getFilename(),'r+');
+			while($content=fscanf($handle, "%s\n")){//escanea todas las filas del archivo		
+				foreach($content as $fila){
+					$fila=TOKEN_BEGIN.$fila;//garantiza que la funcion lea todos los datos de la cadena			
+					$query=$formulario->setQuery($fila);				
+					if(mysqli_query($mysql,$query)){
+						$formulario->setErrorMessage("OK");					
+					}
+					else {
+						$formulario->setErrorMessage("Fallo al subir el archivo");
+					}
+				}
+			}
+			mysqli_close($mysql);		
 		}
 		else {
 			$formulario->setErrorMessage("El remoto no está asociado al cordinador");
@@ -82,7 +101,7 @@ else {
 	$formulario->setErrorMessage("autenficacion fallida");
 }
 /*Muestra el mensaje de error*/
-echo "<p>".$formulario->getErrorMessage()."</p>";
+echo "<p>&".$formulario->getErrorMessage()."&</p>";
 $formulario->clearForm();
 $_SESSION['form']=$formulario;
 ?>

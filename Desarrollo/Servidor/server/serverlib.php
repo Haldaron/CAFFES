@@ -1,4 +1,5 @@
 <?php define("TOKEN_FILE",","); ?>
+<?php define("TOKEN_BEGIN",'dummy,'); ?>
 <?php define("TOKEN_REMOTE_TYPE","_"); ?>
 <?php define("DATABASE_NAME",['suelo'=>'RemotoSuelos',
 										'tanque'=>'RemotoTanques',
@@ -54,6 +55,12 @@ class ServicioAutomatico {
 	}	
 	public function getRemoteID() {
 		return $this->remoteID;	
+	}
+	public function setFilename($fm) {
+		$this->filename=$fm;
+	}
+	public function getFilename() {
+		return $this->filename;
 	}		
 	public function getErrorMessage() {
 		return $this->errorMessage;
@@ -85,6 +92,30 @@ class ServicioAutomatico {
 		$this->estructura['metereologico'][]='direccion_viento';
 		$this->estructura['metereologico'][]='velocidad_viento';	
 		return $this->estructura;
+	}
+	public function setQuery($fila){
+		$query="INSERT INTO ";//directiva que pide insertar valores a la tabla
+		$tableFields=getTableColumns($this->varName);
+		$query.=$this->varName." ("; //señala la tabla en la que se van a insertar los datos
+		/*Concatena los campos de la tabla*/		
+		foreach($tableFields as $index=>$field){
+			$query.=" ".$field;
+			if($index<sizeof($tableFields)-1) {
+				$query.=",";
+			}
+			else {
+				$query.=")";
+			}	
+		}
+		/*inserta los valores de la tabla*/
+		$query.= " VALUES (";
+		$query.= " NULL,"; //el primer dato es nulo para que autoidente en la tabla
+		$value=strtok($fila,TOKEN_FILE);		
+		while($value=strtok(TOKEN_FILE)){//lee todos los campos separados por el TOKEN ","
+			$query.=	" '".$value."',";	
+		}
+		$query.="'".$this->remoteID."')";
+		return $query;
 	}
 }
 ?>
