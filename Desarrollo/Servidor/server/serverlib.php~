@@ -45,7 +45,19 @@ class ServicioAutomatico {
 	}
 	public function setRemoteTable() {
 		$remote=strtok($this->varName,TOKEN_REMOTE_TYPE);//saca la parte del string que indica el remoto
-		$this->remoteTable= DATABASE_NAME[$remote];
+		$tableName='';		
+		switch($remote) {
+			case 'suelo':
+				$tableName='RemotoSuelos';
+				break;
+			case 'tanque':
+				$tableName='RemotoTanques';
+				break;
+			case 'metereologico':
+				$tableName='RemotoMetereologico';
+				break;			
+		}
+		$this->remoteTable= $tableName;
 	}
 	public function getRemoteTable() {
 		return $this->remoteTable;
@@ -75,8 +87,8 @@ class ServicioAutomatico {
 		$this->remID=NULL;
 		$this->varName="";
 		$this->filename="";
-		//$this->errorMessage="";
-		//$this->estructura=[];
+		$this->errorMessage="";
+		$this->estructura=[];
 	}
 	public function getStructure(){
 		$this->estructura['tanque'][]='pH';

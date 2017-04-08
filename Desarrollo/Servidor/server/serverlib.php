@@ -1,10 +1,6 @@
 <?php define("TOKEN_FILE",","); ?>
 <?php define("TOKEN_BEGIN",'dummy,'); ?>
 <?php define("TOKEN_REMOTE_TYPE","_"); ?>
-<?php define("DATABASE_NAME",['suelo'=>'RemotoSuelos',
-										'tanque'=>'RemotoTanques',
-										'metereologico'=>'RemotoMetereologico']);
-?>
 <?php
 //clase que permite hacer la carga automatica de los datos
 class ServicioAutomatico {
@@ -45,7 +41,19 @@ class ServicioAutomatico {
 	}
 	public function setRemoteTable() {
 		$remote=strtok($this->varName,TOKEN_REMOTE_TYPE);//saca la parte del string que indica el remoto
-		$this->remoteTable= DATABASE_NAME[$remote];
+		$tableName='';		
+		switch($remote) {
+			case 'suelo':
+				$tableName='RemotoSuelos';
+				break;
+			case 'tanque':
+				$tableName='RemotoTanques';
+				break;
+			case 'metereologico':
+				$tableName='RemotoMetereologico';
+				break;			
+		}
+		$this->remoteTable= $tableName;
 	}
 	public function getRemoteTable() {
 		return $this->remoteTable;
