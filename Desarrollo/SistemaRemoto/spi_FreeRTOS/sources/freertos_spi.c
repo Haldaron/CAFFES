@@ -56,7 +56,7 @@
 #define	BASE_SPI2	GPIOA
 #define	PIN_SPI1	PIN4
 #define	PIN_SPI2	PIN5
-#define SIZE		2
+#define SIZE		4
 
 
 /*******************************************************************************
@@ -106,16 +106,13 @@ int main(void)
 static void spi_task(void *pvParameters){
 	spi_dev_t dev1;
 	spi_dev_t dev2;
-	spi_rtos_handle_t handle1;
-	spi_rtos_handle_t handle2;
+
 	uint8_t data_out[SIZE];
 	uint8_t data_in[SIZE];
 
-	dev1.spi_rtos_handle= &handle1;
 	dev1.base=BASE_SPI1;
 	dev1.pin=PIN_SPI1;
 
-	dev2.spi_rtos_handle= &handle2;
 	dev2.base=BASE_SPI2;
 	dev2.pin=PIN_SPI2;
 
@@ -128,7 +125,7 @@ static void spi_task(void *pvParameters){
 	}
 
 	for(int i=0;i<SIZE;i++){
-		data_out[i]=i;
+		data_out[i]=i+2;
 	}
 
 	for(;;){

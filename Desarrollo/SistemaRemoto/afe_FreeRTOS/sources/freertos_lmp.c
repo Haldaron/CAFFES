@@ -70,7 +70,7 @@
  * Prototypes
  ******************************************************************************/
 
-static void spi_task(void *pvParameters);
+static void lmp_task(void *pvParameters);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -91,7 +91,7 @@ int main(void)
     PRINTF("   SOUT     --    SIN  \r\n");
 
 
-    xTaskCreate(spi_task, "spi_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
+    xTaskCreate(lmp_task, "lmp_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
 
     vTaskStartScheduler();
     for (;;)
@@ -104,47 +104,27 @@ int main(void)
 
 
 
-static void spi_task(void *pvParameters){
-	spi_dev_t dev1;
-	spi_dev_t dev2;
-	spi_rtos_handle_t handle1;
-	spi_rtos_handle_t handle2;
-	uint8_t data_out[SIZE];
-	uint8_t data_in[SIZE];
+static void lmp_task(void *pvParameters){
+	lmp_dev_t dev;
+	spi_dev_t spi_dev;
+	spi_rtos_handle_t handle;
+	uint32_t data_in;
+	uint8_t status;
+	uint8_t address=DATA_ONLY_1;
 
-	dev1.spi_rtos_handle= &handle1;
-	dev1.base=BASE_SPI1;
-	dev1.pin=PIN_SPI1;
+	dev.spi=&spi_dev;
+	dev.spi->spi_rtos_handle=&handle;
 
-	dev2.spi_rtos_handle= &handle2;
-	dev2.base=BASE_SPI2;
-	dev2.pin=PIN_SPI2;
-
-	if(spi_init(&dev1)!=0){
-		PRINTF("Error de inicializacion dev1");
+	if(lmp_init(&dev, GPIOC, PIN4)!=0){
+		PRINTF("Error de init dev");
 	}
-
-	if(spi_init(&dev2)!=0){
-		PRINTF("Error de inicializacion dev2");
-	}
-
-	for(int i=0;i<SIZE;i++){
-		data_out[i]=i;
-	}
-
 
 	for(;;){
-		if(spi_transfer(&dev1,data_out,data_in,SIZE)!=0){
-			PRINTF("Error de transmision dev1");
+		if(status=(lmp_read(&dev,address,(uint8_t *)&data_in,4))!=0){
+			PRINTF("Error de transmision dev: %d\n\r", status);
 		}
-		PRINTF("DATO ENVIADO %X%X. DATO RECIBIDO %X%X \n\r", data_out[0],data_out[1], data_in[0],data_in[1]);
-		vTaskDelay(2);
-
-		if(spi_transfer(&dev2,data_out,data_in,SIZE)!=0){
-			PRINTF("Error de transmision dev2");
-		}
-		PRINTF("DATO ENVIADO %X%X. DATO RECIBIDO %X%X \n\r", data_out[0],data_out[1], data_in[0],data_in[1]);
-		vTaskDelay(2);
+		PRINTF("Registro leido: %X. DATO RECIBIDO %X \n\r", address,data_in);
+		vTaskDelay(500);
 	}
 }
 
