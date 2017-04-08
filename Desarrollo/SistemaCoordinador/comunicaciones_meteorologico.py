@@ -2,6 +2,7 @@ import os
 import time
 
 device="/dev/ttyUSB1"
+HoraLimite="41"
 contador=0
 offset_RadiacionSolar=14
 offset_VelocidadViento=6
@@ -14,6 +15,7 @@ print(Fecha_Hora)
 
 
 while True:
+    Hora=time.strftime("%M")
     if (contador % 7)==0:
         Fecha_Hora=time.strftime("%Y-%m-%d,%H:%M:%S")
         if os.path.isfile('/home/pi/vproweather-1.1/rtwdata.txt'):
@@ -84,15 +86,21 @@ while True:
         archivo.write(Fecha_Hora+">"+valor_Precipitacion)
         archivo.write('\n')
         archivo.close
-    if (contador==2800):
-        os.remove(path_brillo_solar)
-        os.remove(path_direccion_viento)
-        os.remove(path_velocidad_viento)
-        os.remove(path_temperatura)
-        os.remove(path_Humedad)
-        os.remove(path_Precipitacion)
+    if (Hora==HoraLimite):
+        if os.path.exists(path_brillo_solar):
+            os.remove(path_brillo_solar)
+        if os.path.exists(path_direccion_viento):
+            os.remove(path_direccion_viento)
+        if os.path.exists(path_velocidad_viento):
+            os.remove(path_velocidad_viento)
+        if os.path.exists(path_temperatura):
+            os.remove(path_temperatura)
+        if os.path.exists(path_Humedad):
+            os.remove(path_Humedad)
+        if os.path.exists(path_Precipitacion):
+            os.remove(path_Precipitacion)
         contador=1
-        print(Fecha_Hora)
+        
         
         
         
@@ -105,4 +113,5 @@ while True:
         
     contador=contador+1
     time.sleep(1)
+    
     
