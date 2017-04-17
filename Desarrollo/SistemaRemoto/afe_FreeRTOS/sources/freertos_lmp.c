@@ -57,7 +57,18 @@
 #define	BASE_SPI2	GPIOA
 #define	PIN_SPI1	PIN4
 #define	PIN_SPI2	PIN5
-#define SIZE		2
+#define SIZE		4
+#define ADDRESS		ADC_DOUT
+
+
+
+#define RTD_CURR 			RTD_CUR_1000U
+
+#define CH0_IC 			BURNOUT_DIS|VREF2|VINP0|VINN5
+#define CH1_IC 			BURNOUT_DIS|VREF1|VINP1|VINN7
+#define CH2_IC 			BURNOUT_DIS|VREF1|VINP2|VINN7
+#define CH3_IC 			BURNOUT_DIS|VREF1|VINP3|VINN7
+#define CH4_IC 			BURNOUT_DIS|VREF1|VINP4|VINN7
 
 
 /*******************************************************************************
@@ -71,6 +82,7 @@
  ******************************************************************************/
 
 static void lmp_task(void *pvParameters);
+static void confLmp(lmp_dev_t *dev);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -106,25 +118,54 @@ int main(void)
 
 static void lmp_task(void *pvParameters){
 	lmp_dev_t dev;
-	spi_dev_t spi_dev;
-	spi_rtos_handle_t handle;
-	uint32_t data_in;
-	uint8_t status;
-	uint8_t address=DATA_ONLY_1;
+	uint8_t data_in[SIZE];
+	uint8_t data_in_b[SIZE];
+	double adc;
 
-	dev.spi=&spi_dev;
-	dev.spi->spi_rtos_handle=&handle;
 
 	if(lmp_init(&dev, GPIOC, PIN4)!=0){
-		PRINTF("Error de init dev");
+		PRINTF("Error de init dev\n\r");
 	}
 
 	for(;;){
-		if(status=(lmp_read(&dev,address,(uint8_t *)&data_in,4))!=0){
-			PRINTF("Error de transmision dev: %d\n\r", status);
+		if(lmp_read(&dev,ADDRESS,(uint8_t *)&data_in,SIZE)!=0){
+			PRINTF("Error de transmision dev: %d\n\r\n\r");
 		}
-		PRINTF("Registro leido: %X. DATO RECIBIDO %X \n\r", address,data_in);
+
+		data_in_b[0]=data_in[3];
+		data_in_b[1]=data_in[2];
+		data_in_b[2]=data_in[1];
+		data_in_b[3]=data_in[0];
+		PRINTF("Dato en le: %X. Dato en be: %X\n\r", (uint32_t)(*data_in), (uint32_t)(*data_in_b));
+		adc=(data_in[0]+data_in[1]*256+data_in[2]*256*256)*5/(16777216.0);
+
+
+		PRINTF("Registro leido: %X. DATO RECIBIDO %d \n\r\n\r", ADDRESS,adc);
 		vTaskDelay(500);
 	}
 }
 
+static void confLmp(lmp_dev_t *dev){
+
+	if(lmp_write(dev,ADC_AUXCN,RTD_CURR)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+
+
+	if(lmp_write(dev,CH0_INPUTCN,CH0_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH1_INPUTCN,CH1_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH2_INPUTCN,CH2_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH3_INPUTCN,CH3_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH4_INPUTCN,CH4_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+
+}

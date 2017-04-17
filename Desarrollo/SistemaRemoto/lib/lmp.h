@@ -135,7 +135,6 @@ ADC_AUXCN
 #define RTD_CUR_0U			0x00U	/* Fuentes de corriente generan 0uA*/
 
 
-
 /*
 ADC_DONE
  */
@@ -180,7 +179,7 @@ CHx_INPUTCN
  */
 
 #define BURNOUT_EN		0x80
-#define BURNOUT_DIS		0x80
+#define BURNOUT_DIS		0x00
 
 #define VREF1			0x00
 #define VREF2			0x40
@@ -202,6 +201,7 @@ CHx_INPUTCN
 #define VINN5			0x05
 #define VINN6			0x06
 #define VINN7			0x07
+
 
 /*
 CHx_CONFIG:
@@ -240,6 +240,7 @@ CHx_CONFIG:
 
 /*Transaction 1-URA Setup*/
 #define URA_SETTING_SIZE	0x02
+#define	WRITE_SIZE			0x02
 #define WRITE_URA 			0x10
 #define READ_URA  			0x90
 
@@ -248,10 +249,10 @@ CHx_CONFIG:
 #define READ_REG  		0X80
 
  /**Size Transaction 2*/
-#define BYTES_1 0x0 /*1 Byte*/
-#define BYTES_2 0x1 /*2 Bytes*/
-#define BYTES_3 0x2 /*3 Bytes*/
-#define BYTES_X 0x3 /**Streaming 3+ Bytes hasta que se desactive CS*/
+#define BYTES_1 0x00 /*1 Byte*/
+#define BYTES_2 0x20 /*2 Bytes*/
+#define BYTES_3 0x40 /*3 Bytes*/
+#define BYTES_X 0x80 /**Streaming 3+ Bytes hasta que se desactive CS*/
 
 
 
@@ -263,12 +264,16 @@ typedef struct{
 
 uint8_t lmp_init(lmp_dev_t* dev, GPIO_Type *base, uint32_t pin);
 
-uint8_t lmp_write(lmp_dev_t* dev, uint8_t address, uint8_t* data, uint8_t size);
+uint8_t lmp_write(lmp_dev_t* dev, uint8_t address, uint8_t data);
 
 uint8_t lmp_read(lmp_dev_t* dev,uint8_t address,uint8_t* data, uint8_t size);
 
 uint8_t lmp_getMeasure(lmp_dev_t* dev, uint32_t* lectura);
 
 uint8_t lmp_confMeasure(lmp_dev_t* dev,uint8_t first_ch, uint8_t last_ch);
+
+uint8_t lmp_getSizeMask(uint8_t size);
+
+uint8_t lmp_getURA(uint8_t address);
 
 #endif /* LMP_H_ */
