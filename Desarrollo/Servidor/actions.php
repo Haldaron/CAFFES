@@ -17,7 +17,7 @@ else {
 <html>
 <head>
 	<title>proyecto CAFFES</title>
-	<meta name="generator" content="Bluefish 2.2.7" >
+	<meta name="generator" content="Bluefish 2.2.6" >
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,7 +46,7 @@ else {
 						$list=$nav->getActionList();
 						foreach ($list as $item){
 							echo "<div class='row block'>\n";
-  							echo "<input  type='radio' name='action' value='".$item."' data-labelauty='".ACTIONMASK[$item]."' checked>\n";
+  							echo "<input  type='radio' name='action' value='".$item."' data-labelauty='".actionMask($item)."' checked>\n";
 							echo "</div>\n";
 						}
 					?>

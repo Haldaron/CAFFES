@@ -8,6 +8,37 @@ define("DATABASENAME", "CaffesDataBase");
 define('ACCIONES',['upload'=>'escribir','download'=>'leer']);
 define('ACTIONMASK',['upload'=>'Ingresar datos','download'=>'Descargar Datos']);
 
+/************************************************************************
+funcion que enmascara el listado de acciones y le da un nombre en español
+************************************************************************/
+function acciones($action) {
+	$legend='';
+	switch($action) {
+		case 'upload':
+			$legend='escribir';
+			break;
+		case 'download':
+			$legend='leer';
+			break;			
+	}
+	return $legend;			
+}
+
+/************************************************************************
+funcion que enmascara el listado de acciones y le da un nombre en español
+************************************************************************/
+function actionMask($action) {
+	$legend='';
+	switch($action) {
+		case 'upload':
+			$legend='Ingresar datos';
+			break;
+		case 'download':
+			$legend='Descargar Datos';
+			break;			
+	}
+	return $legend;			
+}
 
 function connect_database(){
 	$identifier=mysqli_connect(SERVERNAME, MYPHPUSER, MYPHPPASSWORD);
@@ -82,7 +113,7 @@ Selecciona un listado de cordinadores en los que un usuario
 puede desempeñar determinada función 
 ***********************************************************/
 function querryCordinator($UserName, $action) {
-	$opcion=ACCIONES[$action];
+	$opcion=acciones($action);
 	$list=[]; //la lista inicialmente está vacía
 	$mysql=connect_database(); //solicita la conexión a la base de datos	
 	if ($mysql){
