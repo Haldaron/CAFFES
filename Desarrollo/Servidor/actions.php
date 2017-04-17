@@ -17,7 +17,7 @@ else {
 <html>
 <head>
 	<title>proyecto CAFFES</title>
-	<meta name="generator" content="Bluefish 2.2.6" >
+	<meta name="generator" content="Bluefish 2.2.7" >
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +59,7 @@ else {
 				$(document).ready(function(){
 					$(":radio").labelauty();
 				});
-			</script>			
+			</script>						
 			<script src="js/bootstrap.min.js"></script>	
 </body>
 </html>

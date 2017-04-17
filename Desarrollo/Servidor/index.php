@@ -161,7 +161,30 @@ else {
 				</div>
 			</div> 		
 	<?php endif; ?>
-<?php endif; ?>		
+<?php endif; ?>
+	<!-- Footer del proyecto  -->
+	<!-- <footer class="footer navbar-fixed-bottom"> -->
+		<footer class="footer navbar-fixed-bottom">
+		<div class="container">
+		<div class="page-footer">
+			<div class="row">
+				<div class="col-sm-11 col-xs-12">
+					<div class="row">							
+						<div class="col-sm-2 col-xs-4"><img src="./imagenes/SGR.png" height="60" class="img-responsive" class="img-responsive" alt="Imagen responsive"></div>						
+						<div class="col-sm-2 col-xs-4"><img src="./imagenes/LogoUniandes.svg" height="60" class="img-responsive" alt="Imagen responsive"></div>
+						<div class="col-sm-2 col-xs-4"><img src="./imagenes/LogoGest.svg" height="60" class="img-responsive" alt="Imagen responsive"></div>						
+						<div class="col-sm-2 col-xs-4"><img src="./imagenes/usco.png" height="60" class="img-responsive" alt="Imagen responsive"></div>
+						<div class="col-sm-2 col-xs-4"><img src="./imagenes/cersucafe.jpg" height="60" class="img-responsive" alt="Imagen responsive"></div>					
+						<div class="col-sm-2 col-xs-4"><img src="./imagenes/occicafe.jpg" height="60" class="img-responsive" alt="Imagen responsive"></div>					
+					</div>
+				</div>
+				<div class="col-sm-1 col-xs-12">
+					<img src="./imagenes/huila.jpg" height="60" class="img-responsive" alt="Imagen responsive">	
+				</div>					   	
+	   	</div>
+		</div>   
+	   </div>
+	<footer>   		
 <script src="js/bootstrap.min.js"></script>	
 </body>
 </html>
