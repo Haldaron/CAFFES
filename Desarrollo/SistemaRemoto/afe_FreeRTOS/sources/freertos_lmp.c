@@ -53,6 +53,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define PRINTF_FLOAT_ENABLE 1U
 #define	BASE_SPI1	GPIOC
 #define	BASE_SPI2	GPIOA
 #define	PIN_SPI1	PIN4
@@ -60,16 +61,16 @@
 #define SIZE		4
 #define ADDRESS		ADC_DOUT
 
+#define RTD_CURR 			RTD_CUR_0U
 
-
-#define RTD_CURR 			RTD_CUR_1000U
-
-#define CH0_IC 			BURNOUT_DIS|VREF2|VINP0|VINN5
+#define CH0_IC 			BURNOUT_DIS|VREF1|VINP5|VINN7
 #define CH1_IC 			BURNOUT_DIS|VREF1|VINP1|VINN7
 #define CH2_IC 			BURNOUT_DIS|VREF1|VINP2|VINN7
 #define CH3_IC 			BURNOUT_DIS|VREF1|VINP3|VINN7
 #define CH4_IC 			BURNOUT_DIS|VREF1|VINP4|VINN7
 
+#define FIRST_CH			CH0_FIRST
+#define LAST_CH				CH3_LAST
 
 /*******************************************************************************
  * Definitions
@@ -97,10 +98,7 @@ int main(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    PRINTF("EJEMPLO DE SPI PARA PROYECTO CAFFES.\r\n");
-    PRINTF("Este ejemplo se utilizan dos dispositivos SPI de manera simultanea\r\n");
-    PRINTF("cada uno con un GPIO diferente como CS.\r\n");
-    PRINTF("   SOUT     --    SIN  \r\n");
+    PRINTF("Prueba de LMP90100%f \r\n");
 
 
     xTaskCreate(lmp_task, "lmp_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
@@ -117,31 +115,57 @@ int main(void)
 
 
 static void lmp_task(void *pvParameters){
-	lmp_dev_t dev;
-	uint8_t data_in[SIZE];
-	uint8_t data_in_b[SIZE];
-	double adc;
+	lmp_dev_t 	dev;
+	uint32_t	adc;
+	uint8_t		buff[2];
 
 
 	if(lmp_init(&dev, GPIOC, PIN4)!=0){
 		PRINTF("Error de init dev\n\r");
 	}
 
+	confLmp(&dev);
+
+
+	lmp_read(&dev,DATA_ONLY_1 ,buff,2);
+
+	PRINTF("DATO DE PRUEBA: %X%X \n\r",buff[0],buff[1]);
+
+
 	for(;;){
-		if(lmp_read(&dev,ADDRESS,(uint8_t *)&data_in,SIZE)!=0){
-			PRINTF("Error de transmision dev: %d\n\r\n\r");
+		lmp_confMeasure(&dev, SCAN_MODE0, FIRST_CH, LAST_CH);
+
+		while(!lmp_dataReady(&dev)){
+			PRINTF("Esperando ADC\n\r\n\r");
 		}
 
-		data_in_b[0]=data_in[3];
-		data_in_b[1]=data_in[2];
-		data_in_b[2]=data_in[1];
-		data_in_b[3]=data_in[0];
-		PRINTF("Dato en le: %X. Dato en be: %X\n\r", (uint32_t)(*data_in), (uint32_t)(*data_in_b));
-		adc=(data_in[0]+data_in[1]*256+data_in[2]*256*256)*5/(16777216.0);
+		lmp_getMeasure(&dev,&adc);
+
+		PRINTF("ADC0: %d\n\r",adc);
+		vTaskDelay(1000);
 
 
-		PRINTF("Registro leido: %X. DATO RECIBIDO %d \n\r\n\r", ADDRESS,adc);
-		vTaskDelay(500);
+		lmp_confMeasure(&dev, SCAN_MODE0, CH1_FIRST, CH6_LAST);
+
+		while(!lmp_dataReady(&dev)){
+			PRINTF("Esperando ADC\n\r\n\r");
+		}
+
+		lmp_getMeasure(&dev,&adc);
+
+		PRINTF("ADC1: %d\n\r",adc);
+		vTaskDelay(1000);
+
+		lmp_confMeasure(&dev, SCAN_MODE0, CH2_FIRST, CH6_LAST);
+
+		while(!lmp_dataReady(&dev)){
+			PRINTF("Esperando ADC\n\r\n\r");
+		}
+
+		lmp_getMeasure(&dev,&adc);
+
+		PRINTF("ADC2: %d\n\r",adc);
+		vTaskDelay(1000);
 	}
 }
 

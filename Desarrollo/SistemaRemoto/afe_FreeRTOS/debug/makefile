@@ -57,7 +57,7 @@ all: afe_FreeRTOS.elf secondary-outputs
 afe_FreeRTOS.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -mfloat-abi=soft -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -ffreestanding -fno-builtin -Wall  -g -T ../settings/MKL27Z64xxx4_flash.ld -Xlinker --gc-sections -Wl,-Map,"afe_FreeRTOS.map" --specs=nano.specs -mapcs  -Xlinker -static  -Xlinker -z  -Xlinker muldefs -o "afe_FreeRTOS.elf" -Xlinker --start-group $(OBJS) $(USER_OBJS) $(LIBS) -Xlinker --end-group
+	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -mfloat-abi=soft -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -ffreestanding -fno-builtin -Wall  -g -T ../settings/MKL27Z64xxx4_flash.ld -Xlinker --gc-sections -Wl,-Map,"afe_FreeRTOS.map" --specs=nano.specs -u _printf_float -u _scanf_float -mfloat-abi=soft -mapcs  -Xlinker -static  -Xlinker -z  -Xlinker muldefs -o "afe_FreeRTOS.elf" -Xlinker --start-group $(OBJS) $(USER_OBJS) $(LIBS) -Xlinker --end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

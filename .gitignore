@@ -54,5 +54,6 @@ dkms.conf
 .metadata/
 RemoteSystemsTempFiles/
 FreeRTOS_TAD_logs/
+*/debug/*
 
 *~

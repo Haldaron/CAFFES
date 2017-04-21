@@ -138,7 +138,7 @@ ADC_AUXCN
 /*
 ADC_DONE
  */
-#define DT_AVAIL_B		0xFF		/* No hay dato disponible. Cualquier otro valor indica lo contrario*/
+#define DT_NOT_AVAIL		0xFF		/* No hay dato disponible. Cualquier otro valor indica lo contrario*/
 
 
 /*
@@ -241,6 +241,8 @@ CHx_CONFIG:
 /*Transaction 1-URA Setup*/
 #define URA_SETTING_SIZE	0x02
 #define	WRITE_SIZE			0x02
+#define ADC_READ_SIZE		0x04
+#define DATA_RDY_SIZE		0x02
 #define WRITE_URA 			0x10
 #define READ_URA  			0x90
 
@@ -270,9 +272,11 @@ uint8_t lmp_read(lmp_dev_t* dev,uint8_t address,uint8_t* data, uint8_t size);
 
 uint8_t lmp_getMeasure(lmp_dev_t* dev, uint32_t* lectura);
 
-uint8_t lmp_confMeasure(lmp_dev_t* dev,uint8_t first_ch, uint8_t last_ch);
+uint8_t lmp_confMeasure(lmp_dev_t* dev, uint8_t mode, uint8_t first_ch, uint8_t last_ch);
 
 uint8_t lmp_getSizeMask(uint8_t size);
+
+bool lmp_dataReady(lmp_dev_t *dev);
 
 uint8_t lmp_getURA(uint8_t address);
 

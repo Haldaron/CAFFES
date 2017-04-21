@@ -60,9 +60,27 @@ uint8_t lmp_read(lmp_dev_t* dev,uint8_t address,uint8_t* data, uint8_t size){
 	return status;
 }
 
-uint8_t lmp_getMeasure(lmp_dev_t* dev, uint32_t* lectura);
+uint8_t lmp_getMeasure(lmp_dev_t* dev, uint32_t* lectura){
+	uint8_t status;
+	uint8_t data_in[ADC_READ_SIZE];
 
-uint8_t lmp_confMeasure(lmp_dev_t* dev,uint8_t first_ch, uint8_t last_ch);
+	status=lmp_read(dev,ADC_DOUT,data_in,ADC_READ_SIZE);
+
+	*lectura=(data_in[3]+data_in[2]*256+data_in[1]*65536);
+
+	return status;
+}
+
+uint8_t lmp_confMeasure(lmp_dev_t* dev, uint8_t mode, uint8_t first_ch, uint8_t last_ch){
+	uint8_t status;
+	uint8_t conf;
+
+	conf= mode|first_ch|last_ch;
+	status=lmp_write(dev,CH_SCAN,conf);
+
+	return status;
+
+}
 
 uint8_t lmp_getSizeMask(uint8_t size){
 	if(size-1==1){
@@ -73,6 +91,14 @@ uint8_t lmp_getSizeMask(uint8_t size){
 		return BYTES_3;
 	}
 	return BYTES_X;
+}
+
+bool lmp_dataReady(lmp_dev_t *dev){
+	uint8_t data[DATA_RDY_SIZE];
+
+	lmp_read(dev,ADC_DONE,data, DATA_RDY_SIZE);
+	PRINTF("DONE?: %X%X\n\f",data[0],data[1]);
+	return (data[1]!=DT_NOT_AVAIL);
 }
 
 uint8_t lmp_getURA(uint8_t address){
