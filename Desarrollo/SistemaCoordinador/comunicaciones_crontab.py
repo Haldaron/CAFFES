@@ -1,10 +1,12 @@
 import os
 import shutil
 import time
+import math
 import statistics
 
 str1=">"
 Fecha_Hora=time.strftime("%Y-%m-%d,%H:%M:%S")
+cifras_significativas_1=9
 cifras_significativas=3
 
 "---------------------------------ORIGINALES-----------------------------------------------------"
@@ -14,6 +16,9 @@ path_direccion_viento_o="/home/pi/USCO/remoto_meteorologico/DireccionViento.csv"
 path_temperatura_o="/home/pi/USCO/remoto_meteorologico/TempAmbiente.csv"
 path_humedad_o="/home/pi/USCO/remoto_meteorologico/HumedadRelativa.csv"
 path_precipitacion_o="/home/pi/USCO/remoto_meteorologico/Precipitacion.csv"
+path_humedad_suelo_o='/home/pi/USCO/remoto_suelo/remoto1/Humedad_estadistico.csv'
+path_temperatura_suelo_o='/home/pi/USCO/remoto_suelo/remoto1/Temperatura_estadistico.csv'
+path_PAR_o='/home/pi/USCO/remoto_meteorologico/PAR.csv'
 
 "---------------------------------ORIGINALES RECURRENTES-----------------------------------------------------"
 path_brillo_solar="/home/pi/USCO/remoto_meteorologico/BrilloSolar_recurrente.csv"
@@ -22,6 +27,10 @@ path_direccion_viento="/home/pi/USCO/remoto_meteorologico/DireccionViento_recurr
 path_temperatura="/home/pi/USCO/remoto_meteorologico/Temperatura_recurrente.csv"
 path_humedad="/home/pi/USCO/remoto_meteorologico/Humedad_recurrente.csv"
 path_precipitacion="/home/pi/USCO/remoto_meteorologico/Precipitacion_recurrente.csv"
+path_humedad_suelo_1='/home/pi/USCO/remoto_suelo/remoto1/Humedad1.csv'
+path_humedad_suelo_2='/home/pi/USCO/remoto_suelo/remoto1/Humedad2.csv'
+path_temperatura_suelo='/home/pi/USCO/remoto_suelo/remoto1/Temperatura.csv'
+path_PAR_suelo='/home/pi/USCO/remoto_suelo/remoto1/PAR.csv'
 
 "--------------------------------COPIAS----------------------------------------------------------"
 
@@ -31,6 +40,10 @@ copia_path_direccion_viento="/home/pi/USCO/remoto_meteorologico/copia_DireccionV
 copia_path_temperatura="/home/pi/USCO/remoto_meteorologico/copia_Temperatura_recurrente.csv"
 copia_path_humedad="/home/pi/USCO/remoto_meteorologico/copia_Humedad_recurrente.csv"
 copia_path_precipitacion="/home/pi/USCO/remoto_meteorologico/copia_Precipitacion_recurrente.csv"
+copia_path_humedad_suelo_1='/home/pi/USCO/remoto_suelo/remoto1/copia_Humedad1.csv'
+copia_path_humedad_suelo_2='/home/pi/USCO/remoto_suelo/remoto1/copia_Humedad2.csv'
+copia_path_temperatura_suelo='/home/pi/USCO/remoto_suelo/remoto1/copia_Temperatura.csv'
+copia_path_PAR_suelo='/home/pi/USCO/remoto_suelo/remoto1/copia_PAR.csv'
 
 "-----------------------SE COPIAN LOS ARCHIVOS RECURRENTES----------------------------------------"
 
@@ -40,6 +53,10 @@ shutil.copy(path_direccion_viento,copia_path_direccion_viento)
 shutil.copy(path_temperatura,copia_path_temperatura)
 shutil.copy(path_humedad,copia_path_humedad)
 shutil.copy(path_precipitacion,copia_path_precipitacion)
+shutil.copy(path_humedad_suelo_1,copia_path_humedad_suelo_1)
+shutil.copy(path_humedad_suelo_2,copia_path_humedad_suelo_2)
+shutil.copy(path_temperatura_suelo,copia_path_temperatura_suelo)
+shutil.copy(path_PAR_suelo,copia_path_PAR_suelo)
 
 "------------------------Brillo Solar------------------------------------------------------------"
 
@@ -194,6 +211,134 @@ file_original_precipitacion=open(path_precipitacion_o,'a')
 file_original_precipitacion.write(string_a_escribir)
 file_original_precipitacion.close()
 
+"------------------------------Humedad_suelo_1----------------------------------------------------------------------------------------------"
+
+file_humedad_suelo_1=open(copia_path_humedad_suelo_1,'r')
+valor_humedad_suelo_1=[]
+
+
+for line in file_humedad_suelo_1.readlines():
+    linea=line.strip().lower()
+    valor_humedad_suelo_1.append(float(linea))
+valor_humedad_suelo_1_promedio=math.floor(round(sum(valor_humedad_suelo_1)/float(len(valor_humedad_suelo_1)),cifras_significativas_1))
+valor_humedad_suelo_1_maximo=max(valor_humedad_suelo_1)
+valor_humedad_suelo_1_minimo=min(valor_humedad_suelo_1)
+Unidades='%'
+Tipo_valor='Promedio'
+Periodicidad='Horario'
+string_temp=str(valor_humedad_suelo_1_promedio)
+string_temp=string_temp.replace(',','')
+string_a_escribir_promedio="P1,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Maximo'
+string_temp=str(valor_humedad_suelo_1_maximo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_max="P1,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Minimo'
+string_temp=str(valor_humedad_suelo_1_minimo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_min="P1,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+file_original_humedad=open(path_humedad_suelo_o,'a')
+file_original_humedad.write(string_a_escribir_promedio)
+file_original_humedad.write(string_a_escribir_max)
+file_original_humedad.write(string_a_escribir_min)
+file_original_humedad.close()
+
+"------------------------------Humedad_suelo_2----------------------------------------------------------------------------------------------"
+
+file_humedad_suelo_2=open(copia_path_humedad_suelo_2,'r')
+valor_humedad_suelo_2=[]
+
+
+for line in file_humedad_suelo_2.readlines():
+    linea=line.strip().lower()
+    valor_humedad_suelo_2.append(float(linea))
+valor_humedad_suelo_2_promedio=math.floor(round(sum(valor_humedad_suelo_2)/float(len(valor_humedad_suelo_2)),cifras_significativas_1))
+valor_humedad_suelo_2_maximo=max(valor_humedad_suelo_2)
+valor_humedad_suelo_2_minimo=min(valor_humedad_suelo_2)
+Unidades='%'
+Tipo_valor='Promedio'
+Periodicidad='Horario'
+string_temp=str(valor_humedad_suelo_2_promedio)
+string_temp=string_temp.replace(',','')
+string_a_escribir_promedio="P2,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Maximo'
+string_temp=str(valor_humedad_suelo_2_maximo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_max="P2,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Minimo'
+string_temp=str(valor_humedad_suelo_2_minimo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_min="P2,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+file_original_humedad=open(path_humedad_suelo_o,'a')
+file_original_humedad.write(string_a_escribir_promedio)
+file_original_humedad.write(string_a_escribir_max)
+file_original_humedad.write(string_a_escribir_min)
+file_original_humedad.close()
+
+"------------------------------Temperatura_suelo----------------------------------------------------------------------------------------------"
+
+file_temperatura_suelo=open(copia_path_temperatura_suelo,'r')
+valor_temperatura_suelo=[]
+
+
+for line in file_temperatura_suelo.readlines():
+    linea=line.strip().lower()
+    valor_temperatura_suelo.append(float(linea))
+valor_temperatura_suelo_promedio=math.floor(round(sum(valor_temperatura_suelo)/float(len(valor_temperatura_suelo)),cifras_significativas_1))
+valor_temperatura_suelo_maximo=max(valor_temperatura_suelo)
+valor_temperatura_suelo_minimo=min(valor_temperatura_suelo)
+Unidades='Celsius'
+Tipo_valor='Promedio'
+Periodicidad='Horario'
+string_temp=str(valor_temperatura_suelo_promedio)
+string_temp=string_temp.replace(',','')
+string_a_escribir_promedio=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Maximo'
+string_temp=str(valor_temperatura_suelo_maximo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_max=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Minimo'
+string_temp=str(valor_temperatura_suelo_minimo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_min=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+file_original_humedad=open(path_temperatura_suelo_o,'a')
+file_original_humedad.write(string_a_escribir_promedio)
+file_original_humedad.write(string_a_escribir_max)
+file_original_humedad.write(string_a_escribir_min)
+file_original_humedad.close()
+
+"------------------------------PAR----------------------------------------------------------------------------------------------"
+
+file_PAR_suelo=open(copia_path_PAR_suelo,'r')
+valor_PAR_suelo=[]
+
+
+for line in file_PAR_suelo.readlines():
+    linea=line.strip().lower()
+    valor_PAR_suelo.append(float(linea))
+valor_PAR_suelo_promedio=math.floor(round(sum(valor_PAR_suelo)/float(len(valor_PAR_suelo)),cifras_significativas_1))
+valor_PAR_suelo_maximo=max(valor_PAR_suelo)
+valor_PAR_suelo_minimo=min(valor_PAR_suelo)
+Unidades='PARios'
+Tipo_valor='Promedio'
+Periodicidad='Horario'
+string_temp=str(valor_PAR_suelo_promedio)
+string_temp=string_temp.replace(',','')
+string_a_escribir_promedio=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Maximo'
+string_temp=str(valor_PAR_suelo_maximo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_max=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+Tipo_valor='Minimo'
+string_temp=str(valor_PAR_suelo_minimo)
+string_temp=string_temp.replace(',','')
+string_a_escribir_min=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+file_original_humedad=open(path_PAR_o,'a')
+file_original_humedad.write(string_a_escribir_promedio)
+file_original_humedad.write(string_a_escribir_max)
+file_original_humedad.write(string_a_escribir_min)
+file_original_humedad.close()
+
 
 "-----------------------SE BORRAN LAS COPIAS-----------------------------------------------------"
 os.remove(copia_path_brillo_solar)
@@ -202,3 +347,8 @@ os.remove(copia_path_direccion_viento)
 os.remove(copia_path_temperatura)
 os.remove(copia_path_humedad)
 os.remove(copia_path_precipitacion)
+os.remove(copia_path_humedad_suelo_1)
+os.remove(copia_path_humedad_suelo_2)
+os.remove(copia_path_temperatura_suelo)
+os.remove(copia_path_PAR_suelo)
+
