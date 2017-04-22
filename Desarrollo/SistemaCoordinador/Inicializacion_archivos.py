@@ -43,13 +43,15 @@ primera_pregunta=input("Cuantos nodos remotos estan asociados a este coordinador
 
 for i in range(1,primera_pregunta+1):
 
-    path_temp='/home/pi/USCO/remoto_suelo/remoto%d '% i
+    path_temp='/home/pi/USCO/remoto_suelo/remoto%d'% i
 
     if not os.path.exists(path_temp):
         os.mkdir(path_temp)
         
-    archivo_humedad=open(path_temp+"/Humedad.csv","a+")
-    archivo_humedad.close()
+    archivo_humedad_1=open(path_temp+"/Humedad1.csv","a+")
+    archivo_humedad_1.close()
+    archivo_humedad_2=open(path_temp+"/Humedad2.csv","a+")
+    archivo_humedad_2.close()
     archivo_temperatura=open(path_temp+"/Temperatura.csv","a+")
     archivo_temperatura.close()
 print 'su respuesta fue: %d y ya se crearon los directorios y archivos'% primera_pregunta
