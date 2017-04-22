@@ -49,17 +49,19 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "spi.h"
+#include "Xbee.h"
 #include "lmp.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define PRINTF_FLOAT_ENABLE 1U
 #define	BASE_SPI1	GPIOC
 #define	BASE_SPI2	GPIOA
 #define	PIN_SPI1	PIN4
 #define	PIN_SPI2	PIN5
 #define SIZE		4
 #define ADDRESS		ADC_DOUT
+
+#define TASK_DELAY	1000U
 
 #define RTD_CURR 			RTD_CUR_0U
 
@@ -69,8 +71,14 @@
 #define CH3_IC 			BURNOUT_DIS|VREF1|VINP3|VINN7
 #define CH4_IC 			BURNOUT_DIS|VREF1|VINP4|VINN7
 
-#define FIRST_CH			CH0_FIRST
+#define CH1_CONF		ODR_1_6775|FGA_OFF_1|BUFF_OFF
+
+
+
+
+#define FIRST_CH			CH1_FIRST
 #define LAST_CH				CH3_LAST
+
 
 /*******************************************************************************
  * Definitions
@@ -82,7 +90,7 @@
  * Prototypes
  ******************************************************************************/
 
-static void lmp_task(void *pvParameters);
+static void medicion_task(void *pvParameters);
 static void confLmp(lmp_dev_t *dev);
 /*******************************************************************************
  * Code
@@ -98,10 +106,8 @@ int main(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    PRINTF("Prueba de LMP90100%f \r\n");
 
-
-    xTaskCreate(lmp_task, "lmp_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
+    xTaskCreate(medicion_task, "med_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
 
     vTaskStartScheduler();
     for (;;)
@@ -114,37 +120,47 @@ int main(void)
 
 
 
-static void lmp_task(void *pvParameters){
+static void medicion_task(void *pvParameters){
+    int error=kStatus_Success;
+    Xbee_frame 	*frame=pvPortMalloc(sizeof(Xbee_frame));
+    Xbee_dev_t 	*xbee_dev=pvPortMalloc(sizeof(Xbee_dev_t));
+    char 		str[30]="Mensaje de ejemplo";
 	lmp_dev_t 	dev;
 	uint32_t	adc;
-	uint8_t		buff[2];
 
 
 	if(lmp_init(&dev, GPIOC, PIN4)!=0){
 		PRINTF("Error de init dev\n\r");
 	}
 
-	confLmp(&dev);
+    Xbee_init(xbee_dev);
 
-
-	lmp_read(&dev,DATA_ONLY_1 ,buff,2);
-
-	PRINTF("DATO DE PRUEBA: %X%X \n\r",buff[0],buff[1]);
+    confLmp(&dev);
 
 
 	for(;;){
+
 		lmp_confMeasure(&dev, SCAN_MODE0, FIRST_CH, LAST_CH);
-
-		while(!lmp_dataReady(&dev)){
-			PRINTF("Esperando ADC\n\r\n\r");
-		}
-
 		lmp_getMeasure(&dev,&adc);
+		sprintf(str,"datoAgua: %d",(int)adc);
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
 
-		PRINTF("ADC0: %d\n\r",adc);
-		vTaskDelay(1000);
+		vTaskDelay(TASK_DELAY);
+
+		lmp_confMeasure(&dev, SCAN_MODE0, CH2_FIRST, CH5_LAST);
+		lmp_getMeasure(&dev,&adc);
+		sprintf(str,"datoAire: %d",(int)adc);
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+
+    	vTaskDelay(TASK_DELAY);
 
 	}
+
+    /* Send data */
+
+    vTaskSuspend(NULL);
 }
 
 static void confLmp(lmp_dev_t *dev){
@@ -169,5 +185,11 @@ static void confLmp(lmp_dev_t *dev){
 	if(lmp_write(dev,CH4_INPUTCN,CH4_IC)!=0){
 		PRINTF("Error de transmision dev: %d\n\r\n\r");
 	}
+
+
+//	if(lmp_write(dev,CH1_CONFIG,CH1_CONF)!=0){
+//		PRINTF("Error de transmision dev: %d\n\r\n\r");
+//	}
+
 
 }

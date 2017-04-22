@@ -48,7 +48,6 @@ uint8_t lmp_read(lmp_dev_t* dev,uint8_t address,uint8_t* data, uint8_t size){
 
 	/*URA setting*/
 	spi_transfer(dev->spi, set_ura, data, URA_SETTING_SIZE);
-	PRINTF("SET_URA: %X\t",(uint16_t) *set_ura);
 
 	/*Read register*/
 	set_read[0]=READ_REG|lmp_getSizeMask(size)|(address&LRA_MASK);
@@ -93,12 +92,15 @@ uint8_t lmp_getSizeMask(uint8_t size){
 	return BYTES_X;
 }
 
-bool lmp_dataReady(lmp_dev_t *dev){
+uint8_t lmp_dataReady(lmp_dev_t *dev){
 	uint8_t data[DATA_RDY_SIZE];
 
 	lmp_read(dev,ADC_DONE,data, DATA_RDY_SIZE);
-	PRINTF("DONE?: %X%X\n\f",data[0],data[1]);
-	return (data[1]!=DT_NOT_AVAIL);
+	if(data[1]==DT_NOT_AVAIL){
+		return 0;
+	}
+
+	return 1;
 }
 
 uint8_t lmp_getURA(uint8_t address){

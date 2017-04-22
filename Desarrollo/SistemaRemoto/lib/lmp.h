@@ -276,7 +276,7 @@ uint8_t lmp_confMeasure(lmp_dev_t* dev, uint8_t mode, uint8_t first_ch, uint8_t 
 
 uint8_t lmp_getSizeMask(uint8_t size);
 
-bool lmp_dataReady(lmp_dev_t *dev);
+uint8_t lmp_dataReady(lmp_dev_t *dev);
 
 uint8_t lmp_getURA(uint8_t address);
 

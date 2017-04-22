@@ -100,8 +100,6 @@ uint8_t spi_transfer(spi_dev_t *dev, uint8_t data_out[], uint8_t data_in[], uint
     /*Verificacion de resultado de transferencia*/
     if (status != kStatus_Success)
     {
-        PRINTF("SPI transfer completed with error. \r\n");
-
         return ERR_FAIL;
     }
 
