@@ -63,7 +63,7 @@
 
 #define TASK_DELAY	1000U
 
-#define RTD_CURR 			RTD_CUR_0U
+#define RTD_CURR 			RTD_CUR_1000U
 
 #define CH0_IC 			BURNOUT_DIS|VREF1|VINP5|VINN7
 #define CH1_IC 			BURNOUT_DIS|VREF1|VINP1|VINN7
@@ -124,7 +124,7 @@ static void medicion_task(void *pvParameters){
     int error=kStatus_Success;
     Xbee_frame 	*frame=pvPortMalloc(sizeof(Xbee_frame));
     Xbee_dev_t 	*xbee_dev=pvPortMalloc(sizeof(Xbee_dev_t));
-    char 		str[30]="Mensaje de ejemplo";
+    char 		*str=pvPortMalloc(50*sizeof(char));
 	lmp_dev_t 	dev;
 	uint32_t	adc;
 
@@ -140,17 +140,34 @@ static void medicion_task(void *pvParameters){
 
 	for(;;){
 
+		sprintf(str,"h>remoto1>transmitir>var>Temperatura");
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
 		lmp_confMeasure(&dev, SCAN_MODE0, FIRST_CH, LAST_CH);
 		lmp_getMeasure(&dev,&adc);
-		sprintf(str,"datoAgua: %d",(int)adc);
+		sprintf(str,"d>AAAA-MM-DD,hh:mm:ss,%d",(int)adc);
 	    Xbee_setFrame(frame, str);
     	Xbee_APISend(xbee_dev, frame);
 
 		vTaskDelay(TASK_DELAY);
 
+		sprintf(str,"h>remoto1>transmitir>var>Humedad1");
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
 		lmp_confMeasure(&dev, SCAN_MODE0, CH2_FIRST, CH5_LAST);
 		lmp_getMeasure(&dev,&adc);
-		sprintf(str,"datoAire: %d",(int)adc);
+		sprintf(str,"d>AAAA-MM-DD,hh:mm:ss,%d",(int)adc);
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+
+    	vTaskDelay(TASK_DELAY);
+
+		sprintf(str,"h>remoto1>transmitir>var>Humedad2");
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+		lmp_confMeasure(&dev, SCAN_MODE0, CH0_FIRST, CH5_LAST);
+		lmp_getMeasure(&dev,&adc);
+		sprintf(str,"d>AAAA-MM-DD,hh:mm:ss,%d",(int)adc);
 	    Xbee_setFrame(frame, str);
     	Xbee_APISend(xbee_dev, frame);
 
