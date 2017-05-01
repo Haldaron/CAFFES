@@ -127,7 +127,7 @@ static void lmp_task(void *pvParameters){
 	confLmp(&dev);
 
 
-	lmp_read(&dev,DATA_ONLY_1 ,buff,2);
+	lmp_read(&dev,CH6_INPUTCN,buff,2);
 
 	PRINTF("DATO DE PRUEBA: %X%X \n\r",buff[0],buff[1]);
 

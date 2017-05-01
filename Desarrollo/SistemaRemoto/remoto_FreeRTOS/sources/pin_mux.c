@@ -113,6 +113,8 @@ void pinmux_init_all(bool disablePortClockAfterInit) {
 	GPIO_PinInit(GPIOD, PIN1_IDX, &pin_config_asserted);
 	GPIO_PinInit(GPIOD, PIN0_IDX, &pin_config_input);
 
+
+
 	SIM->SOPT5 = ((SIM->SOPT5 &
 	(~(SIM_SOPT5_LPUART0TXSRC_MASK | SIM_SOPT5_LPUART0RXSRC_MASK))) /* Mask bits to zero which are setting */
 	  | SIM_SOPT5_LPUART0TXSRC(SOPT5_LPUART0TXSRC_LPUART_TX) /* LPUART0 Transmit Data Source Select: LPUART0_TX pin */

@@ -92,6 +92,7 @@
 
 static void medicion_task(void *pvParameters);
 static void confLmp(lmp_dev_t *dev);
+void xbeeReset(void);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -106,6 +107,7 @@ int main(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+    xbeeReset();
 
     xTaskCreate(medicion_task, "med_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
 
@@ -133,7 +135,11 @@ static void medicion_task(void *pvParameters){
 		PRINTF("Error de init dev\n\r");
 	}
 
+
+
     Xbee_init(xbee_dev);
+
+
 
     confLmp(&dev);
 
@@ -145,7 +151,10 @@ static void medicion_task(void *pvParameters){
     	Xbee_APISend(xbee_dev, frame);
 		lmp_confMeasure(&dev, SCAN_MODE0, FIRST_CH, LAST_CH);
 		lmp_getMeasure(&dev,&adc);
-		sprintf(str,"d>AAAA-MM-DD,hh:mm:ss,%d",(int)adc);
+		sprintf(str,"d>%d",(int)adc);
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+		sprintf(str,"h>remoto1>stop>var>Temperatura");
 	    Xbee_setFrame(frame, str);
     	Xbee_APISend(xbee_dev, frame);
 
@@ -156,22 +165,43 @@ static void medicion_task(void *pvParameters){
     	Xbee_APISend(xbee_dev, frame);
 		lmp_confMeasure(&dev, SCAN_MODE0, CH2_FIRST, CH5_LAST);
 		lmp_getMeasure(&dev,&adc);
-		sprintf(str,"d>AAAA-MM-DD,hh:mm:ss,%d",(int)adc);
+		sprintf(str,"d>%d",(int)adc);
 	    Xbee_setFrame(frame, str);
     	Xbee_APISend(xbee_dev, frame);
+		sprintf(str,"h>remoto1>stop>var>Humedad1");
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+
 
     	vTaskDelay(TASK_DELAY);
 
 		sprintf(str,"h>remoto1>transmitir>var>Humedad2");
 	    Xbee_setFrame(frame, str);
     	Xbee_APISend(xbee_dev, frame);
-		lmp_confMeasure(&dev, SCAN_MODE0, CH0_FIRST, CH5_LAST);
+		lmp_confMeasure(&dev, SCAN_MODE0, CH4_FIRST, CH5_LAST);
 		lmp_getMeasure(&dev,&adc);
-		sprintf(str,"d>AAAA-MM-DD,hh:mm:ss,%d",(int)adc);
+		sprintf(str,"d>%d",(int)adc);
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+		sprintf(str,"h>remoto1>stop>var>Humedad2");
 	    Xbee_setFrame(frame, str);
     	Xbee_APISend(xbee_dev, frame);
 
     	vTaskDelay(TASK_DELAY);
+
+		sprintf(str,"h>remoto1>transmitir>var>PAR");
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+		lmp_confMeasure(&dev, SCAN_MODE0, CH0_FIRST, CH5_LAST);
+		lmp_getMeasure(&dev,&adc);
+		sprintf(str,"d>%d",(int)adc);
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+		sprintf(str,"h>remoto1>stop>var>PAR");
+	    Xbee_setFrame(frame, str);
+    	Xbee_APISend(xbee_dev, frame);
+
+    	vTaskDelay(7*TASK_DELAY);
 
 	}
 
@@ -180,12 +210,19 @@ static void medicion_task(void *pvParameters){
     vTaskSuspend(NULL);
 }
 
+void xbeeReset(void){
+    GPIO_ClearPinsOutput(GPIOD, PIN1 ); 		//pinCS=0
+    for(int i=0;i<1000;i++){
+    	;
+    }
+    GPIO_SetPinsOutput(GPIOD, PIN1 ); 		//pinCS=0
+}
+
 static void confLmp(lmp_dev_t *dev){
 
 	if(lmp_write(dev,ADC_AUXCN,RTD_CURR)!=0){
 		PRINTF("Error de transmision dev: %d\n\r\n\r");
 	}
-
 
 	if(lmp_write(dev,CH0_INPUTCN,CH0_IC)!=0){
 		PRINTF("Error de transmision dev: %d\n\r\n\r");
