@@ -16,7 +16,7 @@ class navegacion
 	public $RemoteSel='';
 	public $RemoteID=NULL;
 	public $VariableList=[];
-	public $VariableSel='';
+	public $VariableSel=[];
 	
 	//muestra si estado de validación de registro del usuario
 	public function getLog() {
@@ -49,7 +49,7 @@ class navegacion
 		
 	//busca en la base de datos los permisos a los que tiene un usuario en función de la acción que va a efectuar
 	public function getActionList() {
-			$this->ActionList=queryActionList($this->UserName);
+                $this->ActionList=queryActionList($this->UserName);
 		return $this->ActionList;
 	}
 	
@@ -109,6 +109,15 @@ class navegacion
 	
 	public function getVarList() {
 		return $this->VariableList;
+	}
+	public function setVarSel($var){
+            $this->VariableSel=array_merge($this->VariableSel,[$var]);
+	}
+	public function getVarSel(){
+            return $this->VariableSel;
+	}
+	public function clearVarSel(){
+            $this->VariableSel=[];
 	}
 }
 ?>

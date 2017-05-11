@@ -40,6 +40,10 @@ function actionMask($action) {
 	return $legend;			
 }
 
+/************************************************
+Pemite conectarse a la base de datos del proyecto
+devuelve un objeto identificador de la conexion
+*************************************************/
 function connect_database(){
 	$identifier=mysqli_connect(SERVERNAME, MYPHPUSER, MYPHPPASSWORD);
 	if(isset($identifier)){
@@ -302,16 +306,31 @@ function isRemoteAttached($tableName,$remoteID,$cordID){
 Obtiene de manera automatica los campos de una tabla dada
 ********************************************************/
 function getTableColumns($tableName){
-	$tableColumns=[];	
-	$mysql=connect_database(); //solicita la conexión a la base de datos	
-   $query="SHOW COLUMNS FROM ".$tableName;
+    $tableColumns=[];	
+    $mysql=connect_database(); //solicita la conexión a la base de datos	
+    $query="SHOW COLUMNS FROM ".$tableName;
 	if ($mysql){
 		$result=mysqli_query($mysql, $query);
 		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
 				$tableColumns[]=$row[0];			
-			}
-		}
+                }
+        }
 	mysqli_close($mysql);
 	return $tableColumns;
+}
+
+/*****************************
+
+*****************************/
+
+function getTableData($variable){
+    $result=NULL;
+    $mysql=connect_database(); //solicita la conexión a la base de datos
+    if($mysql){
+        $query='SELECT * FROM '.$variable;
+        $result=mysqli_query($mysql, $query);
+    }
+    mysqli_close($mysql);
+    return $result;
 }
 ?>
