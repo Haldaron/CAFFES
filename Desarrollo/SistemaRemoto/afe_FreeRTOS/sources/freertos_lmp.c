@@ -53,12 +53,24 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define PRINTF_FLOAT_ENABLE 1U
 #define	BASE_SPI1	GPIOC
 #define	BASE_SPI2	GPIOA
 #define	PIN_SPI1	PIN4
 #define	PIN_SPI2	PIN5
-#define SIZE		2
+#define SIZE		4
+#define ADDRESS		ADC_DOUT
 
+#define RTD_CURR 			RTD_CUR_0U
+
+#define CH0_IC 			BURNOUT_DIS|VREF1|VINP5|VINN7
+#define CH1_IC 			BURNOUT_DIS|VREF1|VINP1|VINN7
+#define CH2_IC 			BURNOUT_DIS|VREF1|VINP2|VINN7
+#define CH3_IC 			BURNOUT_DIS|VREF1|VINP3|VINN7
+#define CH4_IC 			BURNOUT_DIS|VREF1|VINP4|VINN7
+
+#define FIRST_CH			CH0_FIRST
+#define LAST_CH				CH3_LAST
 
 /*******************************************************************************
  * Definitions
@@ -71,6 +83,7 @@
  ******************************************************************************/
 
 static void lmp_task(void *pvParameters);
+static void confLmp(lmp_dev_t *dev);
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -85,10 +98,7 @@ int main(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    PRINTF("EJEMPLO DE SPI PARA PROYECTO CAFFES.\r\n");
-    PRINTF("Este ejemplo se utilizan dos dispositivos SPI de manera simultanea\r\n");
-    PRINTF("cada uno con un GPIO diferente como CS.\r\n");
-    PRINTF("   SOUT     --    SIN  \r\n");
+    PRINTF("Prueba de LMP90100%f \r\n");
 
 
     xTaskCreate(lmp_task, "lmp_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
@@ -105,26 +115,59 @@ int main(void)
 
 
 static void lmp_task(void *pvParameters){
-	lmp_dev_t dev;
-	spi_dev_t spi_dev;
-	spi_rtos_handle_t handle;
-	uint32_t data_in;
-	uint8_t status;
-	uint8_t address=DATA_ONLY_1;
+	lmp_dev_t 	dev;
+	uint32_t	adc;
+	uint8_t		buff[2];
 
-	dev.spi=&spi_dev;
-	dev.spi->spi_rtos_handle=&handle;
 
 	if(lmp_init(&dev, GPIOC, PIN4)!=0){
-		PRINTF("Error de init dev");
+		PRINTF("Error de init dev\n\r");
 	}
 
+	confLmp(&dev);
+
+
+	lmp_read(&dev,CH6_INPUTCN,buff,2);
+
+	PRINTF("DATO DE PRUEBA: %X%X \n\r",buff[0],buff[1]);
+
+
 	for(;;){
-		if(status=(lmp_read(&dev,address,(uint8_t *)&data_in,4))!=0){
-			PRINTF("Error de transmision dev: %d\n\r", status);
+		lmp_confMeasure(&dev, SCAN_MODE0, FIRST_CH, LAST_CH);
+
+		while(!lmp_dataReady(&dev)){
+			PRINTF("Esperando ADC\n\r\n\r");
 		}
-		PRINTF("Registro leido: %X. DATO RECIBIDO %X \n\r", address,data_in);
-		vTaskDelay(500);
+
+		lmp_getMeasure(&dev,&adc);
+
+		PRINTF("ADC0: %d\n\r",adc);
+		vTaskDelay(1000);
+
 	}
 }
 
+static void confLmp(lmp_dev_t *dev){
+
+	if(lmp_write(dev,ADC_AUXCN,RTD_CURR)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+
+
+	if(lmp_write(dev,CH0_INPUTCN,CH0_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH1_INPUTCN,CH1_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH2_INPUTCN,CH2_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH3_INPUTCN,CH3_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH4_INPUTCN,CH4_IC)!=0){
+		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+
+}

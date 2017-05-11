@@ -2,7 +2,7 @@ import os
 import time
 
 device="/dev/ttyUSB1"
-HoraLimite="41"
+HoraLimite="02"
 contador=0
 offset_RadiacionSolar=14
 offset_VelocidadViento=6
