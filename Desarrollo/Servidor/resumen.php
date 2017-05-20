@@ -40,8 +40,9 @@ foreach ($variables as $fila){
     }
 }
 system('rm '.$resultFile);//borra el archivo anteriores
-echo $convert;
 system($convert);   //crea un nuevo archivo con la solicitud
+
+printNavigation($nav);
 ?>
 
 <!DOCTYPE html>

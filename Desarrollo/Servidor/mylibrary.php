@@ -7,7 +7,7 @@ class navegacion
 {
 	public $UserID=NULL;
 	public $UserName='';
-	public $Logged=false;
+// 	public $Logged=false;
 	public $ActionList=[];
 	public $ActionSel='';
 	public $CordList=[];
@@ -119,5 +119,28 @@ class navegacion
 	public function clearVarSel(){
             $this->VariableSel=[];
 	}
+}
+
+function printArray($list){
+    $index=0;
+    foreach ($list as $element){
+        echo '['.$index.']->'.$element."\t";
+        $index++;
+    }
+}
+
+function printNavigation($nav){
+	//$nav->UserID=NULL;
+	//$nav->UserName='';
+	//$nav->Logged=false;
+	printArray($nav->getActionList());
+	//$nav->ActionSel='';
+	//$nav->CordList=[];
+	//$nav->CordSel='';
+	//$nav->RemoteList=[];
+	//$nav->RemoteSel='';
+	//$nav->RemoteID=NULL;
+	//$nav->VariableList=[];
+	//$nav->VariableSel=[]; 
 }
 ?>
