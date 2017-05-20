@@ -26,6 +26,8 @@ function getSistems(){
 }
 ?>
 
+
+
 <html>
 <head>
     <title>Formato de validacion de la infraestructura instalada</title>
