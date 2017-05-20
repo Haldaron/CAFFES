@@ -38,10 +38,10 @@ $metodologia=$_POST['metodologia'];
 $valorEsperado=$_POST['valorEsperado'];
 $unidades=$_POST['unidades'];
 
-$query="INSERT INTO casos (caseID, descripcion, sistema, varMed, intrumentacion, metodogia, valEsperado, Unidades) 
+$query="INSERT INTO casos (caseID, descripcion, sistema, varMed, instrumentacion, metodogia, valEsperado, Unidades) 
         VALUES (NULL,
         '".$descripcion."',
-        ".getSystemID($sistema).",
+        '".getSystemID($sistema)."',
         '".$varMedir."',
         '".$instrumentacion."',
         '".$metodologia."',
