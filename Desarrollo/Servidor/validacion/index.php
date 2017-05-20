@@ -48,6 +48,18 @@ function getSistems(){
     mysqli_close($mysqli);
 }
 
+function getCaseList(){
+    $mysqli=connect_database();
+    if($mysqli){
+        $query='SELECT caseID, descripcion FROM casos';
+        $result=mysqli_query($mysqli, $query);
+        while($row=mysqli_fetch_row($result)){
+            echo '<option>['.$row[0].'] '.$row[1].' </option>';
+        }
+    }
+    mysqli_close($mysqli);
+}
+
 ?>
 <! DOCTYPE html>
 <html>
@@ -80,14 +92,9 @@ function getSistems(){
                     <?php getCasePlace();?>
                 </select>
                 
-                <label for="sistema">Sistema: </label>
-                <select class="form-control" name="sistema">
-                    <?php getSistems();?>
-                </select>
-                
                 <label for="caso">Caso: </label>
                 <select class="form-control" name="caso">
-                    <option>R01-Medición del voltaje de la bateria del subsistema remoto</option>
+                    <?php getCaseList(); ?>
                 </select>
 
                 <label for="fecha">Fecha: </label>
