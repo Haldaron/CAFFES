@@ -37,9 +37,24 @@ $instrumentacion=$_POST['instrumentacion'];
 $metodologia=$_POST['metodologia'];
 $valorEsperado=$_POST['valorEsperado'];
 $unidades=$_POST['unidades'];
+
+$query="INSERT INTO casos (caseID, descripcion, sistema, varMed, intrumentacion, metodogia, valEsperado, Unidades) 
+        VALUES (NULL,
+        '".$descripcion."',
+        '".getSystemID($sistema)."',
+        '".$varMedir."',
+        '".$instrumentacion."',
+        '".$metodologia."',
+        ".$valorEsperado.",
+        '".$unidades."')";
+        
+
+        $mysqli=connect_database();
+        if($mysqli){
+            mysqli_query($mysqli, $query);
+            mysqli_close($mysqli);
+        }
 ?>
-
-
 
 <html>
 <head>
