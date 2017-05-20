@@ -41,7 +41,7 @@ $unidades=$_POST['unidades'];
 $query="INSERT INTO casos (caseID, descripcion, sistema, varMed, intrumentacion, metodogia, valEsperado, Unidades) 
         VALUES (NULL,
         '".$descripcion."',
-        '".getSystemID($sistema)."',
+        ".getSystemID($sistema).",
         '".$varMedir."',
         '".$instrumentacion."',
         '".$metodologia."',
@@ -54,6 +54,7 @@ $query="INSERT INTO casos (caseID, descripcion, sistema, varMed, intrumentacion,
             mysqli_query($mysqli, $query);
             mysqli_close($mysqli);
         }
+echo $query;
 ?>
 
 <html>
