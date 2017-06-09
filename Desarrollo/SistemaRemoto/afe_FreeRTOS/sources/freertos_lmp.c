@@ -69,7 +69,7 @@
 #define CH3_IC 			BURNOUT_DIS|VREF1|VINP3|VINN7
 #define CH4_IC 			BURNOUT_DIS|VREF1|VINP4|VINN7
 
-#define FIRST_CH			CH0_FIRST
+#define FIRST_CH			CH1_FIRST
 #define LAST_CH				CH3_LAST
 
 /*******************************************************************************
@@ -116,7 +116,6 @@ int main(void)
 
 static void lmp_task(void *pvParameters){
 	lmp_dev_t 	dev;
-	uint32_t	adc;
 	uint8_t		buff[2];
 
 
@@ -127,7 +126,7 @@ static void lmp_task(void *pvParameters){
 	confLmp(&dev);
 
 
-	lmp_read(&dev,CH6_INPUTCN,buff,2);
+	lmp_read(&dev,DATA_ONLY_1,buff,2);
 
 	PRINTF("DATO DE PRUEBA: %X%X \n\r",buff[0],buff[1]);
 
@@ -135,13 +134,15 @@ static void lmp_task(void *pvParameters){
 	for(;;){
 		lmp_confMeasure(&dev, SCAN_MODE0, FIRST_CH, LAST_CH);
 
-		while(!lmp_dataReady(&dev)){
-			PRINTF("Esperando ADC\n\r\n\r");
-		}
+//		while(!lmp_dataReady(&dev)){
+//			PRINTF("Esperando ADC\n\r\n\r");
+//		}
 
-		lmp_getMeasure(&dev,&adc);
+//		lmp_getMeasure(&dev,&adc);
+		lmp_read(&dev,DATA_ONLY_1,buff,2);
+		PRINTF("DATO DE PRUEBA: %X%X \n\r",buff[0],buff[1]);
 
-		PRINTF("ADC0: %d\n\r",adc);
+//		PRINTF("ADC0: %d\n\r",adc);
 		vTaskDelay(1000);
 
 	}
