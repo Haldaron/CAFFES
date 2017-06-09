@@ -49,6 +49,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "spi.h"
+#include "SD.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -104,42 +105,12 @@ int main(void)
 
 
 static void spi_task(void *pvParameters){
-	spi_dev_t dev1;
-	spi_dev_t dev2;
-
-	uint8_t data_out[SIZE];
-	uint8_t data_in[SIZE];
-
-	dev1.base=BASE_SPI1;
-	dev1.pin=PIN_SPI1;
-
-	dev2.base=BASE_SPI2;
-	dev2.pin=PIN_SPI2;
-
-	if(spi_init(&dev1)!=0){
-		PRINTF("Error de inicializacion dev1");
-	}
-
-	if(spi_init(&dev2)!=0){
-		PRINTF("Error de inicializacion dev2");
-	}
-
-	for(int i=0;i<SIZE;i++){
-		data_out[i]=i+2;
-	}
-
+	disk_initialize(PDVR_SD0);
+	//uint8_t buffer[4]={0xA,0xB,0xC,0xC};
 	for(;;){
-		if(spi_transfer(&dev1,data_out,data_in,SIZE)!=0){
-			PRINTF("Error de transmision dev1");
-		}
-		PRINTF("DATO ENVIADO %X%X. DATO RECIBIDO %X%X \n\r", data_out[0],data_out[1], data_in[0],data_in[1]);
-		vTaskDelay(2);
-
-		if(spi_transfer(&dev2,data_out,data_in,SIZE)!=0){
-			PRINTF("Error de transmision dev2");
-		}
-		PRINTF("DATO ENVIADO %X%X. DATO RECIBIDO %X%X \n\r", data_out[0],data_out[1], data_in[0],data_in[1]);
-		vTaskDelay(2);
+		PRINTF("la puta plana\r\n");
+		//SD_sendCommand(PDVR_SD0,12,buffer);
+		vTaskDelay(100);
 	}
 }
 
