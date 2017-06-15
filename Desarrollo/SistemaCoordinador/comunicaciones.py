@@ -5,10 +5,11 @@ from xbee import XBee
 
 str1 = 'rf_data'
 str2 = ">"
-HoraLimite="39"
+HoraLimite="59"
 contador=0
 path_humedad_1='/home/pi/USCO/remoto_suelo/remoto1/Humedad1.csv'
 path_humedad_2='/home/pi/USCO/remoto_suelo/remoto1/Humedad2.csv'
+path_humedad_3='/home/pi/USCO/remoto_suelo/remoto1/Humedad3.csv'
 path_temperatura='/home/pi/USCO/remoto_suelo/remoto1/Temperatura.csv'
 path_PAR='/home/pi/USCO/remoto_suelo/remoto1/PAR.csv'
 
@@ -71,6 +72,8 @@ while True:
             os.remove(path_humedad_1)
         if os.path.exists(path_humedad_2):
             os.remove(path_humedad_2)
+        if os.path.exists(path_humedad_3):
+            os.remove(path_humedad_3)
         if os.path.exists(path_temperatura):
             os.remove(path_temperatura)
         if os.path.exists(path_PAR):
