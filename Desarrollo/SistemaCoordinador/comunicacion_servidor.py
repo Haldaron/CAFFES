@@ -63,6 +63,7 @@ path_precipitacion_o="/home/pi/USCO/remoto_meteorologico/Precipitacion.csv"
 path_humedad_suelo_o='/home/pi/USCO/remoto_suelo/remoto1/Humedad_estadistico.csv'
 path_temperatura_suelo_o='/home/pi/USCO/remoto_suelo/remoto1/Temperatura_estadistico.csv'
 path_PAR_o='/home/pi/USCO/remoto_meteorologico/PAR.csv'
+
 if tipo_finca=='si':
     "---------------Brillo Solar-----------------------------------------------------------"
     confirmacion="Null"
@@ -283,9 +284,9 @@ if tipo_finca=='si':
             iteracion=numero_intentos+10
             if os.path.exists(path_respuesta):
                 os.remove(path_respuesta)
-            if os.path.exists(path_precipitacion_o):
-                os.remove(path_precipitacion_o)
-                archivo=open(path_precipitacion_o,"a+")
+            if os.path.exists(path_PAR_o):
+                os.remove(path_PAR_o)
+                archivo=open(path_PAR_o,"a+")
                 archivo.close
         else:
             iteracion=iteracion+1
@@ -315,9 +316,9 @@ while iteracion<=numero_intentos:
         iteracion=numero_intentos+10
         if os.path.exists(path_respuesta):
             os.remove(path_respuesta)
-        if os.path.exists(path_precipitacion_o):
-            os.remove(path_precipitacion_o)
-            archivo=open(path_precipitacion_o,"a+")
+        if os.path.exists(path_humedad_suelo_o):
+            os.remove(path_humedad_suelo_o)
+            archivo=open(path_humedad_suelo_o,"a+")
             archivo.close
     else:
         iteracion=iteracion+1
@@ -347,9 +348,9 @@ while iteracion<=numero_intentos:
         iteracion=numero_intentos+10
         if os.path.exists(path_respuesta):
             os.remove(path_respuesta)
-        if os.path.exists(path_precipitacion_o):
-            os.remove(path_precipitacion_o)
-            archivo=open(path_precipitacion_o,"a+")
+        if os.path.exists(path_temperatura_suelo_o):
+            os.remove(path_temperatura_suelo_o)
+            archivo=open(path_temperatura_suelo_o,"a+")
             archivo.close
     else:
         iteracion=iteracion+1
