@@ -121,22 +121,29 @@ class navegacion
 	}
 }
 
-function printArray($list){
+function printArray($name, $list, $prefered){
     $index=0;
     foreach ($list as $element){
-        echo '['.$index.']->'.$element."\t";
+        if (strcmp($element,$prefered)==0){
+            echo $name.'['.$index.']->'.'<b>'.$element."</b><br>";
+        }
+        else{
+            echo $name.'['.$index.']->'.$element."<br>";
+        }
         $index++;
     }
 }
 
 function printNavigation($nav){
-	//$nav->UserID=NULL;
-	//$nav->UserName='';
+	echo 'userID: '.$nav->UserID.'<br>';
+	echo 'userName: '.$nav->UserName.'<br>';
 	//$nav->Logged=false;
-	printArray($nav->getActionList());
-	//$nav->ActionSel='';
-	//$nav->CordList=[];
-	//$nav->CordSel='';
+	printArray('acciones',$nav->getActionList(),$nav->getActionSel());
+	printArray('cordinadores',$nav->getCordList(),$nav->getCordSel());
+	$list=$nav->getRemList();
+	printArray('suelosID',$list['Suelos'],'');
+	printArray('meteorologicoID',$list['Meteorológico'],'');
+	printArray('tanquesID',$list['Tanques'],'');
 	//$nav->RemoteList=[];
 	//$nav->RemoteSel='';
 	//$nav->RemoteID=NULL;

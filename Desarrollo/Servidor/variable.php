@@ -52,14 +52,14 @@ else {
 					?>
 					<h3><i>Lista de Variables:</i></h3><br>
 					<div class="row">					
-					<form action="resumen.php" method="POST">										
+					<form action="resumen.php" method="POST">			
 					<?php
 						$list=$nav->getVarList();
 						foreach ($list as $clave=>$item){
 							if($item) {
 								echo "<div class='col-sm-6'>\n";
-	  							echo "<input class='radio-inline' type='checkbox' name='variable' value='".$item."' data-labelauty='".$item."' checked>\n";
-								echo "</div>\n";							
+	  							echo "<input class='radio-inline' type='checkbox' name='variable' value='variable' data-labelauty='".$item."' checked>\n";
+								echo "</div>\n";	
 							}
 						}
 					?>

@@ -105,3 +105,10 @@ body {
     width: 120px;
   }
 }
+
+.panel{
+    font-family: serif;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: right;
+}
