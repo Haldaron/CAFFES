@@ -377,11 +377,11 @@ Tipo_valor='Minimo'
 string_temp=str(valor_temperatura_suelo_minimo)
 string_temp=string_temp.replace(',','')
 string_a_escribir_min=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
-file_original_humedad=open(path_temperatura_suelo_o,'a')
-file_original_humedad.write(string_a_escribir_promedio)
-file_original_humedad.write(string_a_escribir_max)
-file_original_humedad.write(string_a_escribir_min)
-file_original_humedad.close()
+file_original_temperatura=open(path_temperatura_suelo_o,'a')
+file_original_temperatura.write(string_a_escribir_promedio)
+file_original_temperatura.write(string_a_escribir_max)
+file_original_temperatura.write(string_a_escribir_min)
+file_original_temperatura.close()
 
 
 
