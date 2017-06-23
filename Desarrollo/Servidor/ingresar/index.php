@@ -21,7 +21,7 @@
         <div class="container">
             <div class="form-group">
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-5 col-sm-offset-5">
                         <div class="row">
                             <label for="NumberValue">valor:</label>
                             <input type="text" class="form-control panel" id="NumberValue"/>

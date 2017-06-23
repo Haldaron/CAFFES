@@ -42,7 +42,7 @@ foreach ($variables as $fila){
 system('rm '.$resultFile);//borra el archivo anteriores
 system($convert);   //crea un nuevo archivo con la solicitud
 
-printNavigation($nav);
+#printNavigation($nav);
 ?>
 
 <!DOCTYPE html>
