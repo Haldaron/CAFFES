@@ -1,7 +1,15 @@
 import os 
 import time
 
-device="/dev/ttyUSB1"
+
+path_puerto_EM='/home/pi/puerto_EM.txt'
+file_puerto_EM=open(path_puerto_EM,'r')
+for line in file_puerto_EM.readlines():
+    puerto_EM=line.strip()
+
+
+device=puerto_EM
+print device
 HoraLimite="02"
 contador=0
 offset_RadiacionSolar=14
@@ -21,7 +29,7 @@ while True:
         if os.path.isfile('/home/pi/vproweather-1.1/rtwdata.txt'):
             os.system("rm /home/pi/vproweather-1.1/rtwdata.txt")
         os.system("cd /home/pi/vproweather-1.1")
-        os.system("./vproweather --get-realtime %s > /home/pi/vproweather-1.1/rtwdata.txt" %device)
+        os.system("./vproweather-1.1/vproweather --get-realtime %s > /home/pi/vproweather-1.1/rtwdata.txt" %device)
         file=open('/home/pi/vproweather-1.1/rtwdata.txt', 'r')
         lineas=file.readlines()
         "--------------------------Radiacion Solar--------------------------"

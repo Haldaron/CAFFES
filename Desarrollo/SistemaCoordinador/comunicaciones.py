@@ -14,7 +14,14 @@ path_temperatura='/home/pi/USCO/remoto_suelo/remoto1/Temperatura.csv'
 path_PAR='/home/pi/USCO/remoto_suelo/remoto1/PAR.csv'
 
 
-ser=serial.Serial('/dev/ttyUSB0' , 9600, timeout=0.5)
+path_puerto_remoto='/home/pi/puerto_Remoto.txt'
+file_puerto_remoto=open(path_puerto_remoto,'r')
+for line in file_puerto_remoto.readlines():
+    puerto_remoto=line.strip()
+
+print puerto_remoto
+
+ser=serial.Serial(puerto_remoto , 9600, timeout=0.5)
 xbee = XBee(ser)
 
 
@@ -23,6 +30,7 @@ leer=False
 
 while True:
     Hora=time.strftime("%M")
+    Fecha_Hora=time.strftime("%Y-%m-%d,%H:%M:%S")
     raw_incoming =xbee.wait_read_frame()
     print raw_incoming
     incoming = raw_incoming[str1]
@@ -64,7 +72,7 @@ while True:
         if tipo=="d":
             print 'received data: '+incoming
             archivo=open(path,'a')
-            archivo.write(incoming[posicion0+1:posicion4])
+            archivo.write(Fecha_Hora+">"+incoming[posicion0+1:posicion4])
             archivo.write('\n')
             archivo.close
     if (Hora==HoraLimite):

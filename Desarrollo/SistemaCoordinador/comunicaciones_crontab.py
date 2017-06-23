@@ -5,6 +5,7 @@ import math
 import statistics
 
 str1=">"
+str2="<"
 Fecha_Hora=time.strftime("%Y-%m-%d,%H:%M:%S")
 cifras_significativas_1=9
 cifras_significativas=3
@@ -100,11 +101,11 @@ if tipo_finca=='si':
         indice=linea.find(str1)
         valor_velocidad_viento.append(float(linea[indice+1:len(linea)]))
         fecha_hora_velocidad_viento.append(linea[0:indice-1])
-    valor_velocidad_viento_promedio=round(sum(valor_velocidad_viento)/float(len(valor_velocidad_viento)),cifras_significativas)
-    valor_velocidad_viento_maximo=max(valor_velocidad_viento)
+    valor_velocidad_viento_promedio=round(0.44704*sum(valor_velocidad_viento)/float(len(valor_velocidad_viento)),cifras_significativas)
+    valor_velocidad_viento_maximo=round(0.44704*max(valor_velocidad_viento),cifras_significativas)
     indice_maximo=valor_velocidad_viento.index(max(valor_velocidad_viento))
     Fecha_Hora_max=fecha_hora_velocidad_viento[indice_maximo]
-    Unidades='MPH'
+    Unidades='m/s'
     Tipo_valor='Promedio'
     Periodicidad='Horario'
     string_a_escribir_promedio=Fecha_Hora+","+str(valor_velocidad_viento_promedio)+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
@@ -227,14 +228,20 @@ if tipo_finca=='si':
 
     file_PAR_suelo=open(copia_path_PAR_suelo,'r')
     valor_PAR_suelo=[]
-
+    fecha_hora_PAR=[]
 
     for line in file_PAR_suelo.readlines():
         linea=line.strip().lower()
-        valor_PAR_suelo.append(float(linea))
+        indice=linea.find(str1)
+        valor_PAR_suelo.append(float(linea[indice+1:len(linea)]))
+        fecha_hora_PAR.append(linea[0:indice-1])
     valor_PAR_suelo_promedio=math.floor(round(sum(valor_PAR_suelo)/float(len(valor_PAR_suelo)),cifras_significativas_1))
     valor_PAR_suelo_maximo=max(valor_PAR_suelo)
+    indice_maximo=valor_PAR_suelo.index(valor_PAR_suelo_maximo)
     valor_PAR_suelo_minimo=min(valor_PAR_suelo)
+    indice_minimo=valor_PAR_suelo.index(valor_PAR_suelo_minimo)
+    Fecha_Hora_max=fecha_hora_PAR[indice_maximo]
+    Fecha_Hora_min=fecha_hora_PAR[indice_minimo]
     Unidades='PARios'
     Tipo_valor='Promedio'
     Periodicidad='Horario'
@@ -244,29 +251,35 @@ if tipo_finca=='si':
     Tipo_valor='Maximo'
     string_temp=str(valor_PAR_suelo_maximo)
     string_temp=string_temp.replace(',','')
-    string_a_escribir_max=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+    string_a_escribir_max=Fecha_Hora_max+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
     Tipo_valor='Minimo'
     string_temp=str(valor_PAR_suelo_minimo)
     string_temp=string_temp.replace(',','')
-    string_a_escribir_min=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
-    file_original_humedad=open(path_PAR_o,'a')
-    file_original_humedad.write(string_a_escribir_promedio)
-    file_original_humedad.write(string_a_escribir_max)
-    file_original_humedad.write(string_a_escribir_min)
-    file_original_humedad.close()
+    string_a_escribir_min=Fecha_Hora_min+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+    file_original_PAR=open(path_PAR_o,'a')
+    file_original_PAR.write(string_a_escribir_promedio)
+    file_original_PAR.write(string_a_escribir_max)
+    file_original_PAR.write(string_a_escribir_min)
+    file_original_PAR.close()
 
 "------------------------------Humedad_suelo_1----------------------------------------------------------------------------------------------"
 
 file_humedad_suelo_1=open(copia_path_humedad_suelo_1,'r')
 valor_humedad_suelo_1=[]
-
+fecha_hora_humedad_suelo_1=[]
 
 for line in file_humedad_suelo_1.readlines():
     linea=line.strip().lower()
-    valor_humedad_suelo_1.append(float(linea))
+    indice=linea.find(str1)
+    valor_humedad_suelo_1.append(float(linea[indice+1:len(linea)]))
+    fecha_hora_humedad_suelo_1.append(linea[0:indice-1])
 valor_humedad_suelo_1_promedio=math.floor(round(sum(valor_humedad_suelo_1)/float(len(valor_humedad_suelo_1)),cifras_significativas_1))
 valor_humedad_suelo_1_maximo=max(valor_humedad_suelo_1)
+indice_maximo=valor_humedad_suelo_1.index(valor_humedad_suelo_1_maximo)
 valor_humedad_suelo_1_minimo=min(valor_humedad_suelo_1)
+indice_minimo=valor_humedad_suelo_1.index(valor_humedad_suelo_1_minimo)
+Fecha_Hora_max=fecha_hora_humedad_suelo_1[indice_maximo]
+Fecha_Hora_min=fecha_hora_humedad_suelo_1[indice_minimo]
 Unidades='%'
 Tipo_valor='Promedio'
 Periodicidad='Horario'
@@ -276,29 +289,35 @@ string_a_escribir_promedio="P1,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tip
 Tipo_valor='Maximo'
 string_temp=str(valor_humedad_suelo_1_maximo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_max="P1,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+string_a_escribir_max="P1,"+Fecha_Hora_max+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
 Tipo_valor='Minimo'
 string_temp=str(valor_humedad_suelo_1_minimo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_min="P1,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
-file_original_humedad=open(path_humedad_suelo_o,'a')
-file_original_humedad.write(string_a_escribir_promedio)
-file_original_humedad.write(string_a_escribir_max)
-file_original_humedad.write(string_a_escribir_min)
-file_original_humedad.close()
+string_a_escribir_min="P1,"+Fecha_Hora_min+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+file_original_humedad_suelo=open(path_humedad_suelo_o,'a')
+file_original_humedad_suelo.write(string_a_escribir_promedio)
+file_original_humedad_suelo.write(string_a_escribir_max)
+file_original_humedad_suelo.write(string_a_escribir_min)
+file_original_humedad_suelo.close()
 
 "------------------------------Humedad_suelo_2----------------------------------------------------------------------------------------------"
 
 file_humedad_suelo_2=open(copia_path_humedad_suelo_2,'r')
 valor_humedad_suelo_2=[]
-
+fecha_hora_humedad_suelo_2=[]
 
 for line in file_humedad_suelo_2.readlines():
     linea=line.strip().lower()
-    valor_humedad_suelo_2.append(float(linea))
+    indice=linea.find(str1)
+    valor_humedad_suelo_2.append(float(linea[indice+1:len(linea)]))
+    fecha_hora_humedad_suelo_2.append(linea[0:indice-1])
 valor_humedad_suelo_2_promedio=math.floor(round(sum(valor_humedad_suelo_2)/float(len(valor_humedad_suelo_2)),cifras_significativas_1))
 valor_humedad_suelo_2_maximo=max(valor_humedad_suelo_2)
+indice_maximo=valor_humedad_suelo_2.index(valor_humedad_suelo_2_maximo)
 valor_humedad_suelo_2_minimo=min(valor_humedad_suelo_2)
+indice_minimo=valor_humedad_suelo_2.index(valor_humedad_suelo_2_minimo)
+Fecha_Hora_max=fecha_hora_humedad_suelo_2[indice_maximo]
+Fecha_Hora_min=fecha_hora_humedad_suelo_2[indice_minimo]
 Unidades='%'
 Tipo_valor='Promedio'
 Periodicidad='Horario'
@@ -308,29 +327,35 @@ string_a_escribir_promedio="P2,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tip
 Tipo_valor='Maximo'
 string_temp=str(valor_humedad_suelo_2_maximo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_max="P2,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+string_a_escribir_max="P2,"+Fecha_Hora_max+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
 Tipo_valor='Minimo'
 string_temp=str(valor_humedad_suelo_2_minimo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_min="P2,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
-file_original_humedad=open(path_humedad_suelo_o,'a')
-file_original_humedad.write(string_a_escribir_promedio)
-file_original_humedad.write(string_a_escribir_max)
-file_original_humedad.write(string_a_escribir_min)
-file_original_humedad.close()
+string_a_escribir_min="P2,"+Fecha_Hora_min+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+file_original_humedad_suelo=open(path_humedad_suelo_o,'a')
+file_original_humedad_suelo.write(string_a_escribir_promedio)
+file_original_humedad_suelo.write(string_a_escribir_max)
+file_original_humedad_suelo.write(string_a_escribir_min)
+file_original_humedad_suelo.close()
 
 "------------------------------Humedad_suelo_3----------------------------------------------------------------------------------------------"
 
 file_humedad_suelo_3=open(copia_path_humedad_suelo_3,'r')
 valor_humedad_suelo_3=[]
-
+fecha_hora_humedad_suelo_3=[]
 
 for line in file_humedad_suelo_3.readlines():
     linea=line.strip().lower()
-    valor_humedad_suelo_3.append(float(linea))
+    indice=linea.find(str1)
+    valor_humedad_suelo_3.append(float(linea[indice+1:len(linea)]))
+    fecha_hora_humedad_suelo_3.append(linea[0:indice-1])
 valor_humedad_suelo_3_promedio=math.floor(round(sum(valor_humedad_suelo_3)/float(len(valor_humedad_suelo_3)),cifras_significativas_1))
 valor_humedad_suelo_3_maximo=max(valor_humedad_suelo_3)
+indice_maximo=valor_humedad_suelo_3.index(valor_humedad_suelo_3_maximo)
 valor_humedad_suelo_3_minimo=min(valor_humedad_suelo_3)
+indice_minimo=valor_humedad_suelo_3.index(valor_humedad_suelo_3_minimo)
+Fecha_Hora_max=fecha_hora_humedad_suelo_3[indice_maximo]
+Fecha_Hora_min=fecha_hora_humedad_suelo_3[indice_minimo]
 Unidades='%'
 Tipo_valor='Promedio'
 Periodicidad='Horario'
@@ -340,29 +365,40 @@ string_a_escribir_promedio="P3,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tip
 Tipo_valor='Maximo'
 string_temp=str(valor_humedad_suelo_3_maximo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_max="P3,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+string_a_escribir_max="P3,"+Fecha_Hora_max+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
 Tipo_valor='Minimo'
 string_temp=str(valor_humedad_suelo_3_minimo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_min="P3,"+Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
-file_original_humedad=open(path_humedad_suelo_o,'a')
-file_original_humedad.write(string_a_escribir_promedio)
-file_original_humedad.write(string_a_escribir_max)
-file_original_humedad.write(string_a_escribir_min)
-file_original_humedad.close()
+string_a_escribir_min="P3,"+Fecha_Hora_min+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+file_original_humedad_suelo=open(path_humedad_suelo_o,'a')
+file_original_humedad_suelo.write(string_a_escribir_promedio)
+file_original_humedad_suelo.write(string_a_escribir_max)
+file_original_humedad_suelo.write(string_a_escribir_min)
+file_original_humedad_suelo.close()
 
 "------------------------------Temperatura_suelo----------------------------------------------------------------------------------------------"
 
 file_temperatura_suelo=open(copia_path_temperatura_suelo,'r')
+valor_temperatura_suelo_1=[]
 valor_temperatura_suelo=[]
-
+fecha_hora_temperatura_suelo=[]
 
 for line in file_temperatura_suelo.readlines():
     linea=line.strip().lower()
-    valor_temperatura_suelo.append(float(linea))
+    indice=linea.find(str1)
+    valor_temperatura_suelo_1.append(float(linea[indice+1:len(linea)]))
+    fecha_hora_temperatura_suelo.append(linea[0:indice-1])
+for x in valor_temperatura_suelo_1:
+    if x<4500000:
+        valor_temperatura_suelo.append(x)
+    
 valor_temperatura_suelo_promedio=math.floor(round(sum(valor_temperatura_suelo)/float(len(valor_temperatura_suelo)),cifras_significativas_1))
 valor_temperatura_suelo_maximo=max(valor_temperatura_suelo)
+indice_maximo=valor_temperatura_suelo.index(valor_temperatura_suelo_maximo)
 valor_temperatura_suelo_minimo=min(valor_temperatura_suelo)
+indice_minimo=valor_temperatura_suelo.index(valor_temperatura_suelo_minimo)
+Fecha_Hora_max=fecha_hora_temperatura_suelo[indice_maximo]
+Fecha_Hora_min=fecha_hora_temperatura_suelo[indice_minimo]
 Unidades='Celsius'
 Tipo_valor='Promedio'
 Periodicidad='Horario'
@@ -372,17 +408,16 @@ string_a_escribir_promedio=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valo
 Tipo_valor='Maximo'
 string_temp=str(valor_temperatura_suelo_maximo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_max=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+string_a_escribir_max=Fecha_Hora_max+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
 Tipo_valor='Minimo'
 string_temp=str(valor_temperatura_suelo_minimo)
 string_temp=string_temp.replace(',','')
-string_a_escribir_min=Fecha_Hora+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
+string_a_escribir_min=Fecha_Hora_min+","+string_temp+","+Unidades+","+Tipo_valor+","+Periodicidad+"\n"
 file_original_temperatura=open(path_temperatura_suelo_o,'a')
 file_original_temperatura.write(string_a_escribir_promedio)
 file_original_temperatura.write(string_a_escribir_max)
 file_original_temperatura.write(string_a_escribir_min)
 file_original_temperatura.close()
-
 
 
 

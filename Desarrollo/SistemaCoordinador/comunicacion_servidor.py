@@ -43,7 +43,7 @@ for line in file_remID.readlines():
 
 """remoteID="2"""
 
-path_rem_m_ID='/home/pi/USCO/administrativo/Rem_ID.txt'
+path_rem_m_ID='/home/pi/USCO/administrativo/Rem_metereologico_ID.txt'
 file_rem_m_ID=open(path_rem_m_ID,'r')
 for line in file_rem_m_ID.readlines():
     remoteID_m=line.strip().lower()
