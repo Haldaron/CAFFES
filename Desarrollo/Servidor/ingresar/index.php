@@ -23,7 +23,6 @@ if(isset($_GET["usuario"])){
     }
 }
 
-echo $nav->getUserName();
 if(validar($nav->getUserName(),$password)){
     header('Location: ingresar.php');
 }

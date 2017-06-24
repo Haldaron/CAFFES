@@ -107,6 +107,7 @@ body {
 }
 
 .panel{
+    background-color: #BBBBBB;
     font-family: serif;
     font-size: 32px;
     font-weight: bold;
