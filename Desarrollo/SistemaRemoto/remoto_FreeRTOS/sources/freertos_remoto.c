@@ -65,13 +65,13 @@
 
 #define RTD_CURR 			RTD_CUR_1000U
 
-#define CH0_IC 			BURNOUT_DIS|VREF1|VINP5|VINN7
+#define CH0_IC 			BURNOUT_DIS|VREF2|VINP0|VINN5
 #define CH1_IC 			BURNOUT_DIS|VREF1|VINP1|VINN7
 #define CH2_IC 			BURNOUT_DIS|VREF1|VINP2|VINN7
 #define CH3_IC 			BURNOUT_DIS|VREF1|VINP3|VINN7
 #define CH4_IC 			BURNOUT_DIS|VREF1|VINP4|VINN7
 
-#define CH1_CONF		ODR_1_6775|FGA_OFF_1|BUFF_OFF
+#define CH0_CONF		ODR_214_65|FGA_OFF_4|BUFF_ON
 
 
 
@@ -178,7 +178,7 @@ static void medicion_task(void *pvParameters){
 		sprintf(str,"h>remoto1>transmitir>var>Humedad2");
 	    Xbee_setFrame(frame, str);
     	Xbee_APISend(xbee_dev, frame);
-		lmp_confMeasure(&dev, SCAN_MODE0, CH4_FIRST, CH5_LAST);
+		lmp_confMeasure(&dev, SCAN_MODE0, CH3_FIRST, CH5_LAST);
 		lmp_getMeasure(&dev,&adc);
 		sprintf(str,"d>%d",(int)adc);
 	    Xbee_setFrame(frame, str);
@@ -189,17 +189,17 @@ static void medicion_task(void *pvParameters){
 
     	vTaskDelay(TASK_DELAY);
 
-		sprintf(str,"h>remoto1>transmitir>var>PAR");
-	    Xbee_setFrame(frame, str);
-    	Xbee_APISend(xbee_dev, frame);
+    	sprintf(str,"h>remoto1>transmitir>var>Humedad3");
+		Xbee_setFrame(frame, str);
+		Xbee_APISend(xbee_dev, frame);
 		lmp_confMeasure(&dev, SCAN_MODE0, CH0_FIRST, CH5_LAST);
 		lmp_getMeasure(&dev,&adc);
 		sprintf(str,"d>%d",(int)adc);
-	    Xbee_setFrame(frame, str);
-    	Xbee_APISend(xbee_dev, frame);
-		sprintf(str,"h>remoto1>stop>var>PAR");
-	    Xbee_setFrame(frame, str);
-    	Xbee_APISend(xbee_dev, frame);
+		Xbee_setFrame(frame, str);
+		Xbee_APISend(xbee_dev, frame);
+		sprintf(str,"h>remoto1>stop>var>Humedad3");
+		Xbee_setFrame(frame, str);
+		Xbee_APISend(xbee_dev, frame);
 
     	vTaskDelay(7*TASK_DELAY);
 
@@ -226,6 +226,9 @@ static void confLmp(lmp_dev_t *dev){
 
 	if(lmp_write(dev,CH0_INPUTCN,CH0_IC)!=0){
 		PRINTF("Error de transmision dev: %d\n\r\n\r");
+	}
+	if(lmp_write(dev,CH0_CONFIG,CH0_CONF)!=0){
+			PRINTF("Error de transmision dev: %d\n\r\n\r");
 	}
 	if(lmp_write(dev,CH1_INPUTCN,CH1_IC)!=0){
 		PRINTF("Error de transmision dev: %d\n\r\n\r");
