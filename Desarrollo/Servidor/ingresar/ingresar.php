@@ -10,24 +10,6 @@ else {
 	$nav=new navegacion;
 }
 ?>
-
-<?php
-if(isset($_GET["password"])){
-    $password=$_GET["password"];
-}
-if(isset($_GET["usuario"])){
-    $usuario=$_GET["usuario"];
-    if(!empty($usuario)){
-        $nav->setUserName($usuario);
-        $_SESSION['navigator']=$nav;
-    }
-}
-
-echo $nav->getUserName();
-if(validar($nav->getUserName(),$password)){
-    header('Location: ingresar.php');
-}
-?>
 <!DOCTYPE html>
 
 <head>
