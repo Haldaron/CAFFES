@@ -39,7 +39,11 @@ if(validar($nav->getUserName(),$password)){
 	<link rel="stylesheet" href="../estilos.css" type="text/css" media="all">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="../jquery-labelauty/source/jquery-labelauty.js"></script>
-	<link rel="stylesheet" type="text/css" href="../jquery-labelauty/source/jquery-labelauty.css">	
+	<script src="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../jquery-labelauty/source/jquery-labelauty.css">
+	<link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/github.min.css">
 </head>
 
 <body>
@@ -58,7 +62,6 @@ if(validar($nav->getUserName(),$password)){
                         <div class="row">
                             <label for="NumberValue">Contraseña:</label>
                             <input type="password" class="form-control panel" id="NumberValue" name="password">
-                            <label for="user" style="visibility:hidden">usuario:</label>
                             <input type="text" class="form-control" id="user" name="usuario" style="visibility:hidden"/>
                         </div>
                         <div class="row">
@@ -118,6 +121,7 @@ if(validar($nav->getUserName(),$password)){
                     $(":checkbox").labelauty();
                     $(":radio").labelauty();
             });
+            $('.clockpicker').clockpicker();
         </script>
 </body>
 </html>

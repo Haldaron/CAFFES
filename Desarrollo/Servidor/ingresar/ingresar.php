@@ -34,11 +34,16 @@ if(validar($nav->getUserName(),$password)){
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<html lang="es">
 	<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="../estilos.css" type="text/css" media="all">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="../jquery-labelauty/source/jquery-labelauty.js"></script>
-	<link rel="stylesheet" type="text/css" href="../jquery-labelauty/source/jquery-labelauty.css">	
+	<script src="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../jquery-labelauty/source/jquery-labelauty.css">
+	<link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/github.min.css">
 </head>
 
 <body>
@@ -70,11 +75,16 @@ if(validar($nav->getUserName(),$password)){
                         <div class="row">
                             <div class="col-sm-12">
                                 <label for="fecha">fecha:</label>
-                                <input class="form-control" type="date" name="fecha"/> 
+                                <input class="form-control" type="date" name="fecha" lang="es"/> 
                             </div>
                             <div class="col-sm-12">
                                 <label for="hora">hora:</label>
-                                <input class="form-control" type="time" name="hora">
+                                <div class="input-group clockpicker" data-autoclose="true" name="hora">
+                                    <input type="text" class="form-control"  value="06:00">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                </div>
                             </div>
                         </div>
                 </div>
@@ -151,6 +161,8 @@ if(validar($nav->getUserName(),$password)){
                     $(":checkbox").labelauty();
                     $(":radio").labelauty();
             });
+            
+            $('.clockpicker').clockpicker();
         </script>
 </body>
 </html>
