@@ -55,32 +55,32 @@ if(validar($nav->getUserName(),$password)){
         </div>
         
         <div class="container">
-            <form  method="GET" action="<?php echo $_SERVER['PHP_SELF']?>" enctype="multipart/form-data">
+            <form  method="GET" action="confirmar.php" enctype="multipart/form-data">
                 <div class="col-sm-8">
                     <div class="form-group">
                         <!--division para la selección de sistemas-->
                         <div class="row">
                             <div class="col-sm-6">
                                 <label for="sistema">Sistema:</label>
-                                <input class='radio-inline' type='radio' name='sistema' value='sistema' data-labelauty='beneficiadero' checked onclick="enableTemp()">
-                                <input class='radio-inline' type='radio' name='sistema' value='sistema' data-labelauty='cultivo' onclick="disableTemp()">
+                                <input class='radio-inline' type='radio' name='sistema' value='sistema' data-labelauty='beneficiadero' checked onclick="enableTemp()" required>
+                                <input class='radio-inline' type='radio' name='sistema' value='sistema' data-labelauty='cultivo' onclick="disableTemp()" required>
                             </div>
                             <div class="col-sm-6">
                                 <label for="variable">variable:</label>
-                                <input class='radio-inline' type='radio' name='variable' value='variable' data-labelauty='temperatura' id="temp">
-                                <input class='radio-inline' type='radio' name='variable' value='variable' data-labelauty='pH' checked id="pH">
+                                <input class='radio-inline' type='radio' name='variable' value='variable' data-labelauty='temperatura' id="temp" required>
+                                <input class='radio-inline' type='radio' name='variable' value='variable' data-labelauty='pH' checked id="pH" required>
                             </div>
                         </div>
                         <!--division para la selección de fecha-->
                         <div class="row">
                             <div class="col-sm-12">
                                 <label for="fecha">fecha:</label>
-                                <input class="form-control" type="date" name="fecha" lang="es"/> 
+                                <input class="form-control" type="date" name="fecha" lang="es" required /> 
                             </div>
                             <div class="col-sm-12">
                                 <label for="hora">hora:</label>
                                 <div class="input-group clockpicker" data-autoclose="true" name="hora">
-                                    <input type="text" class="form-control"  value="06:00">
+                                   <input type="text" class="form-control"  value="06:00" required>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
@@ -93,7 +93,7 @@ if(validar($nav->getUserName(),$password)){
                         <!--division para insertar el valor-->
                         <div class="row">
                             <label for="NumberValue">valor:</label>
-                            <input type="text" class="form-control panel" id="NumberValue" name="variable">
+                            <input type="text" class="form-control panel" id="NumberValue" name="variable" required>
                         </div>
                         
                     <div class="row">
@@ -126,11 +126,9 @@ if(validar($nav->getUserName(),$password)){
                     </div>
                     <div class="row">
 			<div class="col-sm-4"><div class="row"><a class="btn btn-default form-control" onclick="cancelar()"><strong>cancelar</strong></a></div></div>
-                        <div class="col-sm-8"><div class="row"><button value="ingresar" type="submit" class="btn btn-default form-control" name="button"><strong>Ingresar</strong></button></div></div>
+                        <div class="col-sm-8"><div class="row"><button value="ingresar" type="submit" class="btn btn-default form-control" name="button" onclick="confirmar()"><strong>Ingresar</strong></button></div></div>
                     </div>                    
                 </div>
-		<label for="user" style="visibility:hidden">usuario:</label>
-		<input type="text" class="form-control" id="user" name="usuario" style="visibility:hidden"/>
             </form>
         </div>
         <script type="text/javascript">
@@ -162,7 +160,10 @@ if(validar($nav->getUserName(),$password)){
            }
            function cancelar() {
 		window.location="index.php";
-	   }           
+	   }
+	   function confirmar() {
+		alert("¡Su dato ha sido guardado de forma exitosa!");
+	   }	           
            $(document).ready(function(){
                     $(":checkbox").labelauty();
                     $(":radio").labelauty();
