@@ -125,9 +125,12 @@ if(validar($nav->getUserName(),$password)){
                         </div>
                     </div>
                     <div class="row">
-                        <button value="ingresar" type="submit" class="btn btn-default form-control" name="button"><strong>Ingresar</strong></button>
+			<div class="col-sm-4"><div class="row"><a class="btn btn-default form-control" onclick="cancelar()"><strong>cancelar</strong></a></div></div>
+                        <div class="col-sm-8"><div class="row"><button value="ingresar" type="submit" class="btn btn-default form-control" name="button"><strong>Ingresar</strong></button></div></div>
                     </div>                    
                 </div>
+		<label for="user" style="visibility:hidden">usuario:</label>
+		<input type="text" class="form-control" id="user" name="usuario" style="visibility:hidden"/>
             </form>
         </div>
         <script type="text/javascript">
@@ -156,7 +159,10 @@ if(validar($nav->getUserName(),$password)){
            }
            function enableTemp() {
                 document.getElementById("temp").disabled = false;
-           }           
+           }
+           function cancelar() {
+		window.location="index.php";
+	   }           
            $(document).ready(function(){
                     $(":checkbox").labelauty();
                     $(":radio").labelauty();
