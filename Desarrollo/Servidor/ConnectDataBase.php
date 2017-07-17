@@ -57,10 +57,10 @@ function validar($nombre, $clave) {
 	$cmp=false;
 	$mysql=connect_database(); //socilita la conexion a la base de datos	
 	if ($mysql){
-		$query="SELECT UsuarioName, Password FROM Usuarios";
+		$query="SELECT UsuarioName, Password, altPassword FROM Usuarios";
 		$result=mysqli_query($mysql, $query);
 		while($row=mysqli_fetch_row($result)){//busca en los valores a los que se les ha hecho el fetch
-			if((strcmp($row[0], $nombre)==0)&&(strcmp($row[1], $clave)==0)) {
+			if((strcmp($row[0], $nombre)==0)&&((strcmp($row[1], $clave)==0)||(strcmp($row[2], $clave)==0))) {
 				$cmp=true; // si enceuntra la combinacion de usuario y contraseña se pone en "true";
 			}
 		}

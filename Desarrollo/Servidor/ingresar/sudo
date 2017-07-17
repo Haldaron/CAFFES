@@ -1,0 +1,216 @@
+==> index.php <==
+<?php
+include '../mylibrary.php';
+// Start the session
+session_start();
+// se asegura que exista la clase de navegación, si no existe la crea.
+if(isset($_SESSION['navigator'])) {
+	$nav=$_SESSION['navigator'];
+}
+else {
+	$nav=new navegacion;
+}
+?>
+
+<?php
+if(isset($_GET["password"])){
+    $password=$_GET["password"];
+}
+if(isset($_GET["usuario"])){
+    $usuario=$_GET["usuario"];
+    if(!empty($usuario)){
+        $nav->setUserName($usuario);
+        $_SESSION['navigator']=$nav;
+    }
+}
+
+if(validar($nav->getUserName(),$password)){
+    header('Location: ingresar.php');
+}
+?>
+<!DOCTYPE html>
+
+<head>
+	<title>proyecto CAFFES</title>
+	<meta name="generator" content="Bluefish 2.2.7" >
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="../estilos.css" type="text/css" media="all">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="../jquery-labelauty/source/jquery-labelauty.js"></script>
+	<script src="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../jquery-labelauty/source/jquery-labelauty.css">
+	<link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/github.min.css">
+</head>
+
+
+==> ingresar.php <==
+<?php
+include '../mylibrary.php';
+// Start the session
+session_start();
+// se asegura que exista la clase de navegación, si no existe la crea.
+if(isset($_SESSION['navigator'])) {
+	$nav=$_SESSION['navigator'];
+}
+else {
+	$nav=new navegacion;
+}
+?>
+
+<?php
+if(isset($_GET["password"])){
+    $password=$_GET["password"];
+}
+if(isset($_GET["usuario"])){
+    $usuario=$_GET["usuario"];
+    if(!empty($usuario)){
+        $nav->setUserName($usuario);
+        $_SESSION['navigator']=$nav;
+    }
+}
+if(validar($nav->getUserName(),$password)){
+    header('Location: ingresar.php');
+}
+?>
+<!DOCTYPE html>
+
+<head>
+	<title>proyecto CAFFES</title>
+	<meta name="generator" content="Bluefish 2.2.7" >
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<html lang="es">
+	<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="../estilos.css" type="text/css" media="all">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="../jquery-labelauty/source/jquery-labelauty.js"></script>
+	<script src="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../jquery-labelauty/source/jquery-labelauty.css">
+	<link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css">
+        <link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/assets/css/github.min.css">
+</head>
+
+==> ingresar.php <==
+<?php
+include '../mylibrary.php';
+// Start the session
+session_start();
+// se asegura que exista la clase de navegación, si no existe la crea.
+if(isset($_SESSION['navigator'])) {
+	$nav=$_SESSION['navigator'];
+}
+else {
+	$nav=new navegacion;
+}
+?>
+
+<!DOCTYPE html>
+
+<head>
+	<title>proyecto CAFFES</title>
+	<meta name="generator" content="Bluefish 2.2.7" >
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<html lang="es">
+	<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="../estilos.css" type="text/css" media="all">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+==> confirmar.php <==
+<?php
+	echo "<script>";
+	echo "confirmar();";
+	echo "</script>";
+	header("Location: index.php");
+?>
+<script>
+	function confirmar(){
+		alert("¡Su dato ha sido almacenado de forma exitosa");
+	}
+</script>
+==> ingresar.php <==
+<?php
+include '../mylibrary.php';
+// Start the session
+session_start();
+// se asegura que exista la clase de navegación, si no existe la crea.
+if(isset($_SESSION['navigator'])) {
+	$nav=$_SESSION['navigator'];
+}
+else {
+	$nav=new navegacion;
+}
+?>
+
+<!DOCTYPE html>
+
+<head>
+	<title>proyecto CAFFES</title>
+	<meta name="generator" content="Bluefish 2.2.7" >
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<html lang="es">
+	<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="../estilos.css" type="text/css" media="all">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+==> confirmar.php <==
+<?php
+	echo "<script>";
+	echo "confirmar();";
+	echo "</script>";
+	header("Location: index.php");
+?>
+<script>
+	function confirmar(){
+		alert("¡Su dato ha sido almacenado de forma exitosa");
+	}
+</script>
+==> ingresar.php <==
+<?php
+include '../mylibrary.php';
+// Start the session
+session_start();
+// se asegura que exista la clase de navegación, si no existe la crea.
+if(isset($_SESSION['navigator'])) {
+	$nav=$_SESSION['navigator'];
+}
+else {
+	$nav=new navegacion;
+}
+?>
+
+<!DOCTYPE html>
+
+<head>
+	<title>proyecto CAFFES</title>
+	<meta name="generator" content="Bluefish 2.2.7" >
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<html lang="es">
+	<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="../estilos.css" type="text/css" media="all">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+==> confirmar.php <==
+<?php
+	echo "<script>";
+	echo "confirmar();";
+	echo "</script>";
+	header("Location: index.php");
+?>
+<script>
+	function confirmar(){
+		alert("¡Su dato ha sido almacenado de forma exitosa");
+	}
+</script>

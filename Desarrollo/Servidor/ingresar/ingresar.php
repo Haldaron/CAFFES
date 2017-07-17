@@ -11,21 +11,6 @@ else {
 }
 ?>
 
-<?php
-if(isset($_GET["password"])){
-    $password=$_GET["password"];
-}
-if(isset($_GET["usuario"])){
-    $usuario=$_GET["usuario"];
-    if(!empty($usuario)){
-        $nav->setUserName($usuario);
-        $_SESSION['navigator']=$nav;
-    }
-}
-if(validar($nav->getUserName(),$password)){
-    header('Location: ingresar.php');
-}
-?>
 <!DOCTYPE html>
 
 <head>
@@ -55,7 +40,7 @@ if(validar($nav->getUserName(),$password)){
         </div>
         
         <div class="container">
-            <form  method="GET" action="confirmar.php" enctype="multipart/form-data">
+            <form  method="GET" action="confirmar.php" enctype="multipart/form-data" onsubmit="confirmar()">
                 <div class="col-sm-8">
                     <div class="form-group">
                         <!--division para la selección de sistemas-->
@@ -126,7 +111,7 @@ if(validar($nav->getUserName(),$password)){
                     </div>
                     <div class="row">
 			<div class="col-sm-4"><div class="row"><a class="btn btn-default form-control" onclick="cancelar()"><strong>cancelar</strong></a></div></div>
-                        <div class="col-sm-8"><div class="row"><button value="ingresar" type="submit" class="btn btn-default form-control" name="button" onclick="confirmar()"><strong>Ingresar</strong></button></div></div>
+                        <div class="col-sm-8"><div class="row"><button value="ingresar" type="submit" class="btn btn-default form-control" name="button"><strong>Ingresar</strong></button></div></div>
                     </div>                    
                 </div>
             </form>
