@@ -47,13 +47,13 @@ else {
                         <div class="row">
                             <div class="col-sm-6">
                                 <label for="sistema">Sistema:</label>
-                                <input class='radio-inline' type='radio' name='sistema' value='sistema' data-labelauty='beneficiadero' checked onclick="enableTemp()" required>
-                                <input class='radio-inline' type='radio' name='sistema' value='sistema' data-labelauty='cultivo' onclick="disableTemp()" required>
+                                <input class='radio-inline' type='radio' name='sistema' value='beneficiadero' data-labelauty='beneficiadero' checked onclick="enableTemp()" required>
+                                <input class='radio-inline' type='radio' name='sistema' value='cultivo' data-labelauty='cultivo' onclick="disableTemp()" required>
                             </div>
                             <div class="col-sm-6">
-                                <label for="variable">variable:</label>
-                                <input class='radio-inline' type='radio' name='variable' value='variable' data-labelauty='temperatura' id="temp" required>
-                                <input class='radio-inline' type='radio' name='variable' value='variable' data-labelauty='pH' checked id="pH" required>
+                                <label for="medicion">variable:</label>
+                                <input class='radio-inline' type='radio' name='medicion' value='temperatura' data-labelauty='temperatura' id="temp" required>
+                                <input class='radio-inline' type='radio' name='medicion' value='pH' data-labelauty='pH' checked id="pH" required>
                             </div>
                         </div>
                         <!--division para la selección de fecha-->
@@ -64,8 +64,8 @@ else {
                             </div>
                             <div class="col-sm-12">
                                 <label for="hora">hora:</label>
-                                <div class="input-group clockpicker" data-autoclose="true" name="hora">
-                                   <input type="text" class="form-control"  value="06:00" required>
+                                <div class="input-group clockpicker" data-autoclose="true">
+                                   <input type="text" class="form-control"  value="06:00" required name="hora">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-time"></span>
                                         </span>
