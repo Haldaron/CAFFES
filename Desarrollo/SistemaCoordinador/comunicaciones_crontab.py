@@ -130,8 +130,8 @@ if tipo_finca=='si':
         valor_direccion_viento.append(float(linea[indice+1:len(linea)]))
         valor_direccion_viento_sin.append(math.sin(valor_radianes))
         valor_direccion_viento_cos.append(math.cos(valor_radianes))
-    promedio_sin_angulo=sum(valor_direccion_viento_sin)/float(len(valor_direccion_viento_sin)
-    promedio_cos_angulo=sum(valor_direccion_viento_cos)/float(len(valor_direccion_viento_cos)
+    promedio_sin_angulo=(sum(valor_direccion_viento_sin)/float(len(valor_direccion_viento_sin)))
+    promedio_cos_angulo=(sum(valor_direccion_viento_cos)/float(len(valor_direccion_viento_cos)))
     valor_direccion_viento_promedio=round(math.degrees(math.atan(promedio_sin_angulo/promedio_cos_angulo)),cifras_significativas)
     valor_direccion_viento_diferencia=[]
     for z in valor_direccion_viento:
@@ -235,9 +235,10 @@ if tipo_finca=='si':
     file_original_precipitacion.close()
 
     "------------------------------PAR----------------------------------------------------------------------------------------------"
-"""entre 1600000 y 8300000"""
+    """entre 1600000 y 8300000"""
     file_PAR_suelo=open(copia_path_PAR_suelo,'r')
     valor_PAR_suelo=[]
+    valor_PAR_suelo1=[]
     fecha_hora_PAR=[]
 
     for line in file_PAR_suelo.readlines():
@@ -279,6 +280,7 @@ if tipo_finca=='si':
 """entre 4600000 y 8300000"""
 file_humedad_suelo_1=open(copia_path_humedad_suelo_1,'r')
 valor_humedad_suelo_1=[]
+valor_humedad_suelo_11=[]
 fecha_hora_humedad_suelo_1=[]
 
 for line in file_humedad_suelo_1.readlines():
@@ -320,6 +322,7 @@ file_original_humedad_suelo.close()
 """entre 4600000 y 8300000"""
 file_humedad_suelo_2=open(copia_path_humedad_suelo_2,'r')
 valor_humedad_suelo_2=[]
+valor_humedad_suelo_21=[]
 fecha_hora_humedad_suelo_2=[]
 
 for line in file_humedad_suelo_2.readlines():
@@ -361,6 +364,7 @@ file_original_humedad_suelo.close()
 """entre 4600000 y 8300000"""
 file_humedad_suelo_3=open(copia_path_humedad_suelo_3,'r')
 valor_humedad_suelo_3=[]
+valor_humedad_suelo_31=[]
 fecha_hora_humedad_suelo_3=[]
 
 for line in file_humedad_suelo_3.readlines():
