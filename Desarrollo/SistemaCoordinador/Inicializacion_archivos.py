@@ -68,9 +68,23 @@ for i in range(1,primera_pregunta+1):
     archivo_humedad_3.close()
     archivo_temperatura=open(path_temp+"/Temperatura.csv","a+")
     archivo_temperatura.close()
-    
-print 'su respuesta fue: %d y ya se crearon los directorios y archivos'% primera_pregunta
+    archivo_ph=open(path_temp+"/ph.csv","a+")
+    archivo_ph.close()
+    os.system('sudo chmod 777 %s/ph*'%path_temp)
 
+path_tanques='/home/pi/USCO/remoto_tanque'
+
+if not os.path.exists(path_tanques):
+    os.mkdir(path_tanques)
+    archivo_ph_tanque=open(path_tanques+"/ph.csv","a+")
+    archivo_ph_tanque.close()
+    archivo_temperatura_tanque=open(path_tanques+"/Temperatura.csv","a+")
+    archivo_temperatura_tanque.close()
+
+
+os.system('sudo chmod 777 /home/pi/USCO/remoto_tanque/*')
+          
+print 'su respuesta fue: %d y ya se crearon los directorios y archivos'% primera_pregunta
 
 
 if not os.path.exists(path_administrativo):
@@ -104,6 +118,9 @@ archivo_remID.write(remID)
 archivo_rem_m_ID=open(path_administrativo+"/Rem_metereologico_ID.txt","a+")
 archivo_rem_m_ID.write(rem_m_ID)
 
+rem_T_ID=raw_input('ID del remoto tanques en la base de datos: ')
+archivo_rem_T_ID=open(path_administrativo+"/Rem_Tanques.txt","a+")
+archivo_rem_T_ID.write(rem_T_ID)
 
 if tipo_finca=='si':
     

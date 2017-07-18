@@ -11,14 +11,14 @@ if os.path.exists(path_serial_Xbee):
 os.system("dmesg | grep -iC 3 'cp210x converter now attached to' > serial_EM.txt")
 os.system("dmesg | grep -iC 3 'FTDI USB Serial Device converter now attached to' > serial_Remoto.txt")
 puerto_EM=''
-if 'USB0' in open('serial_EM.txt').read():
+if 'cp210x converter now attached to ttyUSB0' in open('serial_EM.txt').read():
  puerto_EM='/dev/ttyUSB0'
-if 'USB1' in open('serial_EM.txt').read():
+if 'cp210x converter now attached to ttyUSB1' in open('serial_EM.txt').read():
  puerto_EM='/dev/ttyUSB1'
 puerto_remoto=''
-if 'USB0' in open('serial_Remoto.txt').read():
+if 'FTDI USB Serial Device converter now attached to ttyUSB0' in open('serial_Remoto.txt').read():
  puerto_remoto='/dev/ttyUSB0'
-if 'USB1' in open('serial_Remoto.txt').read():
+if 'FTDI USB Serial Device converter now attached to ttyUSB1' in open('serial_Remoto.txt').read():
  puerto_remoto='/dev/ttyUSB1'
 
 archivo=open(path_serial_EM,'a')

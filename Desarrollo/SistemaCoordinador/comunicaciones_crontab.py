@@ -120,13 +120,23 @@ if tipo_finca=='si':
 
     file_direccion_viento=open(copia_path_direccion_viento,'r')
     valor_direccion_viento=[]
-
+    valor_direccion_viento_sin=[]
+    valor_direccion_viento_cos=[]
+    valor_radianes=0
     for line in file_direccion_viento.readlines():
         linea=line.strip().lower()
         indice=linea.find(str1)
+        valor_radianes=math.radians(float(linea[indice+1:len(linea)]))
         valor_direccion_viento.append(float(linea[indice+1:len(linea)]))
-    valor_direccion_viento_promedio=round(sum(valor_direccion_viento)/float(len(valor_direccion_viento)),cifras_significativas)
-    valor_direccion_viento_desviacion=round(statistics.stdev(valor_direccion_viento),cifras_significativas)
+        valor_direccion_viento_sin.append(math.sin(valor_radianes))
+        valor_direccion_viento_cos.append(math.cos(valor_radianes))
+    promedio_sin_angulo=sum(valor_direccion_viento_sin)/float(len(valor_direccion_viento_sin)
+    promedio_cos_angulo=sum(valor_direccion_viento_cos)/float(len(valor_direccion_viento_cos)
+    valor_direccion_viento_promedio=round(math.degrees(math.atan(promedio_sin_angulo/promedio_cos_angulo)),cifras_significativas)
+    valor_direccion_viento_diferencia=[]
+    for z in valor_direccion_viento:
+        valor_direccion_viento_diferencia.append((z-valor_direccion_viento_promedio)^2)
+    valor_direccion_viento_desviacion=round(math.sqrt(sum(valor_direccion_viento_diferencia)/float(len(valor_direccion_viento_diferencia))),cifras_significativas)
     Unidades='Grados'
     Tipo_valor='Promedio'
     Periodicidad='Horario'
@@ -225,7 +235,7 @@ if tipo_finca=='si':
     file_original_precipitacion.close()
 
     "------------------------------PAR----------------------------------------------------------------------------------------------"
-
+"""entre 1600000 y 8300000"""
     file_PAR_suelo=open(copia_path_PAR_suelo,'r')
     valor_PAR_suelo=[]
     fecha_hora_PAR=[]
@@ -233,8 +243,11 @@ if tipo_finca=='si':
     for line in file_PAR_suelo.readlines():
         linea=line.strip().lower()
         indice=linea.find(str1)
-        valor_PAR_suelo.append(float(linea[indice+1:len(linea)]))
+        valor_PAR_suelo1.append(float(linea[indice+1:len(linea)]))
         fecha_hora_PAR.append(linea[0:indice-1])
+    for yy in valor_PAR_suelo1:
+        if (yy>1600000 and yy<8300000):
+            valor_PAR_suelo.append(x)
     valor_PAR_suelo_promedio=math.floor(round(sum(valor_PAR_suelo)/float(len(valor_PAR_suelo)),cifras_significativas_1))
     valor_PAR_suelo_maximo=max(valor_PAR_suelo)
     indice_maximo=valor_PAR_suelo.index(valor_PAR_suelo_maximo)
@@ -263,7 +276,7 @@ if tipo_finca=='si':
     file_original_PAR.close()
 
 "------------------------------Humedad_suelo_1----------------------------------------------------------------------------------------------"
-
+"""entre 4600000 y 8300000"""
 file_humedad_suelo_1=open(copia_path_humedad_suelo_1,'r')
 valor_humedad_suelo_1=[]
 fecha_hora_humedad_suelo_1=[]
@@ -271,8 +284,11 @@ fecha_hora_humedad_suelo_1=[]
 for line in file_humedad_suelo_1.readlines():
     linea=line.strip().lower()
     indice=linea.find(str1)
-    valor_humedad_suelo_1.append(float(linea[indice+1:len(linea)]))
+    valor_humedad_suelo_11.append(float(linea[indice+1:len(linea)]))
     fecha_hora_humedad_suelo_1.append(linea[0:indice-1])
+for xxx in valor_humedad_suelo_11:
+    if (xxx>4600000 and xxx<8300000):
+        valor_humedad_suelo_1.append(x)
 valor_humedad_suelo_1_promedio=math.floor(round(sum(valor_humedad_suelo_1)/float(len(valor_humedad_suelo_1)),cifras_significativas_1))
 valor_humedad_suelo_1_maximo=max(valor_humedad_suelo_1)
 indice_maximo=valor_humedad_suelo_1.index(valor_humedad_suelo_1_maximo)
@@ -301,7 +317,7 @@ file_original_humedad_suelo.write(string_a_escribir_min)
 file_original_humedad_suelo.close()
 
 "------------------------------Humedad_suelo_2----------------------------------------------------------------------------------------------"
-
+"""entre 4600000 y 8300000"""
 file_humedad_suelo_2=open(copia_path_humedad_suelo_2,'r')
 valor_humedad_suelo_2=[]
 fecha_hora_humedad_suelo_2=[]
@@ -309,8 +325,11 @@ fecha_hora_humedad_suelo_2=[]
 for line in file_humedad_suelo_2.readlines():
     linea=line.strip().lower()
     indice=linea.find(str1)
-    valor_humedad_suelo_2.append(float(linea[indice+1:len(linea)]))
+    valor_humedad_suelo_21.append(float(linea[indice+1:len(linea)]))
     fecha_hora_humedad_suelo_2.append(linea[0:indice-1])
+for y in valor_humedad_suelo_21:
+    if (y>4600000 and y<8300000):
+        valor_humedad_suelo_2.append(x)
 valor_humedad_suelo_2_promedio=math.floor(round(sum(valor_humedad_suelo_2)/float(len(valor_humedad_suelo_2)),cifras_significativas_1))
 valor_humedad_suelo_2_maximo=max(valor_humedad_suelo_2)
 indice_maximo=valor_humedad_suelo_2.index(valor_humedad_suelo_2_maximo)
@@ -339,7 +358,7 @@ file_original_humedad_suelo.write(string_a_escribir_min)
 file_original_humedad_suelo.close()
 
 "------------------------------Humedad_suelo_3----------------------------------------------------------------------------------------------"
-
+"""entre 4600000 y 8300000"""
 file_humedad_suelo_3=open(copia_path_humedad_suelo_3,'r')
 valor_humedad_suelo_3=[]
 fecha_hora_humedad_suelo_3=[]
@@ -347,8 +366,11 @@ fecha_hora_humedad_suelo_3=[]
 for line in file_humedad_suelo_3.readlines():
     linea=line.strip().lower()
     indice=linea.find(str1)
-    valor_humedad_suelo_3.append(float(linea[indice+1:len(linea)]))
+    valor_humedad_suelo_31.append(float(linea[indice+1:len(linea)]))
     fecha_hora_humedad_suelo_3.append(linea[0:indice-1])
+for xx in valor_humedad_suelo_31:
+    if (xx>4600000 and xx<8300000):
+        valor_humedad_suelo_3.append(x)
 valor_humedad_suelo_3_promedio=math.floor(round(sum(valor_humedad_suelo_3)/float(len(valor_humedad_suelo_3)),cifras_significativas_1))
 valor_humedad_suelo_3_maximo=max(valor_humedad_suelo_3)
 indice_maximo=valor_humedad_suelo_3.index(valor_humedad_suelo_3_maximo)
@@ -377,7 +399,7 @@ file_original_humedad_suelo.write(string_a_escribir_min)
 file_original_humedad_suelo.close()
 
 "------------------------------Temperatura_suelo----------------------------------------------------------------------------------------------"
-
+"""entre 1000000 y 4500000"""
 file_temperatura_suelo=open(copia_path_temperatura_suelo,'r')
 valor_temperatura_suelo_1=[]
 valor_temperatura_suelo=[]
@@ -389,7 +411,7 @@ for line in file_temperatura_suelo.readlines():
     valor_temperatura_suelo_1.append(float(linea[indice+1:len(linea)]))
     fecha_hora_temperatura_suelo.append(linea[0:indice-1])
 for x in valor_temperatura_suelo_1:
-    if x<4500000:
+    if (x>1000000 and x<4500000):
         valor_temperatura_suelo.append(x)
     
 valor_temperatura_suelo_promedio=math.floor(round(sum(valor_temperatura_suelo)/float(len(valor_temperatura_suelo)),cifras_significativas_1))

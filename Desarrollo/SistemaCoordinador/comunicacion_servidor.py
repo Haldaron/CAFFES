@@ -14,39 +14,46 @@ file_IP=open(path_IP,'r')
 for line in file_IP.readlines():
     IP=line.strip().lower()
 
-"""IP="http://157.253.231.114/server/index.php"""
+"""USUARIO"""
 path_usuario='/home/pi/USCO/administrativo/usuario.txt'
 file_usuario=open(path_usuario,'r')
 for line in file_usuario.readlines():
     user=line.strip().lower()
     
-"""user="finca"""
+"""CONTRASENA"""
 
 path_password='/home/pi/USCO/administrativo/contrasena.txt'
 file_password=open(path_password,'r')
 for line in file_password.readlines():
     password=line.strip().lower()
     
-"""password="finca123"""
+"""CORD_ID"""
 
 path_cordID='/home/pi/USCO/administrativo/Cord_ID.txt'
 file_cordID=open(path_cordID,'r')
 for line in file_cordID.readlines():
     cordID=line.strip().lower()
 
-"""cordID="3"""
+"""REM_SUELOS_ID"""
 
 path_remID='/home/pi/USCO/administrativo/Rem_ID.txt'
 file_remID=open(path_remID,'r')
 for line in file_remID.readlines():
     remoteID=line.strip().lower()
 
-"""remoteID="2"""
+"""REM_MET_ID="2"""
 
 path_rem_m_ID='/home/pi/USCO/administrativo/Rem_metereologico_ID.txt'
 file_rem_m_ID=open(path_rem_m_ID,'r')
 for line in file_rem_m_ID.readlines():
     remoteID_m=line.strip().lower()
+
+"""REM_TANQU_ID="2"""
+
+path_rem_tanque_ID='/home/pi/USCO/administrativo/Rem_Tanques.txt'
+file_rem_tanque_ID=open(path_rem_tanque_ID,'r')
+for line in file_rem_tanque_ID.readlines():
+    remoteID_tanque=line.strip().lower()
 
 enviar="Importar"
 path_respuesta="/home/pi/USCO/output.html"
@@ -63,6 +70,9 @@ path_precipitacion_o="/home/pi/USCO/remoto_meteorologico/Precipitacion.csv"
 path_humedad_suelo_o='/home/pi/USCO/remoto_suelo/remoto1/Humedad_estadistico.csv'
 path_temperatura_suelo_o='/home/pi/USCO/remoto_suelo/remoto1/Temperatura_estadistico.csv'
 path_PAR_o='/home/pi/USCO/remoto_meteorologico/PAR.csv'
+path_ph_suelo_o='/home/pi/USCO/remoto_suelo/remoto1/ph.csv'
+path_ph_tanque_o='/home/pi/USCO/remoto_tanque/ph.csv'
+path_temperatura_tanque_o='/home/pi/USCO/remoto_tanque/Temperatura.csv'
 
 if tipo_finca=='si':
     "---------------Brillo Solar-----------------------------------------------------------"
@@ -269,10 +279,10 @@ if tipo_finca=='si':
 
     while iteracion<=numero_intentos:
         os.system(comando)
-        file_precipitacion=open(path_respuesta,'r')
+        file_PAR=open(path_respuesta,'r')
         valor_html=[]
 
-        for line in file_precipitacion.readlines():
+        for line in file_PAR.readlines():
             linea=line.strip().lower()
             valor_html.append(linea)
         confirmacion=valor_html[len(valor_html)-2]
@@ -301,10 +311,10 @@ comando=comando+" --form enviar=%s"%enviar+" %s"%IP+" > %s"%path_respuesta
 print comando
 while iteracion<=numero_intentos:
     os.system(comando)
-    file_precipitacion=open(path_respuesta,'r')
+    file_humedad_suelo=open(path_respuesta,'r')
     valor_html=[]
 
-    for line in file_precipitacion.readlines():
+    for line in file_humedad_suelo.readlines():
         linea=line.strip().lower()
         valor_html.append(linea)
     confirmacion=valor_html[len(valor_html)-2]
@@ -333,10 +343,10 @@ comando=comando+" --form enviar=%s"%enviar+" %s"%IP+" > %s"%path_respuesta
 
 while iteracion<=numero_intentos:
     os.system(comando)
-    file_precipitacion=open(path_respuesta,'r')
+    file_temperatura_suelo=open(path_respuesta,'r')
     valor_html=[]
 
-    for line in file_precipitacion.readlines():
+    for line in file_temperatura_suelo.readlines():
         linea=line.strip().lower()
         valor_html.append(linea)
     confirmacion=valor_html[len(valor_html)-2]
@@ -354,3 +364,103 @@ while iteracion<=numero_intentos:
             archivo.close
     else:
         iteracion=iteracion+1
+"---------------pH suelo-----------------------------------------------------------"
+confirmacion="Null"
+iteracion=1
+variable="suelo_pH"
+comando="curl --form user=%s"%user+" --form password=%s"%password
+comando=comando+" --form cordID=%s"%cordID+" --form variable=%s"%variable
+comando=comando+" --form remoteID=%s"%remoteID+" --form datafile=@%s"%path_ph_suelo_o
+comando=comando+" --form enviar=%s"%enviar+" %s"%IP+" > %s"%path_respuesta
+
+while iteracion<=numero_intentos:
+    os.system(comando)
+    file_ph_suelo=open(path_respuesta,'r')
+    valor_html=[]
+
+    for line in file_ph_suelo.readlines():
+        linea=line.strip().lower()
+        valor_html.append(linea)
+    confirmacion=valor_html[len(valor_html)-2]
+    posicion0=confirmacion.find(str1)
+    posicion1=confirmacion[posicion0+1:len(confirmacion)].find(str1)
+    posicion1=posicion1+posicion0+1
+    confirmacion=confirmacion[posicion0+1:posicion1]
+    if confirmacion=="ok":
+        iteracion=numero_intentos+10
+        if os.path.exists(path_respuesta):
+            os.remove(path_respuesta)
+        if os.path.exists(path_ph_suelo_o):
+            os.remove(path_ph_suelo_o)
+            archivo=open(path_ph_suelo_o,"a+")
+            archivo.close
+            os.system('sudo chmod 777 /home/pi/USCO/remoto_suelo/remoto1/ph*')
+    else:
+        iteracion=iteracion+1
+"---------------pH tanques-----------------------------------------------------------"
+confirmacion="Null"
+iteracion=1
+variable="tanque_pH"
+comando="curl --form user=%s"%user+" --form password=%s"%password
+comando=comando+" --form cordID=%s"%cordID+" --form variable=%s"%variable
+comando=comando+" --form remoteID=%s"%remoteID_tanque+" --form datafile=@%s"%path_ph_tanque_o
+comando=comando+" --form enviar=%s"%enviar+" %s"%IP+" > %s"%path_respuesta
+
+while iteracion<=numero_intentos:
+    os.system(comando)
+    file_ph_tanque=open(path_respuesta,'r')
+    valor_html=[]
+
+    for line in file_ph_tanque.readlines():
+        linea=line.strip().lower()
+        valor_html.append(linea)
+    confirmacion=valor_html[len(valor_html)-2]
+    posicion0=confirmacion.find(str1)
+    posicion1=confirmacion[posicion0+1:len(confirmacion)].find(str1)
+    posicion1=posicion1+posicion0+1
+    confirmacion=confirmacion[posicion0+1:posicion1]
+    if confirmacion=="ok":
+        iteracion=numero_intentos+10
+        if os.path.exists(path_respuesta):
+            os.remove(path_respuesta)
+        if os.path.exists(path_ph_tanque_o):
+            os.remove(path_ph_tanque_o)
+            archivo=open(path_ph_tanque_o,"a+")
+            archivo.close
+            os.system('sudo chmod 777 /home/pi/USCO/remoto_tanque/ph*')
+    else:
+        iteracion=iteracion+1
+"---------------Temperatura tanques-----------------------------------------------------------"
+confirmacion="Null"
+iteracion=1
+variable="tanque_temperatura"
+comando="curl --form user=%s"%user+" --form password=%s"%password
+comando=comando+" --form cordID=%s"%cordID+" --form variable=%s"%variable
+comando=comando+" --form remoteID=%s"%remoteID_tanque+" --form datafile=@%s"%path_temperatura_tanque_o
+comando=comando+" --form enviar=%s"%enviar+" %s"%IP+" > %s"%path_respuesta
+
+while iteracion<=numero_intentos:
+    os.system(comando)
+    file_temperatura_tanque=open(path_respuesta,'r')
+    valor_html=[]
+
+    for line in file_temperatura_tanque.readlines():
+        linea=line.strip().lower()
+        valor_html.append(linea)
+    confirmacion=valor_html[len(valor_html)-2]
+    posicion0=confirmacion.find(str1)
+    posicion1=confirmacion[posicion0+1:len(confirmacion)].find(str1)
+    posicion1=posicion1+posicion0+1
+    confirmacion=confirmacion[posicion0+1:posicion1]
+    if confirmacion=="ok":
+        iteracion=numero_intentos+10
+        if os.path.exists(path_respuesta):
+            os.remove(path_respuesta)
+        if os.path.exists(path_temperatura_tanque_o):
+            os.remove(path_temperatura_tanque_o)
+            archivo=open(path_temperatura_tanque_o,"a+")
+            archivo.close
+            os.system('sudo chmod 777 /home/pi/USCO/remoto_tanque/Temperatura*')
+    else:
+        iteracion=iteracion+1
+
