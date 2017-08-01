@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 include '../mylibrary.php';
 // Start the session
@@ -22,6 +23,14 @@ if(isset($_GET["usuario"])){
         $nav->setUserName($usuario);
         $_SESSION['navigator']=$nav;
     }
+    	else{
+		$filename="/home/pi/USCO/administrativo/usuario.txt";
+		$fd=fopen($filename,"r");
+			$usuario=fread($fd,filesize($filename));
+		fclose($fd);
+	}
+        $nav->setUserName($usuario);
+        $_SESSION['navigator']=$nav;
 }
 
 if(validar($nav->getUserName(),$password)){
@@ -34,7 +43,7 @@ else{
     $_SESSION['navigator']=$nav;
 }   
 ?>
-<!DOCTYPE html>
+
 
 <head>
 	<title>proyecto CAFFES</title>
@@ -54,6 +63,9 @@ else{
 </head>
 
 <body>
+		<?php
+
+		?>
 <!-- Librería jQuery requerida por los plugins de JavaScript -->
 <!--<script src="http://code.jquery.com/jquery.js"></script>->
         <!-- Header de la página  -->	
