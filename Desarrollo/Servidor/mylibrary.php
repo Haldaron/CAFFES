@@ -7,6 +7,7 @@ class navegacion
 {
 	public $UserID=NULL;
 	public $UserName='';
+	public $logTries=0;
 // 	public $Logged=false;
 	public $ActionList=[];
 	public $ActionSel='';
@@ -18,6 +19,19 @@ class navegacion
 	public $VariableList=[];
 	public $VariableSel=[];
 	
+        //aumenta el numero de intentos de registre
+        
+        public function addLogTry(){
+            $this->logTries+=1;
+        }
+
+        public function clearLogTry(){
+            $this->logTries=0;
+        }
+
+        public function getLogTries(){
+            return $this->logTries;
+        }
 	//muestra si estado de validación de registro del usuario
 	public function getLog() {
 		return $this->Logged;

@@ -77,8 +77,17 @@ else {
                 <div class="col-sm-4">
                         <!--division para insertar el valor-->
                         <div class="row">
-                            <label for="NumberValue">valor:</label>
-                            <input type="text" class="form-control panel" id="NumberValue" name="variable" required>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                <!--<label for="NumberValue">valor:</label>-->
+                                <input type="text" class="form-control panel" id="NumberValue" name="variable" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="row">
+                                <a class="btn btn-default" id="units" onclick="">pH</a>
+                                </div>
+                            </div>
                         </div>
                         
                     <div class="row">
