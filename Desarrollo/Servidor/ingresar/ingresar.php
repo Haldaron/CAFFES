@@ -52,8 +52,8 @@ else {
                             </div>
                             <div class="col-sm-6">
                                 <label for="medicion">variable:</label>
-                                <input class='radio-inline' type='radio' name='medicion' value='temperatura' data-labelauty='temperatura' id="temp" required>
-                                <input class='radio-inline' type='radio' name='medicion' value='pH' data-labelauty='pH' checked id="pH" required>
+                                <input class='radio-inline' type='radio' name='medicion' value='temperatura' data-labelauty='temperatura' id="temp" onclick="setUnitTemp()" required>
+                                <input class='radio-inline' type='radio' name='medicion' value='pH' data-labelauty='pH' checked id="pH" onclick="setUnitpH()" required>
                             </div>
                         </div>
                         <!--division para la selección de fecha-->
@@ -85,7 +85,7 @@ else {
                             </div>
                             <div class="col-sm-2">
                                 <div class="row">
-                                <a class="btn btn-default" id="units" onclick="">pH</a>
+                                <a class="btn btn-default" id="units">pH</a>
                                 </div>
                             </div>
                         </div>
@@ -147,11 +147,18 @@ else {
                 if(document.getElementById("temp").checked){
                         document.getElementById("pH").checked=true;
                         document.getElementById("temp").checked=false;
+                        document.getElementById("units").innerHTML="pH";
                 }                
            }
            function enableTemp() {
                 document.getElementById("temp").disabled = false;
            }
+           function setUnitTemp() {
+                document.getElementById("units").innerHTML="°C";
+           }
+           function setUnitpH() {
+                document.getElementById("units").innerHTML="pH";
+           }           
            function cancelar() {
 		window.location="index.php";
 	   }
