@@ -150,4 +150,34 @@ function printNavigation($nav){
 	//$nav->VariableList=[];
 	//$nav->VariableSel=[]; 
 }
+
+function lsb2Volt($sensor,$lsb){
+    switch ($sensor) {
+        case "temp":
+                $volt=0.1*$lsb/2.0**25;
+            break;
+        case "hum":
+                $volt=4.0*$lsb/(2.0**23);
+            break;
+        case "par":
+                $volt=4.0*$lsb/(2.0**23);
+            break;
+    }
+return $volt;
+}
+
+function volt2Temp($volt){
+    return $volt*1000.0/0.385;
+}
+
+function volt2PAR($volt){
+    return $volt*156.0/0.2;
+}
+
+function volt2Hum($volt,$a,$b){
+    return $hum;
+}
+
+
 ?>
+

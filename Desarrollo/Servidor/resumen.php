@@ -28,6 +28,7 @@ foreach ($variables as $fila){
     $file = fopen($archivo,'w');
     $result=getTableData($fila);
     while($row=mysqli_fetch_row($result)){
+        //case ($)
         fputcsv($file,$row);
     }
     fclose($file); //cierra el archivo
@@ -72,7 +73,8 @@ system($convert);   //crea un nuevo archivo con la solicitud
 		<div class="col-sm-6">
 			<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
 		</div>
-		<!-- formulario de registro -->		
+		<!-- formulario de registro -->	
+		<?php echo lsb2Volt("par",4300000);?>
 		<div class="col-sm-6">
                     <a href="<?php echo $resultFile;?>" class="miboton" download="reporteDatos.xlsx">
                         <button class="buttondwn"><b>Descargar</b></button>
