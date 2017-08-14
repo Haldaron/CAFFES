@@ -93,7 +93,7 @@ static void confLmp(lmp_dev_t *dev);
 int main(void)
 {
     /* Init board hardware. */
-    pinmux_init_all(true);
+     pinmux_init_all(true);
 
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();

@@ -9,6 +9,8 @@ C_SRCS += \
 ../drivers/fsl_flash.c \
 ../drivers/fsl_gpio.c \
 ../drivers/fsl_lpuart.c \
+../drivers/fsl_sdspi.c \
+../drivers/fsl_sdspi_disk.c \
 ../drivers/fsl_smc.c \
 ../drivers/fsl_spi.c \
 ../drivers/fsl_spi_freertos.c \
@@ -20,6 +22,8 @@ OBJS += \
 ./drivers/fsl_flash.o \
 ./drivers/fsl_gpio.o \
 ./drivers/fsl_lpuart.o \
+./drivers/fsl_sdspi.o \
+./drivers/fsl_sdspi_disk.o \
 ./drivers/fsl_smc.o \
 ./drivers/fsl_spi.o \
 ./drivers/fsl_spi_freertos.o \
@@ -31,6 +35,8 @@ C_DEPS += \
 ./drivers/fsl_flash.d \
 ./drivers/fsl_gpio.d \
 ./drivers/fsl_lpuart.d \
+./drivers/fsl_sdspi.d \
+./drivers/fsl_sdspi_disk.d \
 ./drivers/fsl_smc.d \
 ./drivers/fsl_spi.d \
 ./drivers/fsl_spi_freertos.d \

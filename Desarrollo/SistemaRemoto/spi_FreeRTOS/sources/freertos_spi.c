@@ -29,11 +29,6 @@
  */
 
 
-/* FreeRTOS kernel includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "timers.h"
 
 /* Freescale includes. */
 #include "fsl_device_registers.h"
@@ -42,14 +37,34 @@
 #include "fsl_spi_freertos.h"
 #include "board.h"
 #include "fsl_gpio.h"
+#include "ff.h"
+#include "spi.h"
+#include <stdlib.h>
 
 
 #include "fsl_common.h"
 #include "fsl_port.h"
 #include "pin_mux.h"
 #include "clock_config.h"
-#include "spi.h"
-#include "SD.h"
+
+#define OS_FREERTOS
+
+#ifdef OS_FREERTOS
+	#include "spi.h"
+
+	/* FreeRTOS kernel includes. */
+	#include "FreeRTOS.h"
+	#include "task.h"
+	#include "queue.h"
+	#include "timers.h"
+	/*******************************************************************************
+	 * Definitions
+	 ******************************************************************************/
+	/* Task priorities. */
+	#define master_task_PRIORITY (configMAX_PRIORITIES - 1)
+#else
+	#include "spi_nf.h"
+#endif
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -60,11 +75,7 @@
 #define SIZE		4
 
 
-/*******************************************************************************
- * Definitions
- ******************************************************************************/
-/* Task priorities. */
-#define master_task_PRIORITY (configMAX_PRIORITIES - 1)
+
 
 /*******************************************************************************
  * Prototypes
@@ -80,20 +91,19 @@ static void spi_task(void *pvParameters);
 int main(void)
 {
     /* Init board hardware. */
-    pinmux_init_all(true);
+
+	pinmux_init_all(true);
 
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
     PRINTF("EJEMPLO DE SPI PARA PROYECTO CAFFES.\r\n");
-    PRINTF("Este ejemplo se utilizan dos dispositivos SPI de manera simultanea\r\n");
-    PRINTF("cada uno con un GPIO diferente como CS.\r\n");
     PRINTF("   SOUT     --    SIN  \r\n");
 
 
-    xTaskCreate(spi_task, "spi_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
-
+    xTaskCreate(spi_task, "med_task", configMINIMAL_STACK_SIZE, NULL, master_task_PRIORITY, NULL);
     vTaskStartScheduler();
+
     for (;;)
         ;
 }
@@ -105,12 +115,143 @@ int main(void)
 
 
 static void spi_task(void *pvParameters){
-	disk_initialize(PDVR_SD0);
-	//uint8_t buffer[4]={0xA,0xB,0xC,0xC};
-	for(;;){
-		PRINTF("la puta plana\r\n");
-		//SD_sendCommand(PDVR_SD0,12,buffer);
-		vTaskDelay(100);
+
+	FATFS 		*fs=pvPortMalloc(sizeof(FATFS));
+	FRESULT 	fr;
+	spi_dev_t 	*spi_dev=pvPortMalloc(sizeof(spi_dev_t));
+
+    PRINTF("begin.\r\n");
+
+	char file_name1[12]="Test.csv";
+
+	spi_initialize(spi_dev,GPIOC,PIN4);
+
+
+//	sdspi_init(&sdspi_dev);
+//
+//
+//	data_out[0]=0x40;
+//	data_out[1]=0x00;
+//	data_out[2]=0x00;
+//	data_out[3]=0x00;
+//	data_out[4]=0x00;
+//	data_out[5]=0x95;
+//	for(;;){
+//		PRINTF("Reset Command\n\r");
+//		sdspi_init(&sdspi_dev);
+//		data_out[0]=0x40;
+//		sdspi_transfer(&sdspi_dev,data_out,data_in,6);
+//		data_out[0]=0xFF;
+//		for(int i=0;i<9;i++){
+//			sdspi_transfer(&sdspi_dev,data_out,data_in,1);
+//			PRINTF("Response: %X\n\r",data_in[0]);
+//			for(int j=0;j<480000;j++);
+//		}
+//	}
+
+	fr= f_mount(fs,file_name1,1);
+	if(fr)
+	{
+
+					PRINTF("\nError mounting file system\r\n");
+
+					for(;;){}
+
 	}
+	//
+	//	fr = f_open(&fil, file_name1, FA_WRITE | FA_OPEN_ALWAYS);//create csv file
+	//
+	//	if(fr)
+	//
+	//	{
+	//
+	//					PRINTF("\nError opening text file\r\n");
+	//
+	//					for(;;){}
+	//
+	//	}
+	//
+	//	fr = f_write(&fil, "Test1 ,Test2 ,Test3 ,Test4 \r\n", 29, &bw); //write data to the excel file
+	//
+	//	if(fr)
+	//
+	//	{
+	//
+	//					PRINTF("\nError write text file\r\n");
+	//
+	//					for(;;){}
+	//
+	//	}
+	//
+	//	 fr = f_close(&fil);
+	//
+	//	if(fr)
+	//
+	//	{
+	//
+	//					PRINTF("\nError close text file\r\n");
+	//
+	//					for(;;){}
+	//
+	//	}
+	//
+	//	fr= f_mount(&fs,file_name2,0);
+	//
+	//	if(fr)
+	//
+	//	{
+	//
+	//					PRINTF("\nError mounting file system\r\n");
+	//
+	//					for(;;){}
+	//
+	//	}
+	//
+	//	fr = f_open(&fil, file_name2, FA_WRITE | FA_OPEN_ALWAYS);//create txt file
+	//
+	//	if(fr)
+	//
+	//	{
+	//
+	//					PRINTF("\nError opening text file\r\n");
+	//
+	//					for(;;){}
+	//
+	//	}
+	//
+	//	fr = f_write(&fil, "Test1 ,Test2 ,Test3 ,Test4 \r\n", 29, &bw); //write data to the txt file
+	//
+	//	if(fr)
+	//
+	//	{
+	//
+	//					PRINTF("\nError write text file\r\n");
+	//
+	//					for(;;){}
+	//
+	//	}
+	//
+	//	fr = f_close(&fil);
+	//
+	//	if(fr)
+	//
+	//	{
+	//
+	//					PRINTF("\nError close text file\r\n");
+	//
+	//					for(;;){}
+	//
+	//	}
+	//
+	//while(1)
+	//
+	//	{
+	//
+	//			 for(i=0;i<10;i++) for(j=0;j<65535;j++);
+	//
+	//			PRINTF("\ntest_sd\n");//
+	//
+	//	}
+
 }
 
