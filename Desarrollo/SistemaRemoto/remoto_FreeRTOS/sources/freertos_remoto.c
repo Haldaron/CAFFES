@@ -72,7 +72,11 @@
 #define CH4_IC 			BURNOUT_DIS|VREF1|VINP4|VINN7
 
 #define CH0_CONF		ODR_214_65|FGA_OFF_4|BUFF_ON
+<<<<<<< HEAD
 #define BGCAL            BGCALMODE2
+=======
+#define BGCAL           BGCALMODE2
+>>>>>>> 91ed90fb7a2d903fb7c3e50d54476c7aa83fd5d5
 
 /*******************************************************************************
  * Definitions
@@ -174,7 +178,11 @@ static void medicion_task(void *pvParameters){
 	sprintf(str,"h>remoto1>transmitir>var>Humedad3");
 	Xbee_setFrame(frame, str);
 	Xbee_APISend(xbee_dev, frame);
+<<<<<<< HEAD
 	lmp_confMeasure(&dev, SCAN_MODE0, CH0_FIRST, CH5_LAST);
+=======
+    	lmp_confMeasure(&dev, SCAN_MODE0, CH0_FIRST, CH5_LAST);
+>>>>>>> 91ed90fb7a2d903fb7c3e50d54476c7aa83fd5d5
 	lmp_getMeasure(&dev,&adc);
 	sprintf(str,"d>%d",(int)adc);
 	Xbee_setFrame(frame, str);

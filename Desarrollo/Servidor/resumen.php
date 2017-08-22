@@ -9,30 +9,51 @@ if(isset($_SESSION['navigator'])) {
 else {
 	$nav=new navegacion;
 }
-/*estas instrucciones se deben reemplazar por aquellas que provienen del metodo post*/
-$nav->clearVarSel();//evita que se carguen datos anteriores
 
-$nav->setVarSel('metereologico_temperatura');
-$nav->setVarSel('metereologico_precipitacion');
-$nav->setVarSel('metereologico_direccion_viento');
-$nav->setVarSel('metereologico_velocidad_viento');
-$nav->setVarSel('metereologico_humedad');
+/*leer las variables que el usuario selecciono*/
+//$variables=['pH,'suelo_temperatura']:
+//$nav->setVarSel($variable);
 
+$variables=$_POST['variable']; //lista de las variables que se van a descargar
 
-$variables=$nav->getVarSel(); //lista de las variables que se van a descargar
+printNavigation($nav);
+foreach ($variables as $field){
+    echo $field.'<br>';
+}
+
+/*
 $resultFile='results.xlsx';
 
 $convert='ssconvert --merge-to='.$resultFile;
 foreach ($variables as $fila){
     $archivo=$fila.'.csv';    
-    $file = fopen($archivo,'w');
+    $file = fopen($archivo,'w'); // dejo abierto un archivo
     $result=getTableData($fila);
     while($row=mysqli_fetch_row($result)){
-        //case ($)
+        switch($fila){
+            case "suelo_temperatura":
+                    $volt=lsb2Volt("temp",row[]);
+                    $temp=volt2Temp($volt);
+                    echo $temp;
+                 break;   
+            case "metereologico_radiacion_PAR":
+                    $volt=lsb2Volt("par",row[]);
+                    $par=volt2Par($volt);
+                    echo $par;
+                 break;
+            case "suelo_humedad":
+                    $volt=lsb2Volt("hum",row[]);
+                    //query para buscar los parametros a y b
+                    $hum=volt2Hum($volt,0.001,3.5);
+                    echo $hum;
+                break;
+            default:
+                break;        
+        }
         fputcsv($file,$row);
     }
     fclose($file); //cierra el archivo
-    /*revisa si hay uno o mas variables seleccionadas*/
+    //revisa si hay uno o mas variables seleccionadas
     if(count($variables)==1){
         $convert='ssconvert'.' '.$archivo.' '.$resultFile;
     }
@@ -42,8 +63,7 @@ foreach ($variables as $fila){
 }
 system('rm '.$resultFile);//borra el archivo anteriores
 system($convert);   //crea un nuevo archivo con la solicitud
-
-#printNavigation($nav);
+*/
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +94,6 @@ system($convert);   //crea un nuevo archivo con la solicitud
 			<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
 		</div>
 		<!-- formulario de registro -->	
-		<?php echo lsb2Volt("par",4300000);?>
 		<div class="col-sm-6">
                     <a href="<?php echo $resultFile;?>" class="miboton" download="reporteDatos.xlsx">
                         <button class="buttondwn"><b>Descargar</b></button>

@@ -222,7 +222,7 @@ function queryVariable($remoteType, $RemoteID) {
 	$list=[];
 	switch($remoteType) {
 		case "Suelos":
-			$list=['Temperatura','Humedad','pH'];
+			$list=['suelo_temperatura','suelo_humedad','suelo_pH'];
 			break;
 		case "Meteorológico":
 			$list=['Humedad Relativa','Temperatura','Brillo Solar','Velocidad de Viento', 'Dirección de Viento','Precipitación','PAR'];

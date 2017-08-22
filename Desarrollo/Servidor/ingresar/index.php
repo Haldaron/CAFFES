@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 include '../mylibrary.php';
 // Start the session
@@ -12,6 +13,7 @@ else {
 ?>
 
 <?php
+
 if(isset($_GET["password"])){
     $password=$_GET["password"];
 }
@@ -21,13 +23,27 @@ if(isset($_GET["usuario"])){
         $nav->setUserName($usuario);
         $_SESSION['navigator']=$nav;
     }
+    	else{
+		$filename="/home/pi/USCO/administrativo/usuario.txt";
+		$fd=fopen($filename,"r");
+			$usuario=fread($fd,filesize($filename));
+		fclose($fd);
+	}
+        $nav->setUserName($usuario);
+        $_SESSION['navigator']=$nav;
 }
 
 if(validar($nav->getUserName(),$password)){
+    $nav->clearLogTry();
+    $_SESSION['navigator']=$nav;
     header('Location: ingresar.php');
 }
+else{
+    $nav->addLogTry();
+    $_SESSION['navigator']=$nav;
+}   
 ?>
-<!DOCTYPE html>
+
 
 <head>
 	<title>proyecto CAFFES</title>
@@ -47,6 +63,9 @@ if(validar($nav->getUserName(),$password)){
 </head>
 
 <body>
+		<?php
+
+		?>
 <!-- Librería jQuery requerida por los plugins de JavaScript -->
 <!--<script src="http://code.jquery.com/jquery.js"></script>->
         <!-- Header de la página  -->	
@@ -94,12 +113,20 @@ if(validar($nav->getUserName(),$password)){
                         </div>
                         <div class="row">
                             <button value="ingresar" type="submit" class="btn btn-default form-control" name="button"><strong>Ingresar</strong></button>
-                        </div>    
+                        </div>
+                        <?php
+                            if($nav->getLogTries()>1){
+                            echo '<div class="alert alert-warning">'; 
+                            echo '<strong>Advertencia:</strong> la contraseña no es correcta. intente de nuevo por favor';
+                            echo '</div>';
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
             </form>
         </div>
+    
         <script type="text/javascript">
            function appendNumber(N){
                 document.getElementById('NumberValue').value+=N;

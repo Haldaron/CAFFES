@@ -18,6 +18,7 @@ else {
 		$nav->setRemSel($remoto);
 		$nav->setRemID();//actualizar con el valor del ID; 
 		$nav->setVarList();
+		$nav->clearVarSel();
 	?>
 
 <!DOCTYPE html>
@@ -58,7 +59,7 @@ else {
 						foreach ($list as $clave=>$item){
 							if($item) {
 								echo "<div class='col-sm-6'>\n";
-	  							echo "<input class='radio-inline' type='checkbox' name='variable' value='variable' data-labelauty='".$item."' checked>\n";
+	  							echo "<input class='radio-inline' type='checkbox' name='variable[]' value='".$item."' data-labelauty='".$item."' checked>\n";
 								echo "</div>\n";	
 							}
 						}
