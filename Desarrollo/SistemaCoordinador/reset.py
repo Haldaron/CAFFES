@@ -169,7 +169,7 @@ for line in file_rem_tanque_ID.readlines():
 enviar="Importar"
 "--------------Funcion que envia un archivo por lineas-----------------------------------"
 def enviar_archivo(path_datos,path_datos_temporal,variable,rID):
-    comando="curl --form user=%s"%user+" --form password=%s"%password
+    comando="curl -m 60 --form user=%s"%user+" --form password=%s"%password
     comando=comando+" --form cordID=%s"%cordID+" --form variable=%s"%variable
     comando=comando+" --form remoteID=%s"%rID+" --form datafile=@%s"%path_datos_temporal
     comando=comando+" --form enviar=%s"%enviar+" %s"%IP+" > %s"%path_respuesta
@@ -182,7 +182,8 @@ def enviar_archivo(path_datos,path_datos_temporal,variable,rID):
     n_lineas=len(lineas)
     file_datos.close
     file_datos=open(path_datos,'a')
-    file_datos.write(lineas[n_lineas-1])
+    if n_lineas>0:
+        file_datos.write(lineas[n_lineas-1])
     file_datos.close
     file_datos=open(path_datos,'r')
     confirmaciones=[]
