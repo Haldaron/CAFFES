@@ -125,7 +125,7 @@ class navegacion
 		return $this->VariableList;
 	}
 	public function setVarSel($var){
-            $this->VariableSel=array_merge($this->VariableSel,[$var]);
+            $this->VariableSel=$var;
 	}
 	public function getVarSel(){
             return $this->VariableSel;
@@ -154,11 +154,17 @@ function printNavigation($nav){
 	//$nav->Logged=false;
 	printArray('acciones',$nav->getActionList(),$nav->getActionSel());
 	printArray('cordinadores',$nav->getCordList(),$nav->getCordSel());
-	printArray('remoto',$nav->getRemList(),$nav->getRemSel());
-	
-        printArray('varibale',$nav->getVarList(),$nav->getVarSel());
-	//$nav->VariableList=[];
-	//$nav->VariableSel=[]; 
+}
+
+function setFileName($nav){
+$name="Finca-".$nav->getCordSel()."_";//acocia el numero del cordinador
+$name.="Var-".$nav->getRemSel(); //asocia el tipo de remoto
+foreach($nav->getVarSel() as $variable){
+    $name.="(".$variable.")";//relaciona las variables seleccionadas
+}
+$name.="_".date("Y-m-d");//la fecha
+$name.=".xlsx"; //genera la extension del archivo
+return $name;
 }
 
 function lsb2Volt($sensor,$lsb){

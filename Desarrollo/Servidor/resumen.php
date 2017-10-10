@@ -15,11 +15,12 @@ else {
 //$nav->setVarSel($variable);
 
 $variables=$_POST['variable']; //lista de las variables que se van a descargar
+$nav->setVarSel($variables); //set the variable list
 
+
+$resultFileName=setFileName($nav);
 printNavigation($nav);
-foreach ($variables as $field){
-    echo $field.'<br>';
-}
+
 
 /*
 $resultFile='results.xlsx';
@@ -95,7 +96,7 @@ system($convert);   //crea un nuevo archivo con la solicitud
 		</div>
 		<!-- formulario de registro -->	
 		<div class="col-sm-6">
-                    <a href="<?php echo $resultFile;?>" class="miboton" download="reporteDatos.xlsx">
+                    <a href="<?php echo $resultFile;?>" class="miboton" download="<?php echo $resultFileName;?>">
                         <button class="buttondwn"><b>Descargar</b></button>
                     </a>
 		</div>
