@@ -20,7 +20,7 @@ $nav->setVarSel($variables); //set the variable list
 
 $resultFileName=setFileName($nav);
 
-$resultFile="~/Desktop/results.xlsx";
+$resultFile='results.xlsx';
 
 $convert="ssconvert --merge-to=".$resultFile;
 foreach ($variables as $fila){
