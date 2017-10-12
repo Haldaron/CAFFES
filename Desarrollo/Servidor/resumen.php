@@ -19,38 +19,15 @@ $nav->setVarSel($variables); //set the variable list
 
 
 $resultFileName=setFileName($nav);
-printNavigation($nav);
 
+$resultFile="~/Desktop/results.xlsx";
 
-/*
-$resultFile='results.xlsx';
-
-$convert='ssconvert --merge-to='.$resultFile;
+$convert="ssconvert --merge-to=".$resultFile;
 foreach ($variables as $fila){
-    $archivo=$fila.'.csv';    
+    $archivo=$fila.'.csv';// crea el archivo de la variable seleccionada    
     $file = fopen($archivo,'w'); // dejo abierto un archivo
     $result=getTableData($fila);
     while($row=mysqli_fetch_row($result)){
-        switch($fila){
-            case "suelo_temperatura":
-                    $volt=lsb2Volt("temp",row[]);
-                    $temp=volt2Temp($volt);
-                    echo $temp;
-                 break;   
-            case "metereologico_radiacion_PAR":
-                    $volt=lsb2Volt("par",row[]);
-                    $par=volt2Par($volt);
-                    echo $par;
-                 break;
-            case "suelo_humedad":
-                    $volt=lsb2Volt("hum",row[]);
-                    //query para buscar los parametros a y b
-                    $hum=volt2Hum($volt,0.001,3.5);
-                    echo $hum;
-                break;
-            default:
-                break;        
-        }
         fputcsv($file,$row);
     }
     fclose($file); //cierra el archivo
@@ -64,7 +41,6 @@ foreach ($variables as $fila){
 }
 system('rm '.$resultFile);//borra el archivo anteriores
 system($convert);   //crea un nuevo archivo con la solicitud
-*/
 ?>
 
 <!DOCTYPE html>
