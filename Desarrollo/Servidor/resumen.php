@@ -20,7 +20,7 @@ $resultFileName=setFileName($nav);
 
 $resultFile='results.xlsx';
 
-$convert="ssconvert --merge-to=".$resultFileName;
+$convert="ssconvert --merge-to=".$resultFile;
 foreach ($variables as $fila){
     $archivo=$fila.'.csv';// crea el archivo de la variable seleccionada    
     $file = fopen($archivo,'w'); // dejo abierto un archivo
@@ -39,7 +39,7 @@ foreach ($variables as $fila){
 }
 
 system('rm '.$resultFile);//borra el archivo anteriores
-system($resultFileName);   //crea un nuevo archivo con la solicitud
+system($convert);   //crea un nuevo archivo con la solicitud
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +90,7 @@ system($resultFileName);   //crea un nuevo archivo con la solicitud
 		</div>
 		<!-- formulario de registro -->	
 		<div class="col-sm-6">
-                    <a href="<?php echo $resultFileName;?>" class="miboton" download="<?php echo $resultFileName;?>">
+                    <a href="<?php echo $resultFile;?>" class="miboton" download="<?php echo $resultFileName;?>">
                         <button class="buttondwn"><b>Descargar</b></button>
                     </a>
 		</div>
