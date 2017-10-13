@@ -9,20 +9,18 @@ if(isset($_SESSION['navigator'])) {
 else {
 	$nav=new navegacion;
 }
+?>
 
-/*leer las variables que el usuario selecciono*/
-//$variables=['pH,'suelo_temperatura']:
-//$nav->setVarSel($variable);
-
+<?php if($nav->getLog()):?>
+<?php
 $variables=$_POST['variable']; //lista de las variables que se van a descargar
 $nav->setVarSel($variables); //set the variable list
-
 
 $resultFileName=setFileName($nav);
 
 $resultFile='results.xlsx';
 
-$convert="ssconvert --merge-to=".$resultFile;
+$convert="ssconvert --merge-to=".$resultFileName;
 foreach ($variables as $fila){
     $archivo=$fila.'.csv';// crea el archivo de la variable seleccionada    
     $file = fopen($archivo,'w'); // dejo abierto un archivo
@@ -39,8 +37,9 @@ foreach ($variables as $fila){
         $convert.=' '.$archivo;
     }
 }
+
 system('rm '.$resultFile);//borra el archivo anteriores
-system($convert);   //crea un nuevo archivo con la solicitud
+system($resultFileName);   //crea un nuevo archivo con la solicitud
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +61,25 @@ system($convert);   //crea un nuevo archivo con la solicitud
 	<div class="container">
 	<div class="page-header"><h3>INVESTIGACIÓN DE LAS CONDICIONES DE CONTROL DE LA CALIDAD DE CAFÉ ESPECIAL<br><small> LA PLATA, HUILA, CENTRO ORIENTE</small></h3></div>
 	</div>
+
+        <!--cabecera que contiene la barra de navegacion-->
+        <div class="container">
+            <nav class="navbar navbar-default">			
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">ProyectoOccicafe</a>
+                </div>
+                <ul class="nav navbar-nav">
+                <li><a href="actions.php">acciones</a></li>
+                <li><a href="cordinador.php">cordinadores</a></li>
+                <li><a href="remoto.php">remotos</a></li>
+                <li><a href="variable.php">variables</a></li>
+                <li class="active"><a href="#">resumen</a></li>
+                </ul>
+            </div>
+            </nav>
+        </div>
+	
 	<!-- Primera fila del diseño -->
 	<div class="container">
 	<div class="row">
@@ -72,7 +90,7 @@ system($convert);   //crea un nuevo archivo con la solicitud
 		</div>
 		<!-- formulario de registro -->	
 		<div class="col-sm-6">
-                    <a href="<?php echo $resultFile;?>" class="miboton" download="<?php echo $resultFileName;?>">
+                    <a href="<?php echo $resultFileName;?>" class="miboton" download="<?php echo $resultFileName;?>">
                         <button class="buttondwn"><b>Descargar</b></button>
                     </a>
 		</div>
@@ -81,3 +99,6 @@ system($convert);   //crea un nuevo archivo con la solicitud
 	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
+<?php else: ?>
+	<?php header("Location: index.php"); ?>
+<?php endif;?>	

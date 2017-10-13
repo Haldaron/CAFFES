@@ -35,6 +35,21 @@ else {
 			<div class="container">
 				<div class="page-header"><h3>INVESTIGACIÓN DE LAS CONDICIONES DE CONTROL DE LA CALIDAD DE CAFÉ ESPECIAL<br><small> LA PLATA, HUILA, CENTRO ORIENTE</small></h3></div>
 			</div>
+			
+			<!--cabecera que contiene la barra de navegacion-->
+			<div class="container">
+                            <nav class="navbar navbar-default">			
+                            <div class="container-fluid">
+                                <div class="navbar-header">
+                                <a class="navbar-brand" href="index.html">ProyectoOccicafe</a>
+                                </div>
+                                <ul class="nav navbar-nav">
+                                <li class="active"><a href="#">acciones</a></li>
+                                </ul>
+                            </div>
+                            </nav>
+                        </div>
+                        
 			<div class="container">
 				<div class="col-sm-6">
 					<img src="./imagenes/finca.jpg" class="img-thumbnail img-responsive" alt="Imagen responsive">
