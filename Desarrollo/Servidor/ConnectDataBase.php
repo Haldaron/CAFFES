@@ -371,9 +371,9 @@ function getTableData($variable, $rem_ID){
                 $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." AND Valor >= ".PARLOWERLIMIT." AND Valor <= ".PARUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'tanque_pH':
-                 $query="SELECT DISTINCT 'Fecha', 'Hora', 'Valor', 'Unidad', 'Tipo', 'Periodo' FROM '".$variable."' WHERE 'Remoto_Tanque_ID'= ".$rem_ID." AND 'Valor'>=".SOILPHLOWERLIMIT." 'Valor'<=".SOILPHUPPERLIMIT." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                 $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo FROM ".$variable." WHERE Remoto_Tanque_ID= ".$rem_ID." AND Valor >= ".SOILPHLOWERLIMIT." AND Valor <= ".SOILPHUPPERLIMIT." ORDER BY Fecha  DESC, Hora DESC";
             case 'tanque_temperatura':
-                $query='SELECT * FROM '.$variable."' WHERE 'Remoto_Tanque_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                 $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo FROM ".$variable." WHERE Remoto_Tanque_ID = ".$rem_ID." ORDER BY Fecha DESC, Hora DESC";
                 break;
             default:
                 echo 'Seleccion no valida';
