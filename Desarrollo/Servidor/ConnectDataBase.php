@@ -8,7 +8,18 @@ define("DATABASENAME", "CaffesDataBase");
 define('ACCIONES',['upload'=>'escribir','download'=>'leer']);
 define('ACTIONMASK',['upload'=>'Ingresar datos','download'=>'Descargar Datos']);
 
+//rangos de saturacion de los sensores
+define('SOILTEMPLOWERLIMIT', 1000000);
+define('SOILTEMPUPPERLIMIT', 4500000);
+define('SOILHUMLOWERLIMIT', 4600000);
+define('SOILHUMUPPERLIMIT', 8300000);
+define('SOILPHLOWERLIMIT', 0);
+define('SOILPHUPPERLIMIT', 14);
+define('PARLOWERLIMIT', 1600000);
+define('PARLOWERLIMIT', 8300000);
+
 /************************************************************************
+
 funcion que enmascara el listado de acciones y le da un nombre en español
 ************************************************************************/
 function acciones($action) {
@@ -225,10 +236,10 @@ function queryVariable($remoteType, $RemoteID) {
 			$list=['suelo_temperatura','suelo_humedad','suelo_pH'];
 			break;
 		case "Meteorológico":
-			$list=['Humedad Relativa','Temperatura','Brillo Solar','Velocidad de Viento', 'Dirección de Viento','Precipitación','PAR'];
+			$list=['metereologico_humedad','metereologico_temperatura','metereologico_brillo_solar','metereologico_velocidad_viento', 'metereologico_direccion_viento','metereologico_precipitacion','metereologico_radiacion_PAR'];
 			break;
 		case "Tanques":
-			$list=['pH','Temperatura'];
+			$list=['tanque_pH','tanque_temperatura'];
 			break;
 	}
 	return $list;
@@ -323,11 +334,51 @@ function getTableColumns($tableName){
 
 *****************************/
 
-function getTableData($variable){
+function getTableData($variable, $rem_ID){
     $result=NULL;
     $mysql=connect_database(); //solicita la conexión a la base de datos
     if($mysql){
-        $query='SELECT * FROM '.$variable;
+        echo $variable;
+        switch($variable){
+            case 'suelo_temperatura':
+                $query="SELECT DISTINCT 'Fecha', 'Hora', 'valor', 'unidad', 'tipo', 'periodo' FROM '".$variable."' WHERE 'Remoto_Suelos_ID'= ".$rem_ID." AND 'valor'>=".SOILTEMPLOWERLIMIT." 'valor'<=".SOILTEMPUPPERLIMIT." ORDER BY 'Fecha' DESC, 'Hora' DESC"; 
+                break;
+            case 'suelo_humedad':
+                $query="SELECT DISTINCT 'Profundidad', 'Fecha', 'Hora', 'Valor', 'Unidad', 'Tipo', 'Periodo' FROM '".$variable."' WHERE 'Remoto_Suelos_ID'= ".$rem_ID." AND 'Valor'>=".SOILHUMLOWERLIMIT." 'Valor'<=".SOILHUMUPPERLIMIT." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'suelo_pH':
+                $query="SELECT DISTINCT 'Fecha', 'Hora', 'Valor', 'Unidad', 'Tipo', 'Periodo' FROM '".$variable."' WHERE 'Remoto_Suelos_ID'= ".$rem_ID." AND 'Valor'>=".SOILPHLOWERLIMIT." 'Valor'<=".SOILPHUPPERLIMIT." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'metereologico_humedad':
+                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'metereologico_temperatura':
+                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'metereologico_brillo_solar':
+                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'metereologico_velocidad_viento':
+                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'metereologico_direccion_viento':
+                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'metereologico_precipitacion':
+                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            case 'metereologico_radiacion_PAR':
+                $query='SELECT * FROM '.$variable;
+                break;
+            case 'tanque_pH':
+                 $query="SELECT DISTINCT 'Fecha', 'Hora', 'Valor', 'Unidad', 'Tipo', 'Periodo' FROM '".$variable."' WHERE 'Remoto_Tanque_ID'= ".$rem_ID." AND 'Valor'>=".SOILPHLOWERLIMIT." 'Valor'<=".SOILPHUPPERLIMIT." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+            case 'tanque_temperatura':
+                $query='SELECT * FROM '.$variable."' WHERE 'Remoto_Tanque_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                break;
+            default:
+                echo 'Seleccion no valida';
+                break;
+        }
         $result=mysqli_query($mysql, $query);
     }
     mysqli_close($mysql);
