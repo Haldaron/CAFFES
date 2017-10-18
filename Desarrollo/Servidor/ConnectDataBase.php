@@ -338,7 +338,6 @@ function getTableData($variable, $rem_ID){
     $result=NULL;
     $mysql=connect_database(); //solicita la conexión a la base de datos
     if($mysql){
-        echo $variable;
         switch($variable){
             case 'suelo_temperatura':
                 $query="SELECT DISTINCT Fecha, Hora, valor, unidad, tipo, periodo FROM ".$variable." WHERE Remoto_Suelos_ID= ".$rem_ID." AND valor >= ".SOILTEMPLOWERLIMIT." AND valor<=".SOILTEMPUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC"; 

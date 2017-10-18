@@ -16,15 +16,19 @@ else {
 $variables=$_POST['variable']; //lista de las variables que se van a descargar
 $nav->setVarSel($variables); //set the variable list
 
-$resultFileName=setFileName($nav);
+//calcula el ID del remoto que se selecciono
+$remote=$nav->getRemSel();
+$list=$nav->getRemList();
+$remID=$list[$remote][0]; // el indice 0 cambia en caso de instalar mas remotos por finca.
 
+$resultFileName=setFileName($nav);
 $resultFile='results.xlsx';
 
 $convert="ssconvert --merge-to=".$resultFile;
 foreach ($variables as $fila){
     $archivo=$fila.'.csv';// crea el archivo de la variable seleccionada    
     $file = fopen($archivo,'w'); // dejo abierto un archivo
-    $result=getTableData($fila,3);
+    $result=getTableData($fila,$remID);
     while($row=mysqli_fetch_row($result)){
         fputcsv($file,$row);
     }
