@@ -16,7 +16,7 @@ define('SOILHUMUPPERLIMIT', 8300000);
 define('SOILPHLOWERLIMIT', 0);
 define('SOILPHUPPERLIMIT', 14);
 define('PARLOWERLIMIT', 1600000);
-define('PARLOWERLIMIT', 8300000);
+define('PARUPPERLIMIT', 8300000);
 
 /************************************************************************
 
@@ -350,25 +350,25 @@ function getTableData($variable, $rem_ID){
                 $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Suelos_ID= ".$rem_ID." AND Valor>=".SOILPHLOWERLIMIT." AND  Valor <=".SOILPHUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'metereologico_humedad':
-                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'metereologico_temperatura':
-                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'metereologico_brillo_solar':
-                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'metereologico_velocidad_viento':
-                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'metereologico_direccion_viento':
-                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'metereologico_precipitacion':
-                $query='SELECT DISTINCTROW * FROM '.$variable."' WHERE 'Remoto_Meteo_ID'= ".$rem_ID." ORDER BY 'Fecha' DESC, 'Hora' DESC";
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'metereologico_radiacion_PAR':
-                $query='SELECT * FROM '.$variable;
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Meteo_ID= ".$rem_ID." AND Valor >= ".PARLOWERLIMIT." AND Valor <= ".PARUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'tanque_pH':
                  $query="SELECT DISTINCT 'Fecha', 'Hora', 'Valor', 'Unidad', 'Tipo', 'Periodo' FROM '".$variable."' WHERE 'Remoto_Tanque_ID'= ".$rem_ID." AND 'Valor'>=".SOILPHLOWERLIMIT." 'Valor'<=".SOILPHUPPERLIMIT." ORDER BY 'Fecha' DESC, 'Hora' DESC";

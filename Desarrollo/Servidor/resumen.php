@@ -24,7 +24,7 @@ $convert="ssconvert --merge-to=".$resultFile;
 foreach ($variables as $fila){
     $archivo=$fila.'.csv';// crea el archivo de la variable seleccionada    
     $file = fopen($archivo,'w'); // dejo abierto un archivo
-    $result=getTableData($fila,5);
+    $result=getTableData($fila,3);
     while($row=mysqli_fetch_row($result)){
         fputcsv($file,$row);
     }
