@@ -343,7 +343,7 @@ function getTableData($variable, $rem_ID){
                 $query="SELECT DISTINCT Fecha, Hora, valor, unidad, tipo, periodo FROM ".$variable." WHERE Remoto_Suelos_ID= ".$rem_ID." AND valor >= ".SOILTEMPLOWERLIMIT." AND valor<=".SOILTEMPUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC"; 
                 break;
             case 'suelo_humedad':
-                $query="SELECT DISTINCT Profundidad, Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Suelos_ID= ".$rem_ID." AND Valor >= ".SOILHUMLOWERLIMIT." AND Valor <= ".SOILHUMUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC";
+                $query="SELECT DISTINCT Fecha, Hora, Valor, Profundidad, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Suelos_ID= ".$rem_ID." AND Valor >= ".SOILHUMLOWERLIMIT." AND Valor <= ".SOILHUMUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC";
                 break;
             case 'suelo_pH':
                 $query="SELECT DISTINCT Fecha, Hora, Valor, Unidad, Tipo, Periodo FROM ".$variable." WHERE Remoto_Suelos_ID= ".$rem_ID." AND Valor>=".SOILPHLOWERLIMIT." AND  Valor <=".SOILPHUPPERLIMIT." ORDER BY Fecha DESC, Hora DESC";

@@ -30,7 +30,57 @@ foreach ($variables as $fila){
     $file = fopen($archivo,'w'); // dejo abierto un archivo
     $result=getTableData($fila,$remID);
     while($row=mysqli_fetch_row($result)){
+        switch($fila){
+            case 'suelo_temperatura':
+                $row[2]=volt2Temp(lsb2Volt("temp", $row[2]));
+            break;                        
+            
+            case 'metereologico_radiacion_PAR':
+                $row[2]=volt2PAR(lsb2Volt("par", $row[2]));
+                $row[3]="umol/m2s";
+            break;
+            
+            case 'suelo_humedad':
+                $volt=lsb2Volt("hum", $row[2]);
+                switch($remID){
+                    case 5:
+                        $row[2]=volt2Hum($volt,COEFAFINCA5,COEFBFINCA5);
+                    break;
+                    case 6:
+                        $row[2]=volt2Hum($volt,COEFAFINCA6,COEFBFINCA6);
+                    break;
+                    case 7:
+                        $row[2]=volt2Hum($volt,COEFAFINCA7,COEFBFINCA7);
+                    break;
+                    case 8:
+                        $row[2]=volt2Hum($volt,COEFAFINCA8,COEFBFINCA8);
+                    break;
+                    case 9:
+                        $row[2]=volt2Hum($volt,COEFAFINCA9,COEFBFINCA9);
+                    break;
+                    case 10:
+                        $row[2]=volt2Hum($volt,COEFAFINCA10,COEFBFINCA10);
+                    break;
+                    case 11:
+                        $row[2]=volt2Hum($volt,COEFAFINCA11,COEFBFINCA11);
+                    break;
+                    case 12:
+                        $row[2]=volt2Hum($volt,COEFAFINCA12,COEFBFINCA12);
+                    break;
+                    case 13:
+                        $row[2]=volt2Hum($volt,COEFAFINCA13,COEFBFINCA13);
+                    break;
+                    case 14:
+                        $row[2]=volt2Hum($volt,COEFAFINCA14,COEFBFINCA14);
+                    break;                   
+                }
+            break;
+            default:
+                $row[2]=$row[2];
+            break;
+        }
         fputcsv($file,$row);
+        echo $row[0].', '.$row[1].', '.$row[2].', '.$row[3].'<br>';
     }
     fclose($file); //cierra el archivo
     //revisa si hay uno o mas variables seleccionadas
@@ -94,7 +144,7 @@ system($convert);   //crea un nuevo archivo con la solicitud
 		</div>
 		<!-- formulario de registro -->	
 		<div class="col-sm-6">
-                    <a href="<?php echo $resultFile;?>" class="miboton" download="<?php echo $resultFileName;?>">
+                    <!--<a href="<?php echo $resultFile;?>" class="miboton" download="<?php echo $resultFileName;?>">-->
                         <button class="buttondwn"><b>Descargar</b></button>
                     </a>
 		</div>

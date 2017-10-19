@@ -1,4 +1,28 @@
 <?php
+define('COEFAFINCA5',0.005);
+define('COEFAFINCA6',0.001);
+define('COEFAFINCA7',0.052);
+define('COEFAFINCA8',0.00034);
+define('COEFAFINCA9',0.06);
+define('COEFAFINCA10',0.004);
+define('COEFAFINCA11',0.002);
+define('COEFAFINCA12',0.003);
+define('COEFAFINCA13',0.009);
+define('COEFAFINCA14',0.01);
+
+define('COEFBFINCA5',2.817);
+define('COEFBFINCA6',3.352);
+define('COEFBFINCA7',2.229);
+define('COEFBFINCA8',3.731);
+define('COEFBFINCA9',1.943);
+define('COEFBFINCA10',2.811);
+define('COEFBFINCA11',3.212);
+define('COEFBFINCA12',2.942);
+define('COEFBFINCA13',3.35);
+define('COEFBFINCA14',3.35);
+?>
+
+<?php
 // incluir los servicios de la base de datos
 include 'ConnectDataBase.php'; 
 
@@ -191,6 +215,7 @@ function volt2PAR($volt){
 }
 
 function volt2Hum($volt,$a,$b){
+        $hum=$a*exp($b*$volt);
     return $hum;
 }
 
