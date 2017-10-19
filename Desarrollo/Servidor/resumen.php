@@ -80,7 +80,6 @@ foreach ($variables as $fila){
             break;
         }
         fputcsv($file,$row);
-        echo $row[0].', '.$row[1].', '.$row[2].', '.$row[3].'<br>';
     }
     fclose($file); //cierra el archivo
     //revisa si hay uno o mas variables seleccionadas
